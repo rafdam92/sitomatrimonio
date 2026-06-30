@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Album — Damiano & Francesca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.story-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:190px;gap:6px;padding:0 1.5rem;max-width:1100px;margin:0 auto}
+.sc{position:relative;overflow:hidden;cursor:pointer;background:var(--petal);display:flex;align-items:center;justify-content:center}
+.sc-ph{font-size:2.5rem;opacity:.3;transition:transform .5s,opacity .3s}
+.sc:hover .sc-ph{transform:scale(1.08);opacity:.45}
+.sc-img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.sc:hover .sc-img{transform:scale(1.05)}
+.sc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,36,32,.82) 0%,transparent 55%);opacity:0;transition:opacity .35s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem}
+.sc:hover .sc-ov{opacity:1}
+.sc-year{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rose);margin-bottom:.25rem}
+.sc-cap{font-family:var(--fd);font-style:italic;font-size:1rem;color:#FEFCF8;line-height:1.2}
+.sc-w{grid-column:span 8}.sc-t{grid-column:span 4;grid-row:span 2}.sc-m{grid-column:span 6}.sc-s{grid-column:span 4}.sc-sq{grid-column:span 4;grid-row:span 2}.sc-f{grid-column:span 12}
+@media(max-width:700px){.story-grid{grid-template-columns:1fr 1fr;grid-auto-rows:150px}.sc-w,.sc-t,.sc-m,.sc-s,.sc-sq,.sc-f{grid-column:span 1;grid-row:span 1}}
+
+.photo-hint{max-width:480px;margin:2.5rem auto;text-align:center;border:1.5px dashed var(--border);padding:2rem 1.5rem;background:rgba(242,217,208,.3)}
+.photo-hint p{font-size:.8rem;color:var(--mid);line-height:1.8}
+.photo-hint code{background:rgba(201,160,192,.2);padding:2px 8px;font-size:.73rem;color:var(--mauve)}
+
+#lb{display:none;position:fixed;inset:0;z-index:8000;background:rgba(44,36,32,.94);align-items:center;justify-content:center}
+#lb.open{display:flex}
+#lb-img{max-width:90vw;max-height:85vh;object-fit:contain}
+#lb-cap{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:var(--fd);font-style:italic;font-size:1.1rem;color:#FEFCF8;text-align:center}
+#lb-year{display:block;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:.3rem}
+#lb-close{position:absolute;top:1.5rem;right:1.5rem;color:#FEFCF8;font-size:2rem;line-height:1;background:none;border:none;cursor:pointer}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="../index.html">D <span>&amp;</span> F</a>
+  <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="info.html">Informazioni</a></li>
+    <li><a href="rsvp.html">RSVP</a></li>
+    <li><a href="regali.html">Regali</a></li>
+    <li><a href="album.html">Album</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="page-hero-ey">La nostra storia</p>
+  <h1 class="page-hero-title">Album</h1>
+</div>
+
+<!--
+  ✅ COME AGGIUNGERE LE FOTO:
+  1. Copia le immagini in  public/assets/images/
+  2. Cambia <div class="sc-ph">📸</div>
+     con     <img class="sc-img" src="../assets/images/nome.jpg" alt="descrizione"/>
+  3. Aggiorna data-year e data-cap
+-->
+<section style="padding:4rem 0 2rem">
+  <div class="story-grid">
+    <div class="sc sc-w reveal" data-year="2020" data-cap="Il primo incontro"><div class="sc-ph">📸</div><div class="sc-ov"><span class="sc-year">2020</span><span class="sc-cap">Il primo incontro</span></div></div>
+    <div class="sc sc-t reveal" data-year="2021" data-cap="La prima estate insieme"><div class="sc-ph">🌊</div><div class="sc-ov"><span class="sc-year">2021</span><span class="sc-cap">La prima estate insieme</span></div></div>
+    <div class="sc sc-m reveal" data-year="2021" data-cap="Sicilia, casa nostra"><div class="sc-ph">🌴</div><div class="sc-ov"><span class="sc-year">2021</span><span class="sc-cap">Sicilia, casa nostra</span></div></div>
+    <div class="sc sc-m reveal" data-year="2022" data-cap="Il primo viaggio"><div class="sc-ph">✈️</div><div class="sc-ov"><span class="sc-year">2022</span><span class="sc-cap">Il primo viaggio</span></div></div>
+    <div class="sc sc-sq reveal" data-year="2023" data-cap="Ogni alba insieme"><div class="sc-ph">🌅</div><div class="sc-ov"><span class="sc-year">2023</span><span class="sc-cap">Ogni alba insieme</span></div></div>
+    <div class="sc sc-s reveal" data-year="2023" data-cap="Natale in famiglia"><div class="sc-ph">🎄</div><div class="sc-ov"><span class="sc-year">2023</span><span class="sc-cap">Natale in famiglia</span></div></div>
+    <div class="sc sc-s reveal" data-year="2024" data-cap="La proposta"><div class="sc-ph">💍</div><div class="sc-ov"><span class="sc-year">2024</span><span class="sc-cap">La proposta</span></div></div>
+    <div class="sc sc-f reveal" data-year="2025" data-cap="Engagement shoot — Sicilia"><div class="sc-ph">📷</div><div class="sc-ov"><span class="sc-year">2025</span><span class="sc-cap">Engagement shoot — Sicilia</span></div></div>
+  </div>
+  <div class="photo-hint reveal">
+    <p>🌸 Aggiungi le vostre foto in <code>public/assets/images/</code><br>poi sostituisci le emoji con tag <code>&lt;img src="../assets/images/nome.jpg"&gt;</code></p>
+  </div>
+</section>
+
+<div id="lb" role="dialog" aria-label="Foto ingrandita">
+  <button id="lb-close" aria-label="Chiudi">✕</button>
+  <img id="lb-img" src="" alt=""/>
+  <div id="lb-cap"><span id="lb-year"></span><span id="lb-text"></span></div>
+</div>
+
+<footer class="site-footer">
+  <div class="fn">Damiano & Francesca</div>
+  <p>24 Luglio 2027 · Sicilia</p>
+</footer>
+
+<script>
+  const lb = document.getElementById('lb');
+  document.querySelectorAll('.sc').forEach(c => {
+    c.addEventListener('click', () => {
+      const img = c.querySelector('img');
+      if (!img) return;
+      document.getElementById('lb-img').src = img.src;
+      document.getElementById('lb-year').textContent = c.dataset.year || '';
+      document.getElementById('lb-text').textContent = c.dataset.cap || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeLB() { lb.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('lb-close').addEventListener('click', closeLB);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+</script>
+<script src="../js/nav.js"></script>
+</body>
+</html>

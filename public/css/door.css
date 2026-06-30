@@ -1,0 +1,72 @@
+/* ============================================================
+   DOOR ANIMATION — floreale pastello
+   ============================================================ */
+#door{position:fixed;inset:0;z-index:9000;display:flex;cursor:pointer}
+
+.door-half{
+  width:50%;height:100%;
+  background:linear-gradient(160deg,#2C2420 0%,#3D2E2A 100%);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform 1.3s var(--door-ease);
+  will-change:transform;overflow:hidden;position:relative;
+}
+
+/* floral SVG pattern inciso */
+.door-half::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cellipse cx='60' cy='40' rx='8' ry='14' fill='%23E8C4B8' opacity='.1' transform='rotate(0 60 60)'/%3E%3Cellipse cx='60' cy='40' rx='8' ry='14' fill='%23C9A8C0' opacity='.1' transform='rotate(45 60 60)'/%3E%3Cellipse cx='60' cy='40' rx='8' ry='14' fill='%239BAF8E' opacity='.1' transform='rotate(90 60 60)'/%3E%3Cellipse cx='60' cy='40' rx='8' ry='14' fill='%23E8C4B8' opacity='.1' transform='rotate(135 60 60)'/%3E%3Ccircle cx='60' cy='60' r='5' fill='%23F2D9D0' opacity='.15'/%3E%3C/svg%3E");
+  opacity:.7;
+}
+
+.door-half--l::after{content:'';position:absolute;right:0;top:15%;bottom:15%;width:1px;background:linear-gradient(to bottom,transparent,rgba(201,160,192,.5),transparent)}
+.door-half--r::after{content:'';position:absolute;left:0;top:15%;bottom:15%;width:1px;background:linear-gradient(to bottom,transparent,rgba(201,160,192,.5),transparent)}
+
+.door-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;padding:0 2rem}
+.door-half--l .door-inner{align-items:flex-end;padding-right:3.5rem}
+.door-half--r .door-inner{align-items:flex-start;padding-left:3.5rem}
+
+.door-name{
+  font-family:var(--fd);font-style:italic;font-weight:400;
+  font-size:clamp(2.4rem,7vw,5rem);color:#FEFCF8;line-height:1;white-space:nowrap;
+}
+.door-sub{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,160,192,.6);margin-top:.6rem}
+
+.door-amp{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-family:var(--fd);font-style:italic;font-size:clamp(2rem,5vw,4rem);
+  color:var(--rose);z-index:9001;pointer-events:none;transition:opacity .4s;
+  text-shadow:0 0 40px rgba(232,196,184,.3);
+}
+
+.door-cta{
+  position:absolute;bottom:2.8rem;left:50%;transform:translateX(-50%);z-index:9002;
+  display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  animation:ctaFloat 2.4s ease-in-out infinite;
+}
+@keyframes ctaFloat{
+  0%,100%{transform:translateX(-50%) translateY(0);opacity:.75}
+  50%{transform:translateX(-50%) translateY(-8px);opacity:1}
+}
+.door-cta-txt{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(254,252,248,.45);font-family:var(--fb)}
+.door-cta-ring{
+  width:50px;height:50px;border-radius:50%;
+  border:1px solid rgba(201,160,192,.45);background:rgba(201,160,192,.1);
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.door-cta-ring:hover{background:rgba(201,160,192,.2)}
+.door-cta-ring svg{width:20px;height:20px;stroke:var(--rose);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+#door.opening .door-half--l{transform:translateX(-100%)}
+#door.opening .door-half--r{transform:translateX(100%)}
+#door.opening .door-amp{opacity:0}
+#door.opening .door-cta{opacity:0;pointer-events:none}
+#door.gone{display:none}
+
+@media(max-width:500px){
+  .door-half--l .door-inner{padding-right:1.5rem}
+  .door-half--r .door-inner{padding-left:1.5rem}
+}
+
+/* ── PETAL CANVAS ───────────────────────────────────────── */
+#petal-canvas{position:fixed;inset:0;pointer-events:none;z-index:8999;opacity:0;transition:opacity .5s}
+#petal-canvas.active{opacity:1}

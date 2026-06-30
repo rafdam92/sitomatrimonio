@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RSVP — Damiano & Francesca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.rsvp-wrap{max-width:560px;margin:0 auto;padding:4rem 1.5rem 5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+@media(max-width:460px){.form-grid{grid-template-columns:1fr}}
+.form-full{margin-bottom:1.2rem}
+
+.pres-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+.pres-opt{position:relative}
+.pres-opt input{position:absolute;opacity:0;width:0;height:0}
+.pres-label{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.5rem 1rem;border:1px solid var(--border);cursor:pointer;text-align:center;transition:all .2s;background:var(--milk)}
+.pres-label:hover{background:var(--petal)}
+.pres-label-icon{font-size:1.6rem}
+.pres-label-text{font-size:.74rem;color:var(--mid)}
+.pres-opt input:checked + .pres-label{border-color:var(--mauve);background:rgba(201,160,192,.08)}
+.pres-opt input:checked + .pres-label .pres-label-text{color:var(--mauve);font-weight:500}
+
+.c-lbl{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:.4rem}
+.c-wrap{display:flex;align-items:center;border:1px solid var(--border)}
+.c-btn{width:46px;height:46px;font-size:1.2rem;color:var(--mauve);transition:background .2s;flex-shrink:0}
+.c-btn:hover{background:rgba(201,160,192,.1)}
+#guest-count{flex:1;text-align:center;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:.7rem;font-size:1rem;color:var(--ink);background:transparent;font-family:var(--fb)}
+
+.form-submit{display:flex;flex-direction:column;align-items:center;gap:1rem;margin-top:2rem}
+.form-note{font-size:.68rem;color:var(--mid);text-align:center}
+
+#rsvp-success{display:none;text-align:center;padding:4rem 1rem}
+#rsvp-success .s-icon{font-size:3rem;margin-bottom:1rem}
+#rsvp-success h2{font-family:var(--fd);font-style:italic;font-size:2rem;color:var(--ink);margin-bottom:.7rem}
+#rsvp-success p{color:var(--mid);font-size:.95rem}
+
+#pres-err{font-size:.65rem;color:#c0392b;display:none;margin-bottom:.5rem}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="../index.html">D <span>&amp;</span> F</a>
+  <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="info.html">Informazioni</a></li>
+    <li><a href="rsvp.html">RSVP</a></li>
+    <li><a href="regali.html">Regali</a></li>
+    <li><a href="album.html">Album</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="page-hero-ey">Conferma presenza</p>
+  <h1 class="page-hero-title">Ci sarete?</h1>
+  <p class="page-hero-sub">Vi chiediamo di rispondere entro il <strong>30 Aprile 2027</strong>.<br>Ogni risposta è preziosa per noi.</p>
+</div>
+
+<div class="rsvp-wrap">
+  <form id="rsvp-form" novalidate>
+    <div class="form-grid">
+      <div class="field" id="fw-nome"><label>Nome *</label><input type="text" id="f-nome" placeholder="Damiano" autocomplete="given-name"/><span class="field-err">Campo obbligatorio</span></div>
+      <div class="field" id="fw-cognome"><label>Cognome *</label><input type="text" id="f-cognome" placeholder="Rossi" autocomplete="family-name"/><span class="field-err">Campo obbligatorio</span></div>
+    </div>
+    <div class="form-full field" id="fw-email">
+      <label>Email *</label>
+      <input type="email" id="f-email" placeholder="tua@email.com" autocomplete="email"/>
+      <span class="field-err">Inserisci un'email valida</span>
+    </div>
+    <div class="form-full">
+      <div style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:.7rem">Presenza *</div>
+      <div class="pres-grid">
+        <div class="pres-opt"><input type="radio" name="presenza" id="p-si" value="si"/><label class="pres-label" for="p-si"><span class="pres-label-icon">🥂</span><span class="pres-label-text">Sarò presente!</span></label></div>
+        <div class="pres-opt"><input type="radio" name="presenza" id="p-no" value="no"/><label class="pres-label" for="p-no"><span class="pres-label-icon">😢</span><span class="pres-label-text">Purtroppo non potrò</span></label></div>
+      </div>
+      <span id="pres-err">Seleziona un'opzione</span>
+    </div>
+    <div id="fw-ospiti" style="display:none;margin-bottom:1.2rem">
+      <div class="c-lbl">Numero di persone</div>
+      <div class="c-wrap">
+        <button type="button" class="c-btn" id="c-minus">−</button>
+        <input type="number" id="guest-count" value="1" min="1" max="10" readonly/>
+        <button type="button" class="c-btn" id="c-plus">+</button>
+      </div>
+    </div>
+    <div id="fw-menu" class="form-full field" style="display:none">
+      <label>Preferenze alimentari</label>
+      <div class="sel-wrap">
+        <select id="f-menu">
+          <option value="">Nessuna preferenza</option>
+          <option value="vegetariano">Vegetariano</option>
+          <option value="vegano">Vegano</option>
+          <option value="senza_glutine">Senza glutine</option>
+          <option value="senza_lattosio">Senza lattosio</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-full field"><label>Note o auguri agli sposi</label><textarea id="f-note" placeholder="Un messaggio per Damiano e Francesca…"></textarea></div>
+    <div class="form-submit">
+      <button type="submit" class="btn btn-primary" id="rsvp-btn">Invia la risposta</button>
+      <p class="form-note">* I tuoi dati vengono salvati su Firebase e usati solo per organizzare il matrimonio.</p>
+    </div>
+  </form>
+  <div id="rsvp-success">
+    <div class="s-icon">🌸</div>
+    <h2>Grazie!</h2>
+    <p id="success-msg">Non vediamo l'ora di vedervi!</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="fn">Damiano & Francesca</div>
+  <p>24 Luglio 2027 · Sicilia</p>
+</footer>
+
+<!-- ══ FIREBASE FIRESTORE ══════════════════════════════════
+     IMPORTANTE: sostituisci firebaseConfig con i tuoi valori
+     reali presi da: Firebase Console → ⚙️ Project Settings →
+     scorri fino a "Le tue app" → clicca l'icona web </>
+════════════════════════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ⚠️ SOSTITUISCI QUESTI VALORI con quelli del tuo progetto Firebase
+  const firebaseConfig = {
+    apiKey:            "LA_TUA_API_KEY",
+    authDomain:        "IL_TUO_PROJECT.firebaseapp.com",
+    projectId:         "IL_TUO_PROJECT_ID",
+    storageBucket:     "IL_TUO_PROJECT.appspot.com",
+    messagingSenderId: "IL_TUO_SENDER_ID",
+    appId:             "IL_TUO_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  document.querySelectorAll('input[name="presenza"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const si = r.value === 'si';
+      document.getElementById('fw-ospiti').style.display = si ? '' : 'none';
+      document.getElementById('fw-menu').style.display   = si ? '' : 'none';
+    });
+  });
+
+  const gc = document.getElementById('guest-count');
+  document.getElementById('c-minus').onclick = () => { if (+gc.value > 1)  gc.value = +gc.value - 1; };
+  document.getElementById('c-plus').onclick  = () => { if (+gc.value < 10) gc.value = +gc.value + 1; };
+
+  function validate() {
+    let ok = true;
+    [['fw-nome','f-nome', v=>v.trim().length>1],
+     ['fw-cognome','f-cognome', v=>v.trim().length>1],
+     ['fw-email','f-email', v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)]
+    ].forEach(([wrap,id,test]) => {
+      const w = document.getElementById(wrap);
+      test(document.getElementById(id).value) ? w.classList.remove('err') : (w.classList.add('err'), ok = false);
+    });
+    const pres = document.querySelector('input[name="presenza"]:checked');
+    const pe = document.getElementById('pres-err');
+    if (!pres) { pe.style.display='block'; ok=false; } else { pe.style.display='none'; }
+    return ok;
+  }
+
+  document.getElementById('rsvp-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const btn = document.getElementById('rsvp-btn');
+    btn.textContent = 'Invio…';
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    const presenza = document.querySelector('input[name="presenza"]:checked').value;
+    const payload  = {
+      nome:      document.getElementById('f-nome').value.trim(),
+      cognome:   document.getElementById('f-cognome').value.trim(),
+      email:     document.getElementById('f-email').value.trim().toLowerCase(),
+      presenza,
+      ospiti:    presenza === 'si' ? +gc.value : 0,
+      menu:      presenza === 'si' ? document.getElementById('f-menu').value : '',
+      note:      document.getElementById('f-note').value.trim(),
+      timestamp: serverTimestamp()
+    };
+
+    try {
+      await addDoc(collection(db, 'rsvp'), payload);
+      document.getElementById('rsvp-form').style.display = 'none';
+      document.getElementById('rsvp-success').style.display = 'block';
+      document.getElementById('success-msg').textContent =
+        presenza === 'si'
+          ? `Non vediamo l'ora di festeggiare con te, ${payload.nome}! 🥂`
+          : `Ci dispiace tanto, ${payload.nome}. Grazie per aver risposto! 🌸`;
+    } catch (err) {
+      console.error(err);
+      btn.textContent = 'Invia la risposta';
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      alert('Errore durante l\'invio. Riprova o contattaci direttamente.');
+    }
+  });
+</script>
+
+<script src="../js/nav.js"></script>
+</body>
+</html>
