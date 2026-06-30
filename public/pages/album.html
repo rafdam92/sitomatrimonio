@@ -385,7 +385,7 @@ async function loadEvents() {
     let count = 0;
     try {
       const snap = await getDocs(
-        query(collection(db, 'photos'), where('eventId', '==', ev.id))
+        query(collection(db, 'photo'), where('eventId', '==', ev.id))
       );
       count = snap.size;
     } catch (_) {}
@@ -431,7 +431,7 @@ async function loadPhotos() {
 
   try {
     const q    = query(
-      collection(db, 'photos'),
+      collection(db, 'photo'),
       where('eventId', '==', currentEvent.id),
       orderBy('timestamp', 'desc')
     );
@@ -511,7 +511,7 @@ async function handleFiles(files) {
         reject,
         async () => {
           const url = await getDownloadURL(task.snapshot.ref);
-          await addDoc(collection(db, 'photos'), {
+          await addDoc(collection(db, 'photo'), {
             eventId:   currentEvent.id,
             url,
             path,
