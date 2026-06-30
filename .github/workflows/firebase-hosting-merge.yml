@@ -13,6 +13,6 @@ jobs:
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: matrimoniodamianofrancesca # <--- Controlla che questo sia l'ID del tuo NUOVO progetto
+          projectId: damianoefrancescawedding # <--- Controlla che questo sia l'ID del tuo NUOVO progetto
           channelId: live
           buildCommand: "" # <--- Questo dice a GitHub di non cercare script di build che non servono
