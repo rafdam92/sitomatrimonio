@@ -1,0 +1,42 @@
+[
+  {
+    "id": "meno365",
+    "titolo": "-365 giorni",
+    "emoji": "📅",
+    "descrizione": "Un anno esatto al grande giorno",
+    "data": "24 Luglio 2026",
+    "attivo": true
+  },
+  {
+    "id": "consegna-inviti",
+    "titolo": "Consegna inviti",
+    "emoji": "✉️",
+    "descrizione": "Il momento in cui tutto è diventato ufficiale",
+    "data": "",
+    "attivo": false
+  },
+  {
+    "id": "confettata",
+    "titolo": "Confettata",
+    "emoji": "🍬",
+    "descrizione": "Ricevimento a casa con i più cari",
+    "data": "",
+    "attivo": false
+  },
+  {
+    "id": "chiesa",
+    "titolo": "In chiesa",
+    "emoji": "⛪",
+    "descrizione": "Chiesa dell'Annunziata, Comiso — 24 Luglio 2027",
+    "data": "24 Luglio 2027",
+    "attivo": false
+  },
+  {
+    "id": "sala",
+    "titolo": "In sala",
+    "emoji": "🥂",
+    "descrizione": "Villa Anna, Ispica — la festa!",
+    "data": "24 Luglio 2027",
+    "attivo": false
+  }
+]
