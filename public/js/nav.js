@@ -1,8 +1,8 @@
-/* nav.js — hamburger mobile + scroll reveal */
-
 if (sessionStorage.getItem('preview') !== '1') {
   window.location.replace('/index.html');
 }
+
+/* nav.js — hamburger mobile + scroll reveal */
 
 const toggle = document.querySelector('.nav-toggle');
 const links  = document.querySelector('.nav-links');
