@@ -11,6 +11,33 @@
 <link rel="stylesheet" href="css/style.css"/>
 <link rel="stylesheet" href="css/door.css"/>
 <style>
+/* Nuovi stili per la porta pastello */
+.door-half {
+  background: linear-gradient(135deg, var(--petal), var(--mauve-lt)) !important;
+  border: 1px solid var(--rose) !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+}
+
+.door-name, .door-sub, .door-amp, .door-cta-txt {
+  color: var(--ink) !important;
+}
+
+.door-amp {
+  color: var(--mauve) !important;
+}
+
+.door-cta-ring {
+  border: 2px solid var(--mauve) !important;
+  background: rgba(254, 252, 248, 0.7) !important;
+  color: var(--ink) !important;
+}
+
+.door-cta-ring:hover {
+  background: var(--petal) !important;
+}
+</style>
+<style>
+/* Stili hero esistenti */
 .hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 1.5rem 5rem;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 30% 20%,rgba(242,217,208,.55) 0%,transparent 65%),radial-gradient(ellipse 60% 50% at 75% 80%,rgba(201,160,192,.3) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 60% 30%,rgba(155,175,142,.18) 0%,transparent 55%);pointer-events:none}
 .hero-flower{position:absolute;opacity:.18;pointer-events:none}
@@ -94,6 +121,7 @@
 </nav>
 
 <section class="hero">
+  <!-- Fiori SVG della hero, pastello esistente -->
   <svg class="hero-flower hero-flower--tl" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="130" cy="80" rx="22" ry="38" fill="#E8C4B8" opacity=".6" transform="rotate(0 130 130)"/>
     <ellipse cx="130" cy="80" rx="22" ry="38" fill="#C9A8C0" opacity=".5" transform="rotate(45 130 130)"/>
@@ -184,7 +212,7 @@
   <div class="ph-grid">
     <div class="ph-card"><div class="ph-icon">🔮</div><div class="ph-title">Fantasposi</div><span class="ph-badge">Coming soon</span></div>
     <div class="ph-card"><div class="ph-icon">🎯</div><div class="ph-title">Challenges</div><span class="ph-badge">Coming soon</span></div>
-    <div class="ph-card"><div class="ph-icon">🧠</div><div class="ph-title">Quiz Sposi</div><span class="ph-badge">Coming soon</span></div>
+�   <div class="ph-card"><div class="ph-icon">🧠</div><div class="ph-title">Quiz Sposi</div><span class="ph-badge">Coming soon</span></div>
     <div class="ph-card"><div class="ph-icon">🎙️</div><div class="ph-title">Audio Capsule</div><span class="ph-badge">Coming soon</span></div>
     <div class="ph-card"><div class="ph-icon">📡</div><div class="ph-title">Live Radar</div><span class="ph-badge">Coming soon</span></div>
   </div>
