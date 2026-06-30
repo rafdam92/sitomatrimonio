@@ -302,7 +302,7 @@ import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, where
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyBYhH_Zw9BEKrAy9mM1_EE2MmYJty0jKXk",
+  apiKey:            "LA_TUA_API_KEY",
   authDomain:        "damianoefrancescawedding.firebaseapp.com",
   projectId:         "damianoefrancescawedding",
   storageBucket:     "damianoefrancescawedding.firebasestorage.app",
@@ -426,8 +426,15 @@ let gameState    = {}; // per-game state
 // resize canvas
 function resizeCanvas() {
   const wrap = document.getElementById('game-canvas-wrap');
-  canvas.width  = wrap.clientWidth;
-  canvas.height = wrap.clientHeight;
+  const dpr  = window.devicePixelRatio || 1;
+  canvas.width  = wrap.clientWidth  * dpr;
+  canvas.height = wrap.clientHeight * dpr;
+  canvas.style.width  = wrap.clientWidth  + 'px';
+  canvas.style.height = wrap.clientHeight + 'px';
+  ctx.scale(dpr, dpr);
+  // store logical size for game logic
+  canvas._w = wrap.clientWidth;
+  canvas._h = wrap.clientHeight;
 }
 
 window.openGame = function(game) {
@@ -492,9 +499,15 @@ async function endGame() {
 
 // input helpers
 function getPointerPos(e) {
-  const r = canvas.getBoundingClientRect();
-  const src = e.touches ? e.touches[0] : e;
-  return { x: src.clientX - r.left, y: src.clientY - r.top };
+  const r   = canvas.getBoundingClientRect();
+  const src = e.changedTouches ? e.changedTouches[0] : e.touches ? e.touches[0] : e;
+  // scale from CSS pixels to logical canvas pixels
+  const scaleX = (canvas._w || canvas.width)  / r.width;
+  const scaleY = (canvas._h || canvas.height) / r.height;
+  return {
+    x: (src.clientX - r.left) * scaleX,
+    y: (src.clientY - r.top)  * scaleY
+  };
 }
 
 // ══════════════════════════════════════════════════════════
@@ -516,11 +529,11 @@ const G_BOUQUET = {
     };
     this.spawnItem();
     canvas.onclick     = e => this.onClick(getPointerPos(e));
-    canvas.ontouchend  = e => { e.preventDefault(); this.onClick(getPointerPos(e)); };
+    canvas.addEventListener("touchstart", e => { e.preventDefault(); this.onClick(getPointerPos(e)); }, { passive: false });
   },
 
   spawnItem() {
-    const x = 40 + Math.random() * (canvas.width - 80);
+    const x = 40 + Math.random() * ((canvas._w||canvas.width) - 80);
     gameState.items.push({ x, y: -40, size: 44, caught: false, miss: false, alpha: 1 });
   },
 
@@ -550,7 +563,7 @@ const G_BOUQUET = {
     gameState.items.forEach(item => {
       if (!item.caught) {
         item.y += gameState.speed;
-        if (item.y > canvas.height + 20 && !item.miss) {
+        if (item.y > (canvas._h||canvas.height) + 20 && !item.miss) {
           item.miss = true;
           gameState.combo = 0;
           gameState.lives--;
@@ -561,7 +574,7 @@ const G_BOUQUET = {
         item.alpha -= .05;
       }
     });
-    gameState.items = gameState.items.filter(i => i.alpha > 0 && i.y < canvas.height + 60);
+    gameState.items = gameState.items.filter(i => i.alpha > 0 && i.y < (canvas._h||canvas.height) + 60);
   },
 
   draw() {
@@ -598,12 +611,12 @@ const G_BOUQUET = {
       } else {
         ctx.fillText('💐', item.x, item.y);
         // shadow when close to ground
-        if (item.y > canvas.height - 100) {
+        if (item.y > (canvas._h||canvas.height) - 100) {
           ctx.globalAlpha *= .3;
           ctx.fillStyle = 'rgba(232,196,184,.5)';
           const r = (item.size/2) * ((item.y - (canvas.height-100))/100);
           ctx.beginPath();
-          ctx.ellipse(item.x, canvas.height - 8, r, r*0.3, 0, 0, Math.PI*2);
+          ctx.ellipse(item.x, (canvas._h||canvas.height) - 8, r, r*0.3, 0, 0, Math.PI*2);
           ctx.fill();
           ctx.globalAlpha = item.alpha;
         }
@@ -615,8 +628,8 @@ const G_BOUQUET = {
     ctx.strokeStyle = 'rgba(201,160,192,.2)';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(0, canvas.height - 4);
-    ctx.lineTo(canvas.width, canvas.height - 4);
+    ctx.moveTo(0, (canvas._h||canvas.height) - 4);
+    ctx.lineTo(canvas.width, (canvas._h||canvas.height) - 4);
     ctx.stroke();
   },
 
@@ -647,7 +660,7 @@ const G_SPOSO = {
       shake: 0,
     };
     canvas.onclick    = e => this.onClick(getPointerPos(e));
-    canvas.ontouchend = e => { e.preventDefault(); this.onClick(getPointerPos(e)); };
+    canvas.addEventListener("touchstart", e => { e.preventDefault(); this.onClick(getPointerPos(e)); }, { passive: false });
     document.getElementById('gm-timer').textContent = '30';
   },
 
@@ -663,8 +676,8 @@ const G_SPOSO = {
       gameState.vx = Math.cos(angle) * spd;
       gameState.vy = Math.sin(angle) * spd;
       // random position away from edges
-      gameState.x = 80 + Math.random() * (canvas.width - 160);
-      gameState.y = 80 + Math.random() * (canvas.height - 160);
+      gameState.x = 80 + Math.random() * ((canvas._w||canvas.width) - 160);
+      gameState.y = 80 + Math.random() * ((canvas._h||canvas.height) - 160);
       gameState.shake = 8;
     }
   },
@@ -763,10 +776,10 @@ const G_TORTA = {
       resultText: '',
       resultColor: '',
     };
-    gameState.cakeY = canvas.height / 2;
+    gameState.cakeY = (canvas._h||canvas.height) / 2;
     this.nextCake();
     canvas.onclick    = e => this.onCut(getPointerPos(e));
-    canvas.ontouchend = e => { e.preventDefault(); this.onCut(getPointerPos(e)); };
+    canvas.addEventListener("touchstart", e => { e.preventDefault(); this.onCut(getPointerPos(e)); }, { passive: false });
   },
 
   nextCake() {
@@ -784,9 +797,9 @@ const G_TORTA = {
     gameState.cutting = true;
     gameState.cutX = gameState.cakeX;
 
-    const center = canvas.width / 2;
+    const center = (canvas._w||canvas.width) / 2;
     const dist   = Math.abs(gameState.cakeX - center);
-    const maxDist = canvas.width / 2;
+    const maxDist = (canvas._w||canvas.width) / 2;
     const pct    = Math.max(0, 1 - dist / maxDist);
     let pts, text, color;
 
@@ -824,15 +837,15 @@ const G_TORTA = {
     ctx.fillStyle = '#2C2420';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
+    const cx = (canvas._w||canvas.width) / 2;
+    const cy = (canvas._h||canvas.height) / 2;
 
     // center line
     ctx.strokeStyle = 'rgba(201,160,192,.3)';
     ctx.setLineDash([6,4]);
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(cx, 60); ctx.lineTo(cx, canvas.height-60);
+    ctx.moveTo(cx, 60); ctx.lineTo(cx, (canvas._h||canvas.height)-60);
     ctx.stroke();
     ctx.setLineDash([]);
 
@@ -874,7 +887,7 @@ const G_TORTA = {
       ctx.fillStyle = 'rgba(254,252,248,.25)';
       ctx.font = '13px "DM Sans",sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('🔪 Clicca per tagliare!', cx, canvas.height - 30);
+      ctx.fillText('🔪 Clicca per tagliare!', cx, (canvas._h||canvas.height) - 30);
     }
   },
 
