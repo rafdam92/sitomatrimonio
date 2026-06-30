@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Damiano & Francesca — 24 Luglio 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --milk:  #FEFCF8;
+  --petal: #F2D9D0;
+  --rose:  #E8C4B8;
+  --mauve: #C9A8C0;
+  --sage:  #9BAF8E;
+  --ink:   #2C2420;
+  --mid:   #7A6A64;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'DM Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background: var(--milk);
+  font-family: var(--fb);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* background glow */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(242,217,208,.6) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(201,160,192,.3) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 60% 40%, rgba(155,175,142,.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* corner flowers */
+.flower {
+  position: fixed;
+  opacity: .15;
+  pointer-events: none;
+}
+.flower-tl { top: -30px; left: -30px; width: 280px; transform: rotate(-15deg); }
+.flower-br { bottom: -30px; right: -30px; width: 240px; transform: rotate(165deg); }
+.flower-tr { top: -20px; right: -20px; width: 200px; transform: rotate(80deg); }
+.flower-bl { bottom: -20px; left: -20px; width: 180px; transform: rotate(260deg); }
+
+/* card */
+.card {
+  position: relative; z-index: 1;
+  max-width: 480px; width: 100%;
+  text-align: center;
+}
+
+.top-tag {
+  font-size: .6rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.names {
+  font-family: var(--fd);
+  font-style: italic;
+  font-size: clamp(3rem, 12vw, 5.5rem);
+  line-height: .9;
+  color: var(--ink);
+  margin-bottom: .3em;
+}
+.names .amp {
+  display: block;
+  font-size: .55em;
+  color: var(--mauve);
+  margin: .15em 0;
+}
+
+.petal-rule {
+  display: flex; align-items: center; gap: 1rem;
+  margin: 1.8rem auto;
+  max-width: 180px;
+}
+.petal-rule::before,.petal-rule::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--rose), transparent);
+}
+
+.date {
+  font-family: var(--fd);
+  font-size: clamp(.9rem, 2.5vw, 1.2rem);
+  letter-spacing: .2em;
+  color: var(--mid);
+  margin-bottom: .5rem;
+}
+.location {
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 2.5rem;
+}
+
+.coming-soon {
+  font-size: .82rem;
+  color: var(--mid);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.coming-soon em {
+  font-family: var(--fd);
+  font-style: italic;
+  font-size: 1.15em;
+  color: var(--mauve);
+}
+
+/* countdown mini */
+.mini-cd {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+.mini-cd-unit {
+  display: flex; flex-direction: column; align-items: center; gap: .3rem;
+}
+.mini-cd-num {
+  font-family: var(--fd);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+.mini-cd-lbl {
+  font-size: .52rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* secret input — looks like just a flower click area */
+.secret-area {
+  margin-top: 1rem;
+}
+.secret-trigger {
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: .4;
+  transition: opacity .3s;
+  background: none;
+  border: none;
+  padding: .5rem;
+  display: inline-block;
+}
+.secret-trigger:hover { opacity: .8; }
+
+.secret-form {
+  display: none;
+  margin-top: 1rem;
+  flex-direction: column;
+  align-items: center;
+  gap: .8rem;
+}
+.secret-form.visible { display: flex; }
+
+.secret-input {
+  width: 220px;
+  padding: .7rem 1rem;
+  border: 1px solid rgba(201,160,192,.35);
+  background: transparent;
+  font-family: var(--fb);
+  font-size: .9rem;
+  color: var(--ink);
+  text-align: center;
+  border-radius: 0;
+  outline: none;
+  transition: border-color .2s;
+}
+.secret-input:focus { border-color: var(--mauve); }
+.secret-input::placeholder { color: rgba(122,106,100,.4); font-size: .8rem; }
+
+.secret-btn {
+  padding: .6rem 1.8rem;
+  background: linear-gradient(135deg, var(--mauve), var(--rose));
+  color: var(--milk);
+  border: none; cursor: pointer;
+  font-family: var(--fb);
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  transition: opacity .2s;
+}
+.secret-btn:hover { opacity: .88; }
+.secret-err { font-size: .7rem; color: #c0392b; display: none; }
+</style>
+</head>
+<body>
+
+<!-- corner flowers SVG -->
+<svg class="flower flower-tl" viewBox="0 0 260 260" fill="none">
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#E8C4B8" opacity=".7" transform="rotate(0 130 130)"/>
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#C9A8C0" opacity=".6" transform="rotate(45 130 130)"/>
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#9BAF8E" opacity=".5" transform="rotate(90 130 130)"/>
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#E8C4B8" opacity=".6" transform="rotate(135 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#C9A8C0" opacity=".4" transform="rotate(22 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#9BAF8E" opacity=".4" transform="rotate(67 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#F2D9D0" opacity=".5" transform="rotate(112 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#E8C4B8" opacity=".4" transform="rotate(157 130 130)"/>
+  <circle cx="130" cy="130" r="14" fill="#F2D9D0" opacity=".9"/>
+  <circle cx="130" cy="130" r="7" fill="#C9A8C0"/>
+</svg>
+<svg class="flower flower-br" viewBox="0 0 260 260" fill="none">
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#C9A8C0" opacity=".7" transform="rotate(0 130 130)"/>
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#9BAF8E" opacity=".6" transform="rotate(45 130 130)"/>
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#E8C4B8" opacity=".5" transform="rotate(90 130 130)"/>
+  <ellipse cx="130" cy="80" rx="22" ry="38" fill="#F2D9D0" opacity=".6" transform="rotate(135 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#E8C4B8" opacity=".4" transform="rotate(22 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#C9A8C0" opacity=".4" transform="rotate(67 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#9BAF8E" opacity=".5" transform="rotate(112 130 130)"/>
+  <ellipse cx="130" cy="80" rx="18" ry="32" fill="#F2D9D0" opacity=".4" transform="rotate(157 130 130)"/>
+  <circle cx="130" cy="130" r="14" fill="#F2D9D0" opacity=".9"/>
+  <circle cx="130" cy="130" r="7" fill="#E8C4B8"/>
+</svg>
+<svg class="flower flower-tr" viewBox="0 0 200 200" fill="none">
+  <ellipse cx="100" cy="60" rx="16" ry="28" fill="#9BAF8E" opacity=".6" transform="rotate(0 100 100)"/>
+  <ellipse cx="100" cy="60" rx="16" ry="28" fill="#E8C4B8" opacity=".5" transform="rotate(60 100 100)"/>
+  <ellipse cx="100" cy="60" rx="16" ry="28" fill="#C9A8C0" opacity=".5" transform="rotate(120 100 100)"/>
+  <circle cx="100" cy="100" r="10" fill="#F2D9D0" opacity=".9"/>
+</svg>
+<svg class="flower flower-bl" viewBox="0 0 200 200" fill="none">
+  <ellipse cx="100" cy="60" rx="16" ry="28" fill="#E8C4B8" opacity=".6" transform="rotate(0 100 100)"/>
+  <ellipse cx="100" cy="60" rx="16" ry="28" fill="#C9A8C0" opacity=".5" transform="rotate(60 100 100)"/>
+  <ellipse cx="100" cy="60" rx="16" ry="28" fill="#9BAF8E" opacity=".5" transform="rotate(120 100 100)"/>
+  <circle cx="100" cy="100" r="10" fill="#F2D9D0" opacity=".9"/>
+</svg>
+
+<div class="card">
+  <span class="top-tag">Sito in allestimento</span>
+
+  <h1 class="names">
+    Damiano
+    <span class="amp">&amp;</span>
+    Francesca
+  </h1>
+
+  <div class="petal-rule"><span>🌸</span></div>
+
+  <p class="date">24 &middot; VII &middot; 2027</p>
+  <p class="location">Comiso &mdash; Ispica &middot; Sicilia</p>
+
+  <p class="coming-soon">
+    Il nostro sito è quasi pronto.<br>
+    <em>Torna presto per scoprire tutti i dettagli del grande giorno!</em>
+  </p>
+
+  <!-- mini countdown -->
+  <div class="mini-cd">
+    <div class="mini-cd-unit"><span class="mini-cd-num" id="cd-d">—</span><span class="mini-cd-lbl">Giorni</span></div>
+    <div class="mini-cd-unit"><span class="mini-cd-num" id="cd-h">—</span><span class="mini-cd-lbl">Ore</span></div>
+    <div class="mini-cd-unit"><span class="mini-cd-num" id="cd-m">—</span><span class="mini-cd-lbl">Minuti</span></div>
+    <div class="mini-cd-unit"><span class="mini-cd-num" id="cd-s">—</span><span class="mini-cd-lbl">Secondi</span></div>
+  </div>
+
+  <!-- secret access — looks like a decoration -->
+  <div class="secret-area">
+    <button class="secret-trigger" id="secret-trigger" title="🌸" aria-label="accesso">🌸</button>
+    <div class="secret-form" id="secret-form">
+      <input class="secret-input" type="password" id="secret-input" placeholder="password" autocomplete="off"/>
+      <button class="secret-btn" id="secret-btn">Entra</button>
+      <span class="secret-err" id="secret-err">Password errata</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── COUNTDOWN ────────────────────────────────────────────
+(function(){
+  const T = new Date('2027-07-24T11:00:00').getTime();
+  const pad = (n, l=2) => String(n).padStart(l,'0');
+  function tick(){
+    const d = T - Date.now();
+    if(d<=0) return;
+    document.getElementById('cd-d').textContent = pad(Math.floor(d/86400000),3);
+    document.getElementById('cd-h').textContent = pad(Math.floor(d%86400000/3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor(d%3600000/60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor(d%60000/1000));
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+// ── SECRET ACCESS ────────────────────────────────────────
+// ⚠️ Cambia "damiano2027" con la password che vuoi tu
+const PASSWORD = 'damiano2027';
+
+// click 3 volte sul fiore per mostrare il form
+let clicks = 0;
+document.getElementById('secret-trigger').addEventListener('click', () => {
+  clicks++;
+  if(clicks >= 3) {
+    document.getElementById('secret-form').classList.add('visible');
+    document.getElementById('secret-input').focus();
+    clicks = 0;
+  }
+});
+
+function tryEnter() {
+  const val = document.getElementById('secret-input').value;
+  if(val === PASSWORD) {
+    // salva in sessione e vai al sito vero
+    sessionStorage.setItem('preview', '1');
+    window.location.href = 'home.html';
+  } else {
+    document.getElementById('secret-err').style.display = 'block';
+    document.getElementById('secret-input').value = '';
+    document.getElementById('secret-input').focus();
+  }
+}
+
+document.getElementById('secret-btn').addEventListener('click', tryEnter);
+document.getElementById('secret-input').addEventListener('keydown', e => {
+  if(e.key === 'Enter') tryEnter();
+  document.getElementById('secret-err').style.display = 'none';
+});
+
+// check se già autenticato
+if(sessionStorage.getItem('preview') === '1') {
+  window.location.href = 'home.html';
+}
+</script>
+</body>
+</html>
