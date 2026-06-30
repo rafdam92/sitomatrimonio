@@ -9,185 +9,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../css/style.css"/>
 <style>
-/* ── LAYOUT ──────────────────────────────────────────────── */
-.games-hero {
-  padding: 8rem 1.5rem 3rem;
-  text-align: center;
-  background: linear-gradient(160deg, var(--petal) 0%, var(--milk) 100%);
-  border-bottom: 1px solid var(--border);
-}
-.games-intro { font-size: .88rem; color: var(--mid); margin-top: .8rem; }
-
-/* ── NAME GATE ───────────────────────────────────────────── */
-#name-gate {
-  max-width: 400px; margin: 3rem auto;
-  padding: 2.5rem 2rem; text-align: center;
-  border: 1px solid var(--border); background: var(--milk);
-  position: relative;
-}
-#name-gate::before { content:''; position:absolute; top:0;left:0;right:0;height:3px; background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage)); }
-#name-gate h3 { font-family:var(--fd); font-style:italic; font-size:1.5rem; margin-bottom:.5rem; }
-#name-gate p  { font-size:.8rem; color:var(--mid); margin-bottom:1.2rem; }
-#player-name-input {
-  width:100%; padding:.8rem 1rem; border:1px solid var(--border);
-  background:transparent; font-family:var(--fb); font-size:.95rem;
-  color:var(--ink); outline:none; text-align:center; margin-bottom:.8rem;
-  transition:border-color .2s;
-}
-#player-name-input:focus { border-color:var(--mauve); }
-#player-name-input::placeholder { color:rgba(122,106,100,.45); }
-
-/* ── GAME SELECTOR ───────────────────────────────────────── */
-#game-hub { display:none; }
-#game-hub.visible { display:block; }
-
-.player-welcome {
-  text-align:center; padding:1.5rem 1.5rem .5rem;
-  font-size:.82rem; color:var(--mid);
-}
-.player-welcome strong { color:var(--mauve); }
-
-.game-cards {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
-  gap:1.5rem;
-  padding:2rem 1.5rem;
-  max-width:960px;
-  margin:0 auto;
-}
-.game-card {
-  background:var(--milk); border:1px solid var(--border);
-  padding:2rem 1.5rem; text-align:center;
-  cursor:pointer; position:relative;
-  transition:transform .22s, box-shadow .22s, background .2s;
-}
-.game-card::before { content:''; position:absolute; top:0;left:0;right:0;height:3px; background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage)); }
-.game-card:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(44,36,32,.08); background:var(--petal); }
-.game-card-emoji { font-size:3rem; margin-bottom:1rem; display:block; }
-.game-card-title { font-family:var(--fd); font-style:italic; font-size:1.4rem; color:var(--ink); margin-bottom:.4rem; }
-.game-card-desc  { font-size:.78rem; color:var(--mid); line-height:1.6; margin-bottom:1rem; }
-.game-card-best  { font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mauve); }
-
-/* ── LEADERBOARD ─────────────────────────────────────────── */
-.leaderboard-section {
-  max-width:960px; margin:0 auto; padding:2rem 1.5rem 5rem;
-}
-.lb-title {
-  font-family:var(--fd); font-style:italic; font-size:1.6rem;
-  color:var(--ink); text-align:center; margin-bottom:.5rem;
-}
-.lb-sub { text-align:center; font-size:.75rem; color:var(--mid); margin-bottom:1.5rem; }
-.lb-tabs {
-  display:flex; justify-content:center; gap:0;
-  border:1px solid var(--border); width:fit-content; margin:0 auto 1.5rem;
-}
-.lb-tab {
-  padding:.6rem 1.2rem; font-size:.62rem; font-weight:500;
-  letter-spacing:.15em; text-transform:uppercase;
-  color:var(--mid); cursor:pointer; border:none; background:transparent;
-  transition:all .2s; font-family:var(--fb);
-  border-right:1px solid var(--border);
-}
-.lb-tab:last-child { border-right:none; }
-.lb-tab.active { background:var(--mauve); color:var(--milk); }
-
-.lb-list { max-width:500px; margin:0 auto; }
-.lb-row {
-  display:grid; grid-template-columns:2rem 1fr auto;
-  gap:.8rem; align-items:center;
-  padding:.8rem 1rem; border-bottom:1px solid var(--border-lt);
-  font-size:.85rem;
-}
-.lb-row:first-child { border-top:1px solid var(--border-lt); }
-.lb-rank { font-family:var(--fd); font-style:italic; font-size:1.1rem; color:var(--mauve); text-align:center; }
-.lb-rank.gold   { color:#C9A06A; font-size:1.3rem; }
-.lb-rank.silver { color:#A0A0A0; font-size:1.2rem; }
-.lb-rank.bronze { color:#C4836A; font-size:1.15rem; }
-.lb-name  { color:var(--ink); font-weight:400; }
-.lb-score { font-family:var(--fd); font-size:1.1rem; color:var(--ink); text-align:right; }
-.lb-score span { font-size:.6rem; color:var(--mid); }
-.lb-empty { text-align:center; padding:2rem; color:var(--mid); font-size:.85rem; }
-.lb-loading { text-align:center; padding:1.5rem; color:var(--mid); font-size:.82rem; }
-
-/* ── GAME MODAL ──────────────────────────────────────────── */
-#game-modal {
-  display:none; position:fixed; inset:0; z-index:800;
-  background:rgba(44,36,32,.96);
-  flex-direction:column; align-items:center; justify-content:center;
-}
-#game-modal.open { display:flex; }
-
-.game-modal-header {
-  display:flex; justify-content:space-between; align-items:center;
-  width:100%; max-width:500px; padding:1rem 1.5rem;
-  color:var(--milk);
-}
-.game-modal-title { font-family:var(--fd); font-style:italic; font-size:1.3rem; }
-.game-modal-score { font-family:var(--fd); font-size:1.5rem; color:var(--rose); }
-.game-close {
-  position:fixed; top:1rem; right:1rem;
-  color:rgba(254,252,248,.6); font-size:1.8rem;
-  background:none; border:none; cursor:pointer; z-index:810;
-  transition:color .2s;
-}
-.game-close:hover { color:var(--milk); }
-
-/* ── CANVAS AREA ─────────────────────────────────────────── */
-#game-canvas-wrap {
-  position:relative;
-  width:min(420px, 92vw);
-  height:min(560px, 75vh);
-}
-#game-canvas {
-  display:block;
-  width:100%; height:100%;
-  touch-action:none;
-  border:1px solid rgba(254,252,248,.1);
-}
-
-/* ── START / END SCREENS ─────────────────────────────────── */
-.game-overlay {
-  position:absolute; inset:0;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  background:rgba(44,36,32,.85);
-  text-align:center; padding:2rem;
-}
-.game-overlay.hidden { display:none; }
-.go-emoji  { font-size:3.5rem; margin-bottom:.8rem; }
-.go-title  { font-family:var(--fd); font-style:italic; font-size:1.8rem; color:var(--milk); margin-bottom:.5rem; }
-.go-sub    { font-size:.82rem; color:rgba(254,252,248,.65); margin-bottom:1.5rem; line-height:1.7; }
-.go-score  { font-family:var(--fd); font-size:3rem; color:var(--rose); line-height:1; margin-bottom:.3rem; }
-.go-score-lbl { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(254,252,248,.4); margin-bottom:1.5rem; }
-.go-best   { font-size:.78rem; color:var(--rose); margin-bottom:1.5rem; }
-.go-btn {
-  padding:.8rem 2.5rem;
-  background:linear-gradient(135deg,var(--mauve),var(--rose));
-  color:var(--milk); border:none; cursor:pointer;
-  font-family:var(--fb); font-size:.68rem; font-weight:500;
-  letter-spacing:.2em; text-transform:uppercase;
-  transition:opacity .2s; margin:.3rem;
-}
-.go-btn:hover { opacity:.88; }
-.go-btn-ghost {
-  padding:.7rem 2rem; background:transparent;
-  border:1px solid rgba(254,252,248,.3); color:rgba(254,252,248,.7);
-  font-family:var(--fb); font-size:.65rem; font-weight:400;
-  letter-spacing:.18em; text-transform:uppercase;
-  cursor:pointer; transition:all .2s; margin:.3rem;
-}
-.go-btn-ghost:hover { border-color:var(--rose); color:var(--rose); }
-
-/* ── COUNTDOWN TIMER in game ─────────────────────────────── */
-.game-timer {
-  font-family:var(--fd); font-size:1.1rem;
-  color:rgba(254,252,248,.7);
-}
-.game-timer.urgent { color:var(--rose); animation:urgentPulse .5s ease-in-out infinite; }
-@keyframes urgentPulse { 0%,100%{opacity:1} 50%{opacity:.5} }
-
-/* border-lt variable fallback */
-:root { --border-lt: rgba(201,160,192,0.10); }
+.games-hero{padding:8rem 1.5rem 3rem;text-align:center;background:linear-gradient(160deg,var(--petal) 0%,var(--milk) 100%);border-bottom:1px solid var(--border)}
+.games-intro{font-size:.88rem;color:var(--mid);margin-top:.8rem}
+#name-gate{max-width:400px;margin:3rem auto;padding:2.5rem 2rem;text-align:center;border:1px solid var(--border);background:var(--milk);position:relative}
+#name-gate::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage))}
+#name-gate h3{font-family:var(--fd);font-style:italic;font-size:1.5rem;margin-bottom:.5rem}
+#name-gate p{font-size:.8rem;color:var(--mid);margin-bottom:1.2rem}
+#player-name-input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);background:transparent;font-family:var(--fb);font-size:.95rem;color:var(--ink);outline:none;text-align:center;margin-bottom:.8rem;transition:border-color .2s}
+#player-name-input:focus{border-color:var(--mauve)}
+#player-name-input::placeholder{color:rgba(122,106,100,.45)}
+#game-hub{display:none}
+#game-hub.visible{display:block}
+.player-welcome{text-align:center;padding:1.5rem 1.5rem .5rem;font-size:.82rem;color:var(--mid)}
+.player-welcome strong{color:var(--mauve)}
+.game-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;padding:2rem 1.5rem;max-width:960px;margin:0 auto}
+.game-card{background:var(--milk);border:1px solid var(--border);padding:2rem 1.5rem;text-align:center;cursor:pointer;position:relative;transition:transform .22s,box-shadow .22s,background .2s}
+.game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage))}
+.game-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(44,36,32,.08);background:var(--petal)}
+.game-card-emoji{font-size:3rem;margin-bottom:1rem;display:block}
+.game-card-title{font-family:var(--fd);font-style:italic;font-size:1.4rem;color:var(--ink);margin-bottom:.4rem}
+.game-card-desc{font-size:.78rem;color:var(--mid);line-height:1.6;margin-bottom:1rem}
+.game-card-best{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mauve)}
+.leaderboard-section{max-width:960px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.lb-title{font-family:var(--fd);font-style:italic;font-size:1.6rem;color:var(--ink);text-align:center;margin-bottom:.5rem}
+.lb-sub{text-align:center;font-size:.75rem;color:var(--mid);margin-bottom:1.5rem}
+.lb-tabs{display:flex;justify-content:center;border:1px solid var(--border);width:fit-content;margin:0 auto 1.5rem}
+.lb-tab{padding:.6rem 1.2rem;font-size:.62rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);cursor:pointer;border:none;background:transparent;transition:all .2s;font-family:var(--fb);border-right:1px solid var(--border)}
+.lb-tab:last-child{border-right:none}
+.lb-tab.active{background:var(--mauve);color:var(--milk)}
+.lb-list{max-width:500px;margin:0 auto}
+.lb-row{display:grid;grid-template-columns:2rem 1fr auto;gap:.8rem;align-items:center;padding:.8rem 1rem;border-bottom:1px solid rgba(201,160,192,.1);font-size:.85rem}
+.lb-row:first-child{border-top:1px solid rgba(201,160,192,.1)}
+.lb-rank{font-family:var(--fd);font-style:italic;font-size:1.1rem;color:var(--mauve);text-align:center}
+.lb-rank.gold{color:#C9A06A;font-size:1.3rem}
+.lb-rank.silver{color:#A0A0A0;font-size:1.2rem}
+.lb-rank.bronze{color:#C4836A;font-size:1.15rem}
+.lb-name{color:var(--ink);font-weight:400}
+.lb-score{font-family:var(--fd);font-size:1.1rem;color:var(--ink);text-align:right}
+.lb-score span{font-size:.6rem;color:var(--mid)}
+.lb-empty,.lb-loading{text-align:center;padding:2rem;color:var(--mid);font-size:.85rem}
+#game-modal{display:none;position:fixed;inset:0;z-index:800;background:rgba(44,36,32,.96);flex-direction:column;align-items:center;justify-content:center}
+#game-modal.open{display:flex}
+.game-modal-header{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:500px;padding:1rem 1.5rem;color:var(--milk)}
+.game-modal-title{font-family:var(--fd);font-style:italic;font-size:1.3rem}
+.game-modal-score{font-family:var(--fd);font-size:1.5rem;color:var(--rose)}
+.game-close{position:fixed;top:1rem;right:1rem;color:rgba(254,252,248,.6);font-size:1.8rem;background:none;border:none;cursor:pointer;z-index:810;transition:color .2s}
+.game-close:hover{color:var(--milk)}
+#game-canvas-wrap{position:relative;width:min(420px,92vw);height:min(560px,75vh)}
+#game-canvas{display:block;width:100%;height:100%;touch-action:none;border:1px solid rgba(254,252,248,.1)}
+.game-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(44,36,32,.85);text-align:center;padding:2rem}
+.game-overlay.hidden{display:none}
+.go-emoji{font-size:3.5rem;margin-bottom:.8rem}
+.go-title{font-family:var(--fd);font-style:italic;font-size:1.8rem;color:var(--milk);margin-bottom:.5rem}
+.go-sub{font-size:.82rem;color:rgba(254,252,248,.65);margin-bottom:1.5rem;line-height:1.7}
+.go-score{font-family:var(--fd);font-size:3rem;color:var(--rose);line-height:1;margin-bottom:.3rem}
+.go-score-lbl{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(254,252,248,.4);margin-bottom:1.5rem}
+.go-best{font-size:.78rem;color:var(--rose);margin-bottom:1.5rem}
+.go-btn{padding:.8rem 2.5rem;background:linear-gradient(135deg,var(--mauve),var(--rose));color:var(--milk);border:none;cursor:pointer;font-family:var(--fb);font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;transition:opacity .2s;margin:.3rem}
+.go-btn:hover{opacity:.88}
+.go-btn-ghost{padding:.7rem 2rem;background:transparent;border:1px solid rgba(254,252,248,.3);color:rgba(254,252,248,.7);font-family:var(--fb);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin:.3rem}
+.go-btn-ghost:hover{border-color:var(--rose);color:var(--rose)}
+.game-timer{font-family:var(--fd);font-size:1.1rem;color:rgba(254,252,248,.7)}
+.game-timer.urgent{color:var(--rose);animation:urgentPulse .5s ease-in-out infinite}
+@keyframes urgentPulse{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
@@ -205,14 +89,12 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <div class="games-hero">
   <p class="page-hero-ey">Mentre aspetti il grande giorno</p>
   <h1 class="page-hero-title">Giochi & Sfide</h1>
   <p class="games-intro">Tre mini giochi a tema matrimonio — scala la classifica e sfida gli altri ospiti! 🏆</p>
 </div>
 
-<!-- NAME GATE -->
 <div id="name-gate">
   <h3>Come ti chiami?</h3>
   <p>Il tuo nome apparirà nella classifica globale</p>
@@ -220,10 +102,8 @@
   <button class="btn btn-primary" id="name-confirm" style="width:100%">Inizia a giocare →</button>
 </div>
 
-<!-- GAME HUB -->
 <div id="game-hub">
   <p class="player-welcome">Ciao, <strong id="player-display"></strong>! Scegli un gioco 🎮</p>
-
   <div class="game-cards">
     <div class="game-card" onclick="openGame('bouquet')">
       <span class="game-card-emoji">💐</span>
@@ -234,7 +114,7 @@
     <div class="game-card" onclick="openGame('sposo')">
       <span class="game-card-emoji">🏃</span>
       <div class="game-card-title">Lega lo Sposo</div>
-      <div class="game-card-desc">Damiano scappa! Cliccalo prima che esca dallo schermo. Ogni volta che lo prendi riparte più veloce.</div>
+      <div class="game-card-desc">Damiano scappa! Toccalo prima che esca dallo schermo. Ogni volta che lo prendi riparte più veloce.</div>
       <div class="game-card-best" id="best-sposo">Il tuo record: —</div>
     </div>
     <div class="game-card" onclick="openGame('torta')">
@@ -244,23 +124,18 @@
       <div class="game-card-best" id="best-torta">Il tuo record: —</div>
     </div>
   </div>
-
-  <!-- LEADERBOARD -->
   <div class="leaderboard-section">
     <h2 class="lb-title">🏆 Classifica Globale</h2>
     <p class="lb-sub">Aggiornata in tempo reale — chi sarà il campione del matrimonio?</p>
     <div class="lb-tabs">
-      <button class="lb-tab active" onclick="switchLb('bouquet', this)">💐 Bouquet</button>
-      <button class="lb-tab" onclick="switchLb('sposo', this)">🏃 Sposo</button>
-      <button class="lb-tab" onclick="switchLb('torta', this)">🎂 Torta</button>
+      <button class="lb-tab active" onclick="switchLb('bouquet',this)">💐 Bouquet</button>
+      <button class="lb-tab" onclick="switchLb('sposo',this)">🏃 Sposo</button>
+      <button class="lb-tab" onclick="switchLb('torta',this)">🎂 Torta</button>
     </div>
-    <div class="lb-list" id="lb-list">
-      <div class="lb-loading">Caricamento classifica…</div>
-    </div>
+    <div class="lb-list" id="lb-list"><div class="lb-loading">Caricamento classifica…</div></div>
   </div>
 </div>
 
-<!-- GAME MODAL -->
 <div id="game-modal">
   <button class="game-close" onclick="closeGame()">✕</button>
   <div class="game-modal-header">
@@ -272,14 +147,12 @@
   </div>
   <div id="game-canvas-wrap">
     <canvas id="game-canvas"></canvas>
-    <!-- Start screen -->
     <div class="game-overlay" id="go-start">
       <div class="go-emoji" id="go-emoji"></div>
       <div class="go-title" id="go-title-txt"></div>
       <div class="go-sub" id="go-instructions"></div>
       <button class="go-btn" onclick="startGame()">Inizia!</button>
     </div>
-    <!-- End screen -->
     <div class="game-overlay hidden" id="go-end">
       <div class="go-emoji" id="go-end-emoji"></div>
       <div class="go-title" id="go-end-title"></div>
@@ -292,9 +165,6 @@
   </div>
 </div>
 
-<!-- ══ FIREBASE + GAMES ══════════════════════════════════════
-     ⚠️ Sostituisci firebaseConfig con i tuoi valori reali
-════════════════════════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -302,18 +172,17 @@ import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, where
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:            "LA_TUA_API_KEY",
-  authDomain:        "damianoefrancescawedding.firebaseapp.com",
-  projectId:         "damianoefrancescawedding",
-  storageBucket:     "damianoefrancescawedding.firebasestorage.app",
+  apiKey: "AIzaSyBYhH_Zw9BEKrAy9mM1_EE2MmYJty0jKXk",
+  authDomain: "damianoefrancescawedding.firebaseapp.com",
+  projectId: "damianoefrancescawedding",
+  storageBucket: "damianoefrancescawedding.firebasestorage.app",
   messagingSenderId: "1073018154819",
-  appId:             "1:1073018154819:web:f8c162873eeda558ed89f6"
+  appId: "1:1073018154819:web:f8c162873eeda558ed89f6"
 };
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ── PLAYER ───────────────────────────────────────────────
 let playerName = localStorage.getItem('giochiPlayer') || '';
 if (playerName) showHub();
 
@@ -336,37 +205,30 @@ function showHub() {
   loadLeaderboard('bouquet');
 }
 
-// ── PERSONAL BESTS ───────────────────────────────────────
 function loadBests() {
   ['bouquet','sposo','torta'].forEach(g => {
-    const b = localStorage.getItem('best_' + g);
-    if (b) document.getElementById('best-' + g).textContent = 'Il tuo record: ' + b + ' pt';
+    const b = localStorage.getItem('best_'+g);
+    if (b) document.getElementById('best-'+g).textContent = 'Il tuo record: '+b+' pt';
   });
 }
 
-function saveBest(game, score) {
-  const prev = parseInt(localStorage.getItem('best_' + game) || '0');
-  if (score > prev) {
-    localStorage.setItem('best_' + game, score);
-    document.getElementById('best-' + game).textContent = 'Il tuo record: ' + score + ' pt';
-    return true; // new record
+function saveBest(game, sc) {
+  const prev = parseInt(localStorage.getItem('best_'+game)||'0');
+  if (sc > prev) {
+    localStorage.setItem('best_'+game, sc);
+    document.getElementById('best-'+game).textContent = 'Il tuo record: '+sc+' pt';
+    return true;
   }
   return false;
 }
 
-// ── SAVE SCORE TO FIRESTORE ──────────────────────────────
-async function saveScore(game, score) {
+async function saveScore(game, sc) {
   try {
-    await addDoc(collection(db, 'scores'), {
-      game, score, player: playerName,
-      timestamp: serverTimestamp()
-    });
-  } catch (e) { console.error(e); }
+    await addDoc(collection(db,'scores'), { game, score: sc, player: playerName, timestamp: serverTimestamp() });
+  } catch(e) { console.error(e); }
 }
 
-// ── LEADERBOARD ──────────────────────────────────────────
 let currentLbGame = 'bouquet';
-
 window.switchLb = function(game, btn) {
   currentLbGame = game;
   document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
@@ -378,63 +240,52 @@ async function loadLeaderboard(game) {
   const list = document.getElementById('lb-list');
   list.innerHTML = '<div class="lb-loading">Caricamento…</div>';
   try {
-    const snap = await getDocs(
-      query(collection(db, 'scores'),
-        where('game','==', game),
-        orderBy('score','desc'),
-        limit(10))
-    );
-    if (snap.empty) {
-      list.innerHTML = '<div class="lb-empty">Nessun punteggio ancora — sii il primo! 🌸</div>';
-      return;
-    }
-
-    // best per player
+    const snap = await getDocs(query(collection(db,'scores'), where('game','==',game), orderBy('score','desc'), limit(30)));
+    if (snap.empty) { list.innerHTML = '<div class="lb-empty">Nessun punteggio ancora — sii il primo! 🌸</div>'; return; }
     const best = {};
     snap.docs.forEach(d => {
       const { player, score } = d.data();
       if (!best[player] || score > best[player]) best[player] = score;
     });
-    const sorted = Object.entries(best).sort((a,b) => b[1]-a[1]).slice(0,10);
-
+    const sorted = Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,10);
     const medals = ['🥇','🥈','🥉'];
-    const rankClass = ['gold','silver','bronze'];
-    list.innerHTML = sorted.map(([name, score], i) => `
+    const cls    = ['gold','silver','bronze'];
+    list.innerHTML = sorted.map(([name,sc],i) => `
       <div class="lb-row">
-        <span class="lb-rank ${rankClass[i]||''}">${medals[i] || (i+1)}</span>
+        <span class="lb-rank ${cls[i]||''}">${medals[i]||(i+1)}</span>
         <span class="lb-name">${name}${name===playerName?' 👈':''}</span>
-        <span class="lb-score">${score} <span>pt</span></span>
-      </div>
-    `).join('');
-  } catch(e) {
-    list.innerHTML = '<div class="lb-empty">Errore nel caricamento classifica</div>';
-  }
+        <span class="lb-score">${sc} <span>pt</span></span>
+      </div>`).join('');
+  } catch(e) { list.innerHTML = '<div class="lb-empty">Errore caricamento classifica</div>'; }
 }
 
-// ══════════════════════════════════════════════════════════
-//  GAME ENGINE
-// ══════════════════════════════════════════════════════════
+/* ══ GAME ENGINE ══════════════════════════════════════════ */
 const canvas = document.getElementById('game-canvas');
 const ctx    = canvas.getContext('2d');
+let currentGame = null, gameRunning = false, animId = null, score = 0, gameState = {};
 
-let currentGame = null;
-let gameRunning  = false;
-let animId       = null;
-let score        = 0;
-let gameState    = {}; // per-game state
+// W e H logici (indipendenti da DPR)
+function W() { return canvas._w || 400; }
+function H() { return canvas._h || 560; }
 
-// resize canvas
 function resizeCanvas() {
   const wrap = document.getElementById('game-canvas-wrap');
   const dpr  = window.devicePixelRatio || 1;
-  canvas.width  = wrap.clientWidth  * dpr;
-  canvas.height = wrap.clientHeight * dpr;
-  canvas.style.width  = wrap.clientWidth  + 'px';
-  canvas.style.height = wrap.clientHeight + 'px';
-  ctx.scale(dpr, dpr);
-  // store logical size for game logic
-  canvas._w = wrap.clientWidth;
-  canvas._h = wrap.clientHeight;
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  canvas._w = w; canvas._h = h;
+  canvas.width  = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width  = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function getPointerPos(e) {
+  const r   = canvas.getBoundingClientRect();
+  const src = e.changedTouches ? e.changedTouches[0] : e.touches ? e.touches[0] : e;
+  const scaleX = W() / r.width;
+  const scaleY = H() / r.height;
+  return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
 }
 
 window.openGame = function(game) {
@@ -442,16 +293,14 @@ window.openGame = function(game) {
   document.getElementById('game-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
   resizeCanvas();
-
   const cfg = GAMES[game];
-  document.getElementById('gm-title').textContent       = cfg.title;
-  document.getElementById('go-emoji').textContent       = cfg.emoji;
-  document.getElementById('go-title-txt').textContent   = cfg.title;
-  document.getElementById('go-instructions').innerHTML  = cfg.instructions;
-  document.getElementById('go-end-emoji').textContent   = cfg.emoji;
-  document.getElementById('gm-score').textContent       = '0';
-  document.getElementById('gm-timer').textContent       = '';
-
+  document.getElementById('gm-title').textContent      = cfg.title;
+  document.getElementById('go-emoji').textContent      = cfg.emoji;
+  document.getElementById('go-title-txt').textContent  = cfg.title;
+  document.getElementById('go-instructions').innerHTML = cfg.instructions;
+  document.getElementById('go-end-emoji').textContent  = cfg.emoji;
+  document.getElementById('gm-score').textContent      = '0';
+  document.getElementById('gm-timer').textContent      = '';
   document.getElementById('go-start').classList.remove('hidden');
   document.getElementById('go-end').classList.add('hidden');
 };
@@ -465,8 +314,7 @@ window.closeGame = function() {
 };
 
 window.startGame = function() {
-  score = 0;
-  gameRunning = true;
+  score = 0; gameRunning = true;
   document.getElementById('gm-score').textContent = '0';
   document.getElementById('go-start').classList.add('hidden');
   document.getElementById('go-end').classList.add('hidden');
@@ -478,7 +326,7 @@ window.startGame = function() {
 
 function loop() {
   if (!gameRunning) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, W(), H());
   GAMES[currentGame].update();
   GAMES[currentGame].draw();
   animId = requestAnimationFrame(loop);
@@ -487,432 +335,233 @@ function loop() {
 async function endGame() {
   gameRunning = false;
   if (animId) cancelAnimationFrame(animId);
-
   const isNew = saveBest(currentGame, score);
   await saveScore(currentGame, score);
-
   document.getElementById('go-final-score').textContent = score;
   document.getElementById('go-end-title').textContent   = GAMES[currentGame].endMessage(score);
   document.getElementById('go-best-txt').textContent    = isNew ? '🎉 Nuovo record personale!' : '';
   document.getElementById('go-end').classList.remove('hidden');
 }
 
-// input helpers
-function getPointerPos(e) {
-  const r   = canvas.getBoundingClientRect();
-  const src = e.changedTouches ? e.changedTouches[0] : e.touches ? e.touches[0] : e;
-  // scale from CSS pixels to logical canvas pixels
-  const scaleX = (canvas._w || canvas.width)  / r.width;
-  const scaleY = (canvas._h || canvas.height) / r.height;
-  return {
-    x: (src.clientX - r.left) * scaleX,
-    y: (src.clientY - r.top)  * scaleY
-  };
-}
-
-// ══════════════════════════════════════════════════════════
-//  GAME 1 — AFFERRA IL BOUQUET
-// ══════════════════════════════════════════════════════════
+/* ── BOUQUET ─────────────────────────────────────────────── */
 const G_BOUQUET = {
-  title: 'Afferra il Bouquet',
-  emoji: '💐',
-  instructions: 'Il bouquet cade dall\'alto.<br><strong>Toccalo o cliccalo</strong> prima che tocchi terra!<br>Più punti prendi, più è veloce.',
-
+  title:'Afferra il Bouquet', emoji:'💐',
+  instructions:'Il bouquet cade dall\'alto.<br><strong>Toccalo o cliccalo</strong> prima che tocchi terra!',
   init() {
-    gameState = {
-      items: [],
-      speed: 2.5,
-      spawnTimer: 0,
-      spawnInterval: 80,
-      lives: 3,
-      combo: 0,
-    };
-    this.spawnItem();
-    canvas.onclick     = e => this.onClick(getPointerPos(e));
-    canvas.addEventListener("touchstart", e => { e.preventDefault(); this.onClick(getPointerPos(e)); }, { passive: false });
+    gameState = { items:[], speed:2.5, spawnTimer:0, spawnInterval:80, lives:3, combo:0 };
+    this.spawn();
+    canvas.onclick = e => this.click(getPointerPos(e));
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); this.click(getPointerPos(e)); }, {passive:false});
   },
-
-  spawnItem() {
-    const x = 40 + Math.random() * ((canvas._w||canvas.width) - 80);
-    gameState.items.push({ x, y: -40, size: 44, caught: false, miss: false, alpha: 1 });
+  spawn() {
+    gameState.items.push({ x: 40 + Math.random()*(W()-80), y:-40, size:44, caught:false, miss:false, alpha:1 });
   },
-
-  onClick(pos) {
-    gameState.items.forEach(item => {
-      if (item.caught || item.miss) return;
-      const dx = pos.x - item.x, dy = pos.y - item.y;
-      if (Math.sqrt(dx*dx+dy*dy) < item.size) {
-        item.caught = true;
-        gameState.combo++;
-        const pts = 10 * gameState.combo;
-        score += pts;
+  click(pos) {
+    gameState.items.forEach(it => {
+      if (it.caught||it.miss) return;
+      const dx=pos.x-it.x, dy=pos.y-it.y;
+      if (Math.sqrt(dx*dx+dy*dy) < it.size) {
+        it.caught=true; gameState.combo++;
+        score += 10*gameState.combo;
         document.getElementById('gm-score').textContent = score;
-        // speed up
-        gameState.speed = Math.min(12, 2.5 + score / 80);
-        gameState.spawnInterval = Math.max(30, 80 - score / 8);
+        gameState.speed = Math.min(12, 2.5+score/80);
+        gameState.spawnInterval = Math.max(30, 80-score/8);
       }
     });
   },
-
   update() {
     gameState.spawnTimer++;
-    if (gameState.spawnTimer >= gameState.spawnInterval) {
-      this.spawnItem();
-      gameState.spawnTimer = 0;
-    }
-    gameState.items.forEach(item => {
-      if (!item.caught) {
-        item.y += gameState.speed;
-        if (item.y > (canvas._h||canvas.height) + 20 && !item.miss) {
-          item.miss = true;
-          gameState.combo = 0;
-          gameState.lives--;
-          if (gameState.lives <= 0) { setTimeout(() => endGame(), 300); gameRunning = false; }
+    if (gameState.spawnTimer >= gameState.spawnInterval) { this.spawn(); gameState.spawnTimer=0; }
+    gameState.items.forEach(it => {
+      if (!it.caught) {
+        it.y += gameState.speed;
+        if (it.y > H()+20 && !it.miss) {
+          it.miss=true; gameState.combo=0; gameState.lives--;
+          if (gameState.lives<=0) { gameRunning=false; setTimeout(endGame,300); }
         }
-      } else {
-        item.y -= 3;
-        item.alpha -= .05;
-      }
+      } else { it.y-=3; it.alpha-=.05; }
     });
-    gameState.items = gameState.items.filter(i => i.alpha > 0 && i.y < (canvas._h||canvas.height) + 60);
+    gameState.items = gameState.items.filter(i=>i.alpha>0&&i.y<H()+60);
   },
-
   draw() {
-    // background
-    ctx.fillStyle = '#2C2420';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // lives
-    ctx.font = '22px serif';
-    ctx.textAlign = 'left';
-    for (let i=0; i<3; i++) {
-      ctx.globalAlpha = i < gameState.lives ? 1 : .2;
-      ctx.fillText('💗', 12 + i*32, 36);
-    }
-    ctx.globalAlpha = 1;
-
-    // combo
-    if (gameState.combo > 1) {
-      ctx.fillStyle = '#C9A8C0';
-      ctx.font = `500 ${Math.min(16,10+gameState.combo)}px 'DM Sans', sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText(`x${gameState.combo} combo!`, canvas.width/2, 28);
-    }
-
-    // items
-    gameState.items.forEach(item => {
-      ctx.globalAlpha = item.alpha;
-      ctx.font = `${item.size}px serif`;
-      ctx.textAlign = 'center';
-      if (item.caught) {
-        ctx.fillStyle = '#C9A8C0';
-        ctx.font = `bold 14px 'DM Sans',sans-serif`;
-        ctx.fillText('+' + (10*Math.max(1,gameState.combo)), item.x, item.y);
-      } else {
-        ctx.fillText('💐', item.x, item.y);
-        // shadow when close to ground
-        if (item.y > (canvas._h||canvas.height) - 100) {
-          ctx.globalAlpha *= .3;
-          ctx.fillStyle = 'rgba(232,196,184,.5)';
-          const r = (item.size/2) * ((item.y - (canvas.height-100))/100);
-          ctx.beginPath();
-          ctx.ellipse(item.x, (canvas._h||canvas.height) - 8, r, r*0.3, 0, 0, Math.PI*2);
-          ctx.fill();
-          ctx.globalAlpha = item.alpha;
-        }
-      }
+    ctx.fillStyle='#2C2420'; ctx.fillRect(0,0,W(),H());
+    ctx.font='22px serif'; ctx.textAlign='left';
+    for(let i=0;i<3;i++){ctx.globalAlpha=i<gameState.lives?1:.2;ctx.fillText('💗',12+i*32,36);}
+    ctx.globalAlpha=1;
+    if(gameState.combo>1){ctx.fillStyle='#C9A8C0';ctx.font=`${Math.min(16,10+gameState.combo)}px "DM Sans",sans-serif`;ctx.textAlign='center';ctx.fillText(`x${gameState.combo} combo!`,W()/2,28);}
+    gameState.items.forEach(it=>{
+      ctx.globalAlpha=it.alpha; ctx.textAlign='center';
+      if(it.caught){ctx.fillStyle='#C9A8C0';ctx.font='bold 14px "DM Sans",sans-serif';ctx.fillText('+'+10*Math.max(1,gameState.combo),it.x,it.y);}
+      else{ctx.font=`${it.size}px serif`;ctx.fillText('💐',it.x,it.y);}
     });
-    ctx.globalAlpha = 1;
-
-    // floor line
-    ctx.strokeStyle = 'rgba(201,160,192,.2)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, (canvas._h||canvas.height) - 4);
-    ctx.lineTo(canvas.width, (canvas._h||canvas.height) - 4);
-    ctx.stroke();
+    ctx.globalAlpha=1;
+    ctx.strokeStyle='rgba(201,160,192,.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,H()-4);ctx.lineTo(W(),H()-4);ctx.stroke();
   },
-
-  endMessage(s) {
-    if (s >= 200) return 'Campionessa del bouquet! 💐';
-    if (s >= 100) return 'Ottimo riflesso! 🌸';
-    if (s >= 50)  return 'Non male! Riprova 😄';
-    return 'Il bouquet ti è sfuggito! 😅';
-  }
+  endMessage(s){return s>=200?'Campionessa del bouquet! 💐':s>=100?'Ottimo riflesso! 🌸':s>=50?'Non male! Riprova 😄':'Il bouquet ti è sfuggito! 😅';}
 };
 
-// ══════════════════════════════════════════════════════════
-//  GAME 2 — LEGA LO SPOSO
-// ══════════════════════════════════════════════════════════
+/* ── SPOSO ───────────────────────────────────────────────── */
 const G_SPOSO = {
-  title: 'Lega lo Sposo',
-  emoji: '🏃',
-  instructions: 'Damiano scappa!<br><strong>Cliccalo o toccalo</strong> prima che esca dallo schermo.<br>Ogni volta che lo prendi riparte più veloce.',
-
+  title:'Lega lo Sposo', emoji:'🏃',
+  instructions:'Damiano scappa!<br><strong>Toccalo o cliccalo</strong> prima che esca dallo schermo.<br>Hai 30 secondi!',
   init() {
+    // usa W() e H() — già corretti dopo resizeCanvas
     gameState = {
-      x: canvas.width/2, y: canvas.height/2,
+      x: W()/2, y: H()/2,
       vx: 2.5, vy: 2,
-      size: 48,
-      caught: 0,
-      timeLeft: 30,
-      lastTick: Date.now(),
-      shake: 0,
+      size: 48, caught: 0,
+      timeLeft: 30, lastTick: Date.now(), shake: 0
     };
-    canvas.onclick    = e => this.onClick(getPointerPos(e));
-    canvas.addEventListener("touchstart", e => { e.preventDefault(); this.onClick(getPointerPos(e)); }, { passive: false });
+    canvas.onclick = e => this.click(getPointerPos(e));
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); this.click(getPointerPos(e)); }, {passive:false});
     document.getElementById('gm-timer').textContent = '30';
   },
-
-  onClick(pos) {
-    const dx = pos.x - gameState.x, dy = pos.y - gameState.y;
-    if (Math.sqrt(dx*dx+dy*dy) < gameState.size * .7) {
+  click(pos) {
+    const dx=pos.x-gameState.x, dy=pos.y-gameState.y;
+    if(Math.sqrt(dx*dx+dy*dy) < gameState.size*.8) {
       gameState.caught++;
-      score += 10 + gameState.caught * 2;
+      score += 10 + gameState.caught*2;
       document.getElementById('gm-score').textContent = score;
-      // speed up
-      const spd = 2.5 + gameState.caught * .8;
-      const angle = Math.random() * Math.PI * 2;
-      gameState.vx = Math.cos(angle) * spd;
-      gameState.vy = Math.sin(angle) * spd;
-      // random position away from edges
-      gameState.x = 80 + Math.random() * ((canvas._w||canvas.width) - 160);
-      gameState.y = 80 + Math.random() * ((canvas._h||canvas.height) - 160);
-      gameState.shake = 8;
+      const spd = 2.5 + gameState.caught*.8;
+      const ang = Math.random()*Math.PI*2;
+      gameState.vx = Math.cos(ang)*spd;
+      gameState.vy = Math.sin(ang)*spd;
+      // riposiziona lontano dai bordi
+      gameState.x = 80 + Math.random()*(W()-160);
+      gameState.y = 80 + Math.random()*(H()-160);
+      gameState.shake = 10;
     }
   },
-
   update() {
     const now = Date.now();
-    if (now - gameState.lastTick >= 1000) {
+    if(now - gameState.lastTick >= 1000) {
       gameState.timeLeft--;
       gameState.lastTick = now;
       const t = document.getElementById('gm-timer');
       t.textContent = gameState.timeLeft;
-      t.className = 'game-timer' + (gameState.timeLeft <= 5 ? ' urgent' : '');
-      if (gameState.timeLeft <= 0) { setTimeout(endGame, 200); gameRunning = false; return; }
+      t.className = 'game-timer'+(gameState.timeLeft<=5?' urgent':'');
+      if(gameState.timeLeft<=0){ gameRunning=false; setTimeout(endGame,200); return; }
     }
-
     gameState.x += gameState.vx;
     gameState.y += gameState.vy;
-
-    if (gameState.x < gameState.size)                { gameState.x = gameState.size; gameState.vx *= -1; }
-    if (gameState.x > canvas.width - gameState.size) { gameState.x = canvas.width - gameState.size; gameState.vx *= -1; }
-    if (gameState.y < gameState.size)                { gameState.y = gameState.size; gameState.vy *= -1; }
-    if (gameState.y > canvas.height - gameState.size){ gameState.y = canvas.height - gameState.size; gameState.vy *= -1; }
-
-    if (gameState.shake > 0) gameState.shake -= .5;
+    const s = gameState.size;
+    if(gameState.x < s)    { gameState.x = s;    gameState.vx = Math.abs(gameState.vx); }
+    if(gameState.x > W()-s){ gameState.x = W()-s; gameState.vx = -Math.abs(gameState.vx); }
+    if(gameState.y < s)    { gameState.y = s;    gameState.vy = Math.abs(gameState.vy); }
+    if(gameState.y > H()-s){ gameState.y = H()-s; gameState.vy = -Math.abs(gameState.vy); }
+    if(gameState.shake>0) gameState.shake -= .5;
   },
-
   draw() {
-    ctx.fillStyle = '#2C2420';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // caught counter
-    ctx.fillStyle = 'rgba(201,160,192,.6)';
-    ctx.font = '13px "DM Sans", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(`Preso: ${gameState.caught}x`, 12, 36);
-
-    // speed indicator
+    ctx.fillStyle='#2C2420'; ctx.fillRect(0,0,W(),H());
+    ctx.fillStyle='rgba(201,160,192,.6)'; ctx.font='13px "DM Sans",sans-serif'; ctx.textAlign='left';
+    ctx.fillText(`Preso: ${gameState.caught}x`,12,36);
     const spd = Math.sqrt(gameState.vx**2+gameState.vy**2);
-    ctx.fillStyle = spd > 8 ? '#E8C4B8' : 'rgba(201,160,192,.4)';
-    ctx.textAlign = 'right';
-    ctx.fillText(spd > 8 ? '⚡ Velocissimo!' : spd > 5 ? '🏃 Veloce' : '🚶 Cammina', canvas.width-12, 36);
-
-    // glow behind sposo
-    const g = ctx.createRadialGradient(gameState.x, gameState.y, 0, gameState.x, gameState.y, 60);
-    g.addColorStop(0, 'rgba(201,160,192,.15)');
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(gameState.x, gameState.y, 60, 0, Math.PI*2);
-    ctx.fill();
-
-    // shake effect
-    const sx = gameState.shake > 0 ? (Math.random()-0.5)*gameState.shake : 0;
-    const sy = gameState.shake > 0 ? (Math.random()-0.5)*gameState.shake : 0;
-
-    // sposo emoji
-    ctx.font = `${gameState.size}px serif`;
-    ctx.textAlign = 'center';
-    ctx.fillText('🤵', gameState.x + sx, gameState.y + sy + gameState.size/3);
-
-    // target ring
-    ctx.strokeStyle = 'rgba(232,196,184,.25)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(gameState.x, gameState.y, gameState.size * .7, 0, Math.PI*2);
-    ctx.stroke();
+    ctx.fillStyle = spd>8?'#E8C4B8':'rgba(201,160,192,.5)'; ctx.textAlign='right';
+    ctx.fillText(spd>8?'⚡ Velocissimo!':spd>5?'🏃 Veloce':'🚶 Cammina', W()-12, 36);
+    // glow
+    const g = ctx.createRadialGradient(gameState.x,gameState.y,0,gameState.x,gameState.y,60);
+    g.addColorStop(0,'rgba(201,160,192,.15)'); g.addColorStop(1,'transparent');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(gameState.x,gameState.y,60,0,Math.PI*2); ctx.fill();
+    // sposo
+    const sx = gameState.shake>0?(Math.random()-.5)*gameState.shake:0;
+    const sy = gameState.shake>0?(Math.random()-.5)*gameState.shake:0;
+    ctx.font=`${gameState.size}px serif`; ctx.textAlign='center';
+    ctx.fillText('🤵', gameState.x+sx, gameState.y+sy+gameState.size/3);
+    // cerchio target
+    ctx.strokeStyle='rgba(232,196,184,.3)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(gameState.x,gameState.y,gameState.size*.8,0,Math.PI*2); ctx.stroke();
   },
-
-  endMessage(s) {
-    if (s >= 150) return 'Lo sposo non può fuggire! 💍';
-    if (s >= 80)  return 'Brava! Damiano è catturato 😄';
-    if (s >= 40)  return 'Quasi! Riprova 🏃';
-    return 'Damiano è scappato! 😂';
-  }
+  endMessage(s){return s>=150?'Lo sposo non può fuggire! 💍':s>=80?'Brava! Damiano è catturato 😄':s>=40?'Quasi! Riprova 🏃':'Damiano è scappato! 😂';}
 };
 
-// ══════════════════════════════════════════════════════════
-//  GAME 3 — TAGLIA LA TORTA
-// ══════════════════════════════════════════════════════════
+/* ── TORTA ───────────────────────────────────────────────── */
 const G_TORTA = {
-  title: 'Taglia la Torta',
-  emoji: '🎂',
-  instructions: 'La torta scorre — <strong>clicca o tocca</strong> per tagliare.<br>Più sei vicino al centro, più punti guadagni!<br>Hai 10 torte da tagliare.',
-
+  title:'Taglia la Torta', emoji:'🎂',
+  instructions:'La torta scorre — <strong>tocca o clicca</strong> per tagliare.<br>Più sei vicino al centro, più punti guadagni!<br>10 torte in totale.',
   init() {
     gameState = {
-      cakeX: -80,
-      cakeSpeed: 3,
-      cakeY: 0,
-      round: 0,
-      totalRounds: 10,
-      cutting: false,
-      cutX: 0,
-      cutAnim: 0,
-      waitingNext: false,
-      resultText: '',
-      resultColor: '',
+      cakeX: -80, cakeSpeed: 0, // impostato in nextCake
+      round: 0, totalRounds: 10,
+      cutting: false, cutX: 0, cutAnim: 0,
+      waitingNext: false, resultText:'', resultColor:''
     };
-    gameState.cakeY = (canvas._h||canvas.height) / 2;
+    canvas.onclick = e => this.cut(getPointerPos(e));
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); this.cut(getPointerPos(e)); }, {passive:false});
     this.nextCake();
-    canvas.onclick    = e => this.onCut(getPointerPos(e));
-    canvas.addEventListener("touchstart", e => { e.preventDefault(); this.onCut(getPointerPos(e)); }, { passive: false });
   },
-
   nextCake() {
-    gameState.cakeX = -80;
-    const dir = Math.random() > .5 ? 1 : -1;
+    const dir = Math.random()>.5 ? 1 : -1;
     gameState.cakeSpeed = (3 + gameState.round * .4) * dir;
-    if (dir === -1) gameState.cakeX = canvas.width + 80;
+    gameState.cakeX = dir===1 ? -80 : W()+80;
     gameState.cutting = false;
     gameState.waitingNext = false;
     gameState.cutAnim = 0;
   },
-
-  onCut(pos) {
-    if (gameState.cutting || gameState.waitingNext) return;
+  cut(pos) {
+    if(gameState.cutting||gameState.waitingNext) return;
     gameState.cutting = true;
     gameState.cutX = gameState.cakeX;
-
-    const center = (canvas._w||canvas.width) / 2;
-    const dist   = Math.abs(gameState.cakeX - center);
-    const maxDist = (canvas._w||canvas.width) / 2;
-    const pct    = Math.max(0, 1 - dist / maxDist);
+    const center = W()/2;
+    const pct = Math.max(0, 1 - Math.abs(gameState.cakeX-center)/(W()/2));
     let pts, text, color;
-
-    if (pct > .92)      { pts=50; text='PERFETTO! 🎯'; color='#C9A8C0'; }
-    else if (pct > .75) { pts=30; text='Ottimo! 🌸'; color='#9BAF8E'; }
-    else if (pct > .5)  { pts=15; text='Quasi! 😊'; color='#E8C4B8'; }
-    else                { pts=5;  text='Mancino! 😅'; color='rgba(254,252,248,.4)'; }
-
+    if(pct>.92)     { pts=50; text='PERFETTO! 🎯'; color='#C9A8C0'; }
+    else if(pct>.75){ pts=30; text='Ottimo! 🌸';  color='#9BAF8E'; }
+    else if(pct>.5) { pts=15; text='Quasi! 😊';   color='#E8C4B8'; }
+    else            { pts=5;  text='Mancino! 😅'; color='rgba(254,252,248,.4)'; }
     score += pts;
     document.getElementById('gm-score').textContent = score;
-    gameState.resultText  = text;
-    gameState.resultColor = color;
-    gameState.round++;
-    gameState.cutAnim = 1;
-
-    if (gameState.round >= gameState.totalRounds) {
-      setTimeout(endGame, 1200);
-    } else {
-      gameState.waitingNext = true;
-      setTimeout(() => this.nextCake(), 900);
-    }
+    gameState.resultText=text; gameState.resultColor=color;
+    gameState.round++; gameState.cutAnim=1;
+    if(gameState.round>=gameState.totalRounds){ setTimeout(endGame,1200); }
+    else { gameState.waitingNext=true; setTimeout(()=>this.nextCake(),900); }
   },
-
   update() {
-    if (!gameState.cutting) {
+    if(!gameState.cutting) {
       gameState.cakeX += gameState.cakeSpeed;
-      // bounce
-      if (gameState.cakeX > canvas.width + 80)  gameState.cakeSpeed *= -1;
-      if (gameState.cakeX < -80)                gameState.cakeSpeed *= -1;
+      if(gameState.cakeX > W()+80) gameState.cakeSpeed = -Math.abs(gameState.cakeSpeed);
+      if(gameState.cakeX < -80)    gameState.cakeSpeed =  Math.abs(gameState.cakeSpeed);
     }
-    if (gameState.cutAnim > 0) gameState.cutAnim -= .03;
+    if(gameState.cutAnim>0) gameState.cutAnim -= .03;
   },
-
   draw() {
-    ctx.fillStyle = '#2C2420';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const cx = (canvas._w||canvas.width) / 2;
-    const cy = (canvas._h||canvas.height) / 2;
-
-    // center line
-    ctx.strokeStyle = 'rgba(201,160,192,.3)';
-    ctx.setLineDash([6,4]);
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(cx, 60); ctx.lineTo(cx, (canvas._h||canvas.height)-60);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    ctx.fillStyle = 'rgba(201,160,192,.5)';
-    ctx.font = '11px "DM Sans",sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('CENTRO', cx, 52);
-
-    // round indicator
-    ctx.fillStyle = 'rgba(254,252,248,.4)';
-    ctx.font = '13px "DM Sans",sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(`Torta ${gameState.round + 1}/${gameState.totalRounds}`, 12, 36);
-
-    // cake
-    ctx.font = '64px serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('🎂', gameState.cakeX, cy + 20);
-
-    // cut animation
-    if (gameState.cutting && gameState.cutAnim > 0) {
-      ctx.globalAlpha = gameState.cutAnim;
-      ctx.strokeStyle = '#FEFCF8';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(gameState.cutX, cy - 80);
-      ctx.lineTo(gameState.cutX, cy + 80);
-      ctx.stroke();
-
-      ctx.fillStyle = gameState.resultColor;
-      ctx.font = `bold 20px 'DM Sans',sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText(gameState.resultText, gameState.cutX, cy - 100);
-      ctx.globalAlpha = 1;
+    ctx.fillStyle='#2C2420'; ctx.fillRect(0,0,W(),H());
+    const cx=W()/2, cy=H()/2;
+    // linea centro
+    ctx.strokeStyle='rgba(201,160,192,.35)'; ctx.setLineDash([6,4]); ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(cx,50); ctx.lineTo(cx,H()-50); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(201,160,192,.6)'; ctx.font='11px "DM Sans",sans-serif'; ctx.textAlign='center';
+    ctx.fillText('CENTRO',cx,44);
+    // round
+    ctx.fillStyle='rgba(254,252,248,.45)'; ctx.textAlign='left'; ctx.font='13px "DM Sans",sans-serif';
+    ctx.fillText(`Torta ${gameState.round+1}/${gameState.totalRounds}`,12,36);
+    // torta
+    ctx.font='64px serif'; ctx.textAlign='center';
+    ctx.fillText('🎂',gameState.cakeX,cy+22);
+    // taglio
+    if(gameState.cutting && gameState.cutAnim>0){
+      ctx.globalAlpha=gameState.cutAnim;
+      ctx.strokeStyle='#FEFCF8'; ctx.lineWidth=3; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(gameState.cutX,cy-90); ctx.lineTo(gameState.cutX,cy+90); ctx.stroke();
+      ctx.fillStyle=gameState.resultColor; ctx.font='bold 22px "DM Sans",sans-serif'; ctx.textAlign='center';
+      ctx.fillText(gameState.resultText, gameState.cutX, cy-110);
+      ctx.globalAlpha=1;
     }
-
-    // knife hint
-    if (!gameState.cutting) {
-      ctx.fillStyle = 'rgba(254,252,248,.25)';
-      ctx.font = '13px "DM Sans",sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('🔪 Clicca per tagliare!', cx, (canvas._h||canvas.height) - 30);
+    // suggerimento
+    if(!gameState.cutting){
+      ctx.fillStyle='rgba(254,252,248,.22)'; ctx.font='13px "DM Sans",sans-serif'; ctx.textAlign='center';
+      ctx.fillText('🔪 Tocca per tagliare!',cx,H()-28);
     }
   },
-
-  endMessage(s) {
-    if (s >= 400) return 'Tagliatrice perfetta! 🎂';
-    if (s >= 250) return 'Ottima precisione! 🌸';
-    if (s >= 150) return 'Ci vuole un po\' di pratica 😄';
-    return 'La torta è sopravvissuta! 😂';
-  }
+  endMessage(s){return s>=400?'Tagliatrice perfetta! 🎂':s>=250?'Ottima precisione! 🌸':s>=150?'Ci vuole pratica 😄':'La torta è sopravvissuta! 😂';}
 };
 
-// game registry
-const GAMES = {
-  bouquet: G_BOUQUET,
-  sposo:   G_SPOSO,
-  torta:   G_TORTA,
-};
-
-// expose to window for onclick attrs
+const GAMES = { bouquet:G_BOUQUET, sposo:G_SPOSO, torta:G_TORTA };
 window.openGame  = window.openGame;
 window.closeGame = window.closeGame;
 window.startGame = window.startGame;
 window.switchLb  = window.switchLb;
 </script>
-
 <script src="../js/nav.js"></script>
 </body>
 </html>
