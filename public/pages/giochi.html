@@ -53,7 +53,7 @@
 .game-modal-header{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:500px;padding:1rem 1.5rem;color:var(--milk)}
 .game-modal-title{font-family:var(--fd);font-style:italic;font-size:1.3rem}
 .game-modal-score{font-family:var(--fd);font-size:1.5rem;color:var(--rose)}
-.game-close{position:fixed;top:1rem;right:1rem;color:rgba(254,252,248,.6);font-size:1.8rem;background:none;border:none;cursor:pointer;z-index:810;transition:color .2s}
+.game-close{color:rgba(254,252,248,.7);font-size:1.5rem;background:none;border:none;cursor:pointer;transition:color .2s;padding:.2rem .3rem;line-height:1}
 .game-close:hover{color:var(--milk)}
 #game-canvas-wrap{position:relative;width:min(420px,92vw);height:min(560px,75vh)}
 #game-canvas{display:block;width:100%;height:100%;touch-action:none;border:1px solid rgba(254,252,248,.1)}
@@ -137,12 +137,12 @@
 </div>
 
 <div id="game-modal">
-  <button class="game-close" onclick="closeGame()">✕</button>
   <div class="game-modal-header">
     <span class="game-modal-title" id="gm-title"></span>
     <div style="display:flex;align-items:center;gap:1rem">
       <span class="game-timer" id="gm-timer"></span>
       <span class="game-modal-score" id="gm-score">0</span>
+      <button class="game-close" onclick="closeGame()">✕</button>
     </div>
   </div>
   <div id="game-canvas-wrap">
@@ -381,22 +381,12 @@ const G_BOUQUET = {
     // stelle/particelle sfondo
     ctx.fillStyle='rgba(242,217,208,.03)';
     for(let i=0;i<20;i++){ctx.beginPath();ctx.arc((i*137)%W(),(i*97)%H(),1,0,Math.PI*2);ctx.fill();}
-    // vite
-    for(let i=0;i<3;i++){
-      ctx.globalAlpha=i<gameState.lives?1:.15;
-      ctx.font='24px serif';
-      ctx.textAlign='left';
-      ctx.fillText('❤️',14+i*36,38);
-    }
-    ctx.globalAlpha=1;
-    // combo
-    if(gameState.combo>1){
-      ctx.fillStyle='#C9A8C0';
-      ctx.font=`bold ${Math.min(18,11+gameState.combo)}px "DM Sans",sans-serif`;
-      ctx.textAlign='center';
-      ctx.fillText(`x${gameState.combo} COMBO!`,W()/2,30);
-    }
-    // bouquet
+    // linea suolo
+    ctx.strokeStyle='rgba(201,160,192,.15)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,H()-3);ctx.lineTo(W(),H()-3);ctx.stroke();
+
+    // bouquet — disegnati PRIMA, così l'interfaccia sopra resta sempre visibile
     gameState.items.forEach(it=>{
       ctx.globalAlpha=it.alpha;
       ctx.textAlign='center';
@@ -420,10 +410,33 @@ const G_BOUQUET = {
       }
     });
     ctx.globalAlpha=1;
-    // linea suolo
-    ctx.strokeStyle='rgba(201,160,192,.15)';
-    ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(0,H()-3);ctx.lineTo(W(),H()-3);ctx.stroke();
+
+    // ── UI sempre in primo piano, sopra tutto ──────────────
+    // pannello dietro le vite per garantire leggibilità
+    ctx.fillStyle='rgba(26,18,8,.75)';
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(6,8,120,34,8) : ctx.rect(6,8,120,34);
+    ctx.fill();
+    // vite
+    for(let i=0;i<3;i++){
+      ctx.globalAlpha=i<gameState.lives?1:.2;
+      ctx.font='22px serif';
+      ctx.textAlign='left';
+      ctx.fillText('❤️',16+i*34,32);
+    }
+    ctx.globalAlpha=1;
+    // combo
+    if(gameState.combo>1){
+      ctx.fillStyle='rgba(26,18,8,.75)';
+      const cw=Math.min(18,11+gameState.combo)*5+20;
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(W()/2-cw/2,8,cw,28,8) : ctx.rect(W()/2-cw/2,8,cw,28);
+      ctx.fill();
+      ctx.fillStyle='#C9A8C0';
+      ctx.font=`bold ${Math.min(18,11+gameState.combo)}px "DM Sans",sans-serif`;
+      ctx.textAlign='center';
+      ctx.fillText(`x${gameState.combo} COMBO!`,W()/2,28);
+    }
   },
   endMessage(s){return s>=300?'Sei la regina del bouquet! 💐':s>=150?'Ottimi riflessi! 🌸':s>=60?'Non male! Riprova 😄':'Il bouquet è fuggito! 😅';}
 };
