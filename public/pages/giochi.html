@@ -57,7 +57,7 @@
 .game-close:hover{color:var(--milk)}
 #game-canvas-wrap{position:relative;width:min(420px,92vw);height:min(560px,75vh)}
 #game-canvas{display:block;width:100%;height:100%;touch-action:none;border:1px solid rgba(254,252,248,.1)}
-.game-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(44,36,32,.85);text-align:center;padding:2rem}
+.game-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(44,36,32,.88);text-align:center;padding:2rem}
 .game-overlay.hidden{display:none}
 .go-emoji{font-size:3.5rem;margin-bottom:.8rem}
 .go-title{font-family:var(--fd);font-style:italic;font-size:1.8rem;color:var(--milk);margin-bottom:.5rem}
@@ -77,10 +77,10 @@
 <body>
 
 <nav class="nav">
-  <a class="nav-brand" href="../index.html">D <span>&amp;</span> F</a>
+  <a class="nav-brand" href="../home.html">D <span>&amp;</span> F</a>
   <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
+    <li><a href="../home.html">Home</a></li>
     <li><a href="info.html">Informazioni</a></li>
     <li><a href="rsvp.html">RSVP</a></li>
     <li><a href="regali.html">Regali</a></li>
@@ -108,31 +108,31 @@
     <div class="game-card" onclick="openGame('bouquet')">
       <span class="game-card-emoji">💐</span>
       <div class="game-card-title">Afferra il Bouquet</div>
-      <div class="game-card-desc">Il bouquet cade dall'alto — toccalo prima che tocchi terra! Più vai avanti, più è veloce.</div>
+      <div class="game-card-desc">Il bouquet cade dall'alto — toccalo prima che tocchi terra! 3 vite, velocità crescente.</div>
       <div class="game-card-best" id="best-bouquet">Il tuo record: —</div>
     </div>
     <div class="game-card" onclick="openGame('sposo')">
       <span class="game-card-emoji">🏃</span>
       <div class="game-card-title">Lega lo Sposo</div>
-      <div class="game-card-desc">Damiano scappa! Toccalo prima che esca dallo schermo. Ogni volta che lo prendi riparte più veloce.</div>
+      <div class="game-card-desc">Damiano scappa! Toccalo il più volte possibile in 30 secondi.</div>
       <div class="game-card-best" id="best-sposo">Il tuo record: —</div>
     </div>
     <div class="game-card" onclick="openGame('torta')">
       <span class="game-card-emoji">🎂</span>
       <div class="game-card-title">Taglia la Torta</div>
-      <div class="game-card-desc">La torta passa veloce — taglia esattamente al centro! Più sei preciso, più punti guadagni.</div>
+      <div class="game-card-desc">Le torte cadono dall'alto — tagliale con un swipe! Hai 3 vite. Stile Fruit Ninja 🔪</div>
       <div class="game-card-best" id="best-torta">Il tuo record: —</div>
     </div>
   </div>
   <div class="leaderboard-section">
     <h2 class="lb-title">🏆 Classifica Globale</h2>
-    <p class="lb-sub">Aggiornata in tempo reale — chi sarà il campione del matrimonio?</p>
+    <p class="lb-sub">Chi sarà il campione del matrimonio?</p>
     <div class="lb-tabs">
       <button class="lb-tab active" onclick="switchLb('bouquet',this)">💐 Bouquet</button>
       <button class="lb-tab" onclick="switchLb('sposo',this)">🏃 Sposo</button>
       <button class="lb-tab" onclick="switchLb('torta',this)">🎂 Torta</button>
     </div>
-    <div class="lb-list" id="lb-list"><div class="lb-loading">Caricamento classifica…</div></div>
+    <div class="lb-list" id="lb-list"><div class="lb-loading">Caricamento…</div></div>
   </div>
 </div>
 
@@ -166,8 +166,7 @@
 </div>
 
 <script type="module">
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, where, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -179,7 +178,6 @@ const firebaseConfig = {
   messagingSenderId: "1073018154819",
   appId: "1:1073018154819:web:f8c162873eeda558ed89f6"
 };
-
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
@@ -211,21 +209,14 @@ function loadBests() {
     if (b) document.getElementById('best-'+g).textContent = 'Il tuo record: '+b+' pt';
   });
 }
-
 function saveBest(game, sc) {
   const prev = parseInt(localStorage.getItem('best_'+game)||'0');
-  if (sc > prev) {
-    localStorage.setItem('best_'+game, sc);
-    document.getElementById('best-'+game).textContent = 'Il tuo record: '+sc+' pt';
-    return true;
-  }
+  if (sc > prev) { localStorage.setItem('best_'+game, sc); document.getElementById('best-'+game).textContent = 'Il tuo record: '+sc+' pt'; return true; }
   return false;
 }
-
 async function saveScore(game, sc) {
-  try {
-    await addDoc(collection(db,'scores'), { game, score: sc, player: playerName, timestamp: serverTimestamp() });
-  } catch(e) { console.error(e); }
+  try { await addDoc(collection(db,'scores'), { game, score:sc, player:playerName, timestamp:serverTimestamp() }); }
+  catch(e) { console.error(e); }
 }
 
 let currentLbGame = 'bouquet';
@@ -235,332 +226,447 @@ window.switchLb = function(game, btn) {
   btn.classList.add('active');
   loadLeaderboard(game);
 };
-
 async function loadLeaderboard(game) {
   const list = document.getElementById('lb-list');
   list.innerHTML = '<div class="lb-loading">Caricamento…</div>';
   try {
     const snap = await getDocs(query(collection(db,'scores'), where('game','==',game), orderBy('score','desc'), limit(30)));
-    if (snap.empty) { list.innerHTML = '<div class="lb-empty">Nessun punteggio ancora — sii il primo! 🌸</div>'; return; }
+    if (snap.empty) { list.innerHTML = '<div class="lb-empty">Nessun punteggio ancora 🌸</div>'; return; }
     const best = {};
-    snap.docs.forEach(d => {
-      const { player, score } = d.data();
-      if (!best[player] || score > best[player]) best[player] = score;
-    });
+    snap.docs.forEach(d => { const {player,score} = d.data(); if (!best[player]||score>best[player]) best[player]=score; });
     const sorted = Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,10);
-    const medals = ['🥇','🥈','🥉'];
-    const cls    = ['gold','silver','bronze'];
+    const medals=['🥇','🥈','🥉'], cls=['gold','silver','bronze'];
     list.innerHTML = sorted.map(([name,sc],i) => `
       <div class="lb-row">
         <span class="lb-rank ${cls[i]||''}">${medals[i]||(i+1)}</span>
         <span class="lb-name">${name}${name===playerName?' 👈':''}</span>
         <span class="lb-score">${sc} <span>pt</span></span>
       </div>`).join('');
-  } catch(e) { list.innerHTML = '<div class="lb-empty">Errore caricamento classifica</div>'; }
+  } catch(e) { list.innerHTML = '<div class="lb-empty">Errore classifica</div>'; }
 }
 
 /* ══ GAME ENGINE ══════════════════════════════════════════ */
 const canvas = document.getElementById('game-canvas');
 const ctx    = canvas.getContext('2d');
-let currentGame = null, gameRunning = false, animId = null, score = 0, gameState = {};
+let currentGame=null, gameRunning=false, animId=null, score=0, gameState={};
 
-// W e H logici (indipendenti da DPR)
-function W() { return canvas._w || 400; }
-function H() { return canvas._h || 560; }
+function W(){ return canvas._w||400; }
+function H(){ return canvas._h||560; }
 
-function resizeCanvas() {
-  const wrap = document.getElementById('game-canvas-wrap');
-  const dpr  = window.devicePixelRatio || 1;
-  const w = wrap.clientWidth, h = wrap.clientHeight;
-  canvas._w = w; canvas._h = h;
-  canvas.width  = w * dpr;
-  canvas.height = h * dpr;
-  canvas.style.width  = w + 'px';
-  canvas.style.height = h + 'px';
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+function resizeCanvas(){
+  const wrap=document.getElementById('game-canvas-wrap');
+  const dpr=window.devicePixelRatio||1;
+  canvas._w=wrap.clientWidth; canvas._h=wrap.clientHeight;
+  canvas.width=canvas._w*dpr; canvas.height=canvas._h*dpr;
+  canvas.style.width=canvas._w+'px'; canvas.style.height=canvas._h+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 }
 
-function getPointerPos(e) {
-  const r   = canvas.getBoundingClientRect();
-  const src = e.changedTouches ? e.changedTouches[0] : e.touches ? e.touches[0] : e;
-  const scaleX = W() / r.width;
-  const scaleY = H() / r.height;
-  return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
+function getPointerPos(e){
+  const r=canvas.getBoundingClientRect();
+  const src=e.changedTouches?e.changedTouches[0]:e.touches?e.touches[0]:e;
+  return { x:(src.clientX-r.left)*(W()/r.width), y:(src.clientY-r.top)*(H()/r.height) };
 }
 
-window.openGame = function(game) {
-  currentGame = game;
+window.openGame=function(game){
+  currentGame=game;
   document.getElementById('game-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow='hidden';
   resizeCanvas();
-  const cfg = GAMES[game];
-  document.getElementById('gm-title').textContent      = cfg.title;
-  document.getElementById('go-emoji').textContent      = cfg.emoji;
-  document.getElementById('go-title-txt').textContent  = cfg.title;
-  document.getElementById('go-instructions').innerHTML = cfg.instructions;
-  document.getElementById('go-end-emoji').textContent  = cfg.emoji;
-  document.getElementById('gm-score').textContent      = '0';
-  document.getElementById('gm-timer').textContent      = '';
+  const cfg=GAMES[game];
+  document.getElementById('gm-title').textContent=cfg.title;
+  document.getElementById('go-emoji').textContent=cfg.emoji;
+  document.getElementById('go-title-txt').textContent=cfg.title;
+  document.getElementById('go-instructions').innerHTML=cfg.instructions;
+  document.getElementById('go-end-emoji').textContent=cfg.emoji;
+  document.getElementById('gm-score').textContent='0';
+  document.getElementById('gm-timer').textContent='';
   document.getElementById('go-start').classList.remove('hidden');
   document.getElementById('go-end').classList.add('hidden');
 };
-
-window.closeGame = function() {
-  gameRunning = false;
-  if (animId) cancelAnimationFrame(animId);
+window.closeGame=function(){
+  gameRunning=false;
+  if(animId) cancelAnimationFrame(animId);
+  // rimuovi listener canvas
+  canvas.onclick=null;
+  const old=canvas.cloneNode(true);
+  canvas.parentNode.replaceChild(old,canvas);
   document.getElementById('game-modal').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow='';
   loadLeaderboard(currentLbGame);
 };
-
-window.startGame = function() {
-  score = 0; gameRunning = true;
-  document.getElementById('gm-score').textContent = '0';
+window.startGame=function(){
+  score=0; gameRunning=true;
+  document.getElementById('gm-score').textContent='0';
   document.getElementById('go-start').classList.add('hidden');
   document.getElementById('go-end').classList.add('hidden');
   resizeCanvas();
   GAMES[currentGame].init();
-  if (animId) cancelAnimationFrame(animId);
+  if(animId) cancelAnimationFrame(animId);
   loop();
 };
-
-function loop() {
-  if (!gameRunning) return;
-  ctx.clearRect(0, 0, W(), H());
+function loop(){
+  if(!gameRunning) return;
+  ctx.clearRect(0,0,W(),H());
   GAMES[currentGame].update();
   GAMES[currentGame].draw();
-  animId = requestAnimationFrame(loop);
+  animId=requestAnimationFrame(loop);
 }
-
-async function endGame() {
-  gameRunning = false;
-  if (animId) cancelAnimationFrame(animId);
-  const isNew = saveBest(currentGame, score);
-  await saveScore(currentGame, score);
-  document.getElementById('go-final-score').textContent = score;
-  document.getElementById('go-end-title').textContent   = GAMES[currentGame].endMessage(score);
-  document.getElementById('go-best-txt').textContent    = isNew ? '🎉 Nuovo record personale!' : '';
+async function endGame(){
+  gameRunning=false;
+  if(animId) cancelAnimationFrame(animId);
+  const isNew=saveBest(currentGame,score);
+  await saveScore(currentGame,score);
+  document.getElementById('go-final-score').textContent=score;
+  document.getElementById('go-end-title').textContent=GAMES[currentGame].endMessage(score);
+  document.getElementById('go-best-txt').textContent=isNew?'🎉 Nuovo record personale!':'';
   document.getElementById('go-end').classList.remove('hidden');
 }
 
-/* ── BOUQUET ─────────────────────────────────────────────── */
+/* ══ BOUQUET ═════════════════════════════════════════════ */
 const G_BOUQUET = {
   title:'Afferra il Bouquet', emoji:'💐',
-  instructions:'Il bouquet cade dall\'alto.<br><strong>Toccalo o cliccalo</strong> prima che tocchi terra!',
-  init() {
-    gameState = { items:[], speed:2.5, spawnTimer:0, spawnInterval:80, lives:3, combo:0 };
-    this.spawn();
-    canvas.onclick = e => this.click(getPointerPos(e));
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); this.click(getPointerPos(e)); }, {passive:false});
+  instructions:'I bouquet cadono dall\'alto.<br><strong>Toccali o cliccali</strong> prima che tocchino terra!<br>Hai 3 vite ❤️',
+  init(){
+    gameState={items:[], spawnT:0, spawnInt:90, lives:3, combo:0, speed:2.2, ended:false};
+    canvas.onclick=e=>this.tap(getPointerPos(e));
+    canvas.addEventListener('touchstart',e=>{e.preventDefault();this.tap(getPointerPos(e));},{passive:false});
   },
-  spawn() {
-    gameState.items.push({ x: 40 + Math.random()*(W()-80), y:-40, size:44, caught:false, miss:false, alpha:1 });
+  spawn(){
+    const x=50+Math.random()*(W()-100);
+    gameState.items.push({x,y:-50,vy:gameState.speed,size:40,hit:false,missed:false,alpha:1,pts:0});
   },
-  click(pos) {
-    gameState.items.forEach(it => {
-      if (it.caught||it.miss) return;
+  tap(pos){
+    let hit=false;
+    gameState.items.forEach(it=>{
+      if(it.hit||it.missed) return;
       const dx=pos.x-it.x, dy=pos.y-it.y;
-      if (Math.sqrt(dx*dx+dy*dy) < it.size) {
-        it.caught=true; gameState.combo++;
-        score += 10*gameState.combo;
-        document.getElementById('gm-score').textContent = score;
-        gameState.speed = Math.min(12, 2.5+score/80);
-        gameState.spawnInterval = Math.max(30, 80-score/8);
+      if(Math.sqrt(dx*dx+dy*dy)<it.size+10){
+        it.hit=true; hit=true;
+        gameState.combo++;
+        const pts=10*gameState.combo;
+        it.pts=pts; score+=pts;
+        document.getElementById('gm-score').textContent=score;
+        gameState.speed=Math.min(14,2.2+score/100);
+        gameState.spawnInt=Math.max(25,90-score/6);
+      }
+    });
+    if(!hit) gameState.combo=0;
+  },
+  update(){
+    if(gameState.ended) return;
+    gameState.spawnT++;
+    if(gameState.spawnT>=gameState.spawnInt){this.spawn();gameState.spawnT=0;}
+    gameState.items.forEach(it=>{
+      if(it.hit){ it.y-=2; it.alpha-=.04; return; }
+      it.y+=it.vy;
+      if(!it.missed && it.y>H()+10){
+        it.missed=true;
+        gameState.combo=0;
+        gameState.lives--;
+        if(gameState.lives<=0 && !gameState.ended){
+          gameState.ended=true;
+          setTimeout(endGame,600);
+        }
+      }
+    });
+    gameState.items=gameState.items.filter(i=>(i.hit&&i.alpha>0)||(!i.hit&&i.y<H()+60));
+  },
+  draw(){
+    // sfondo
+    ctx.fillStyle='#1a1208';
+    ctx.fillRect(0,0,W(),H());
+    // stelle/particelle sfondo
+    ctx.fillStyle='rgba(242,217,208,.03)';
+    for(let i=0;i<20;i++){ctx.beginPath();ctx.arc((i*137)%W(),(i*97)%H(),1,0,Math.PI*2);ctx.fill();}
+    // vite
+    for(let i=0;i<3;i++){
+      ctx.globalAlpha=i<gameState.lives?1:.15;
+      ctx.font='24px serif';
+      ctx.textAlign='left';
+      ctx.fillText('❤️',14+i*36,38);
+    }
+    ctx.globalAlpha=1;
+    // combo
+    if(gameState.combo>1){
+      ctx.fillStyle='#C9A8C0';
+      ctx.font=`bold ${Math.min(18,11+gameState.combo)}px "DM Sans",sans-serif`;
+      ctx.textAlign='center';
+      ctx.fillText(`x${gameState.combo} COMBO!`,W()/2,30);
+    }
+    // bouquet
+    gameState.items.forEach(it=>{
+      ctx.globalAlpha=it.alpha;
+      ctx.textAlign='center';
+      if(it.hit && it.pts>0){
+        ctx.fillStyle='#E8C4B8';
+        ctx.font='bold 15px "DM Sans",sans-serif';
+        ctx.fillText('+'+it.pts,it.x,it.y);
+      } else if(!it.hit){
+        ctx.font=`${it.size*1.5}px serif`;
+        ctx.fillText('💐',it.x,it.y+it.size/2);
+        // ombra sul pavimento
+        if(it.y>H()-120){
+          const prog=(it.y-(H()-120))/120;
+          ctx.globalAlpha*=prog*.4;
+          ctx.fillStyle='rgba(232,196,184,.3)';
+          ctx.beginPath();
+          ctx.ellipse(it.x,H()-4,it.size*prog,4*prog,0,0,Math.PI*2);
+          ctx.fill();
+          ctx.globalAlpha=it.alpha;
+        }
+      }
+    });
+    ctx.globalAlpha=1;
+    // linea suolo
+    ctx.strokeStyle='rgba(201,160,192,.15)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,H()-3);ctx.lineTo(W(),H()-3);ctx.stroke();
+  },
+  endMessage(s){return s>=300?'Sei la regina del bouquet! 💐':s>=150?'Ottimi riflessi! 🌸':s>=60?'Non male! Riprova 😄':'Il bouquet è fuggito! 😅';}
+};
+
+/* ══ SPOSO ═══════════════════════════════════════════════ */
+const G_SPOSO = {
+  title:'Lega lo Sposo', emoji:'🏃',
+  instructions:'Damiano scappa!<br><strong>Toccalo</strong> più volte che puoi in 30 secondi.<br>Diventa sempre più veloce! 💍',
+  init(){
+    const cx=W()/2, cy=H()/2;
+    gameState={
+      x:cx, y:cy, vx:3, vy:2.5,
+      size:36, caught:0,
+      timeLeft:30, lastTick:Date.now(),
+      flash:0, trail:[]
+    };
+    canvas.onclick=e=>this.tap(getPointerPos(e));
+    canvas.addEventListener('touchstart',e=>{e.preventDefault();this.tap(getPointerPos(e));},{passive:false});
+    document.getElementById('gm-timer').textContent='30';
+  },
+  tap(pos){
+    const dx=pos.x-gameState.x, dy=pos.y-gameState.y;
+    if(Math.sqrt(dx*dx+dy*dy)<gameState.size*1.1){
+      gameState.caught++;
+      score+=10+Math.floor(gameState.caught*1.5);
+      document.getElementById('gm-score').textContent=score;
+      const spd=3+gameState.caught*0.7;
+      const ang=Math.random()*Math.PI*2;
+      gameState.vx=Math.cos(ang)*spd;
+      gameState.vy=Math.sin(ang)*spd;
+      gameState.x=60+Math.random()*(W()-120);
+      gameState.y=60+Math.random()*(H()-120);
+      gameState.flash=12;
+    }
+  },
+  update(){
+    const now=Date.now();
+    if(now-gameState.lastTick>=1000){
+      gameState.timeLeft--;
+      gameState.lastTick=now;
+      const t=document.getElementById('gm-timer');
+      t.textContent=gameState.timeLeft;
+      t.className='game-timer'+(gameState.timeLeft<=5?' urgent':'');
+      if(gameState.timeLeft<=0){gameRunning=false;setTimeout(endGame,100);return;}
+    }
+    // trail
+    gameState.trail.push({x:gameState.x,y:gameState.y,a:.4});
+    if(gameState.trail.length>8) gameState.trail.shift();
+    gameState.trail.forEach(t=>t.a-=.05);
+    gameState.trail=gameState.trail.filter(t=>t.a>0);
+
+    gameState.x+=gameState.vx;
+    gameState.y+=gameState.vy;
+    const s=gameState.size;
+    if(gameState.x<s){gameState.x=s;gameState.vx=Math.abs(gameState.vx);}
+    if(gameState.x>W()-s){gameState.x=W()-s;gameState.vx=-Math.abs(gameState.vx);}
+    if(gameState.y<s){gameState.y=s;gameState.vy=Math.abs(gameState.vy);}
+    if(gameState.y>H()-s){gameState.y=H()-s;gameState.vy=-Math.abs(gameState.vy);}
+    if(gameState.flash>0) gameState.flash--;
+  },
+  draw(){
+    ctx.fillStyle='#1a1208';ctx.fillRect(0,0,W(),H());
+    // info
+    ctx.fillStyle='rgba(201,160,192,.7)';
+    ctx.font='13px "DM Sans",sans-serif';ctx.textAlign='left';
+    ctx.fillText(`Preso: ${gameState.caught}`,14,36);
+    const spd=Math.sqrt(gameState.vx**2+gameState.vy**2);
+    ctx.fillStyle=spd>10?'#E8C4B8':spd>6?'rgba(201,160,192,.8)':'rgba(201,160,192,.4)';
+    ctx.textAlign='right';
+    ctx.fillText(spd>10?'⚡⚡ FULMINE!':spd>6?'⚡ Veloce':'🚶 Cammina',W()-14,36);
+    // trail
+    gameState.trail.forEach(t=>{
+      ctx.globalAlpha=t.a*.3;
+      ctx.font=`${gameState.size*1.5}px serif`;
+      ctx.textAlign='center';
+      ctx.fillText('🤵',t.x,t.y+gameState.size/2);
+    });
+    ctx.globalAlpha=1;
+    // glow
+    if(gameState.flash>0){
+      ctx.globalAlpha=gameState.flash/12*.4;
+      ctx.fillStyle='rgba(232,196,184,.8)';
+      ctx.beginPath();ctx.arc(gameState.x,gameState.y,gameState.size*1.5,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=1;
+    }
+    // sposo
+    ctx.font=`${gameState.size*1.8}px serif`;
+    ctx.textAlign='center';
+    ctx.fillText('🤵',gameState.x,gameState.y+gameState.size*.6);
+    // cerchio target
+    ctx.strokeStyle='rgba(232,196,184,.2)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(gameState.x,gameState.y,gameState.size,0,Math.PI*2);ctx.stroke();
+  },
+  endMessage(s){return s>=200?'Lo sposo non può scappare! 💍':s>=100?'Bravissima! 😄':s>=50?'Non male! Riprova 🏃':'Damiano è libero! 😂';}
+};
+
+/* ══ TORTA — FRUIT NINJA ════════════════════════════════ */
+const G_TORTA = {
+  title:'Taglia la Torta', emoji:'🎂',
+  instructions:'Le torte volano — <strong>fai uno swipe</strong> per tagliarle!<br>Hai 3 vite ❤️ — non lasciarne passare nessuna!',
+  init(){
+    gameState={
+      items:[], spawnT:0, spawnInt:100,
+      lives:3, score_local:0, speed:1,
+      slashes:[], ended:false, particles:[]
+    };
+    // touch swipe
+    let tx0=0,ty0=0,tx1=0,ty1=0;
+    canvas.addEventListener('touchstart',e=>{
+      e.preventDefault();
+      tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;
+    },{passive:false});
+    canvas.addEventListener('touchend',e=>{
+      e.preventDefault();
+      const r=canvas.getBoundingClientRect();
+      const scx=W()/r.width, scy=H()/r.height;
+      const sx=(tx0-r.left)*scx, sy=(ty0-r.top)*scy;
+      const ex=(e.changedTouches[0].clientX-r.left)*scx;
+      const ey=(e.changedTouches[0].clientY-r.top)*scy;
+      this.slash(sx,sy,ex,ey);
+    },{passive:false});
+    // mouse drag
+    let md=false, mx0=0,my0=0;
+    canvas.onmousedown=e=>{md=true;const p=getPointerPos(e);mx0=p.x;my0=p.y;};
+    canvas.onmouseup=e=>{
+      if(!md) return; md=false;
+      const p=getPointerPos(e);
+      this.slash(mx0,my0,p.x,p.y);
+    };
+  },
+  spawn(){
+    const x=40+Math.random()*(W()-80);
+    const vx=(Math.random()-.5)*3;
+    const vy=-(5+Math.random()*4+gameState.speed);
+    gameState.items.push({x,y:H()+40,vx,vy,size:32,cut:false,missed:false,rot:0,rotv:(Math.random()-.5)*.1});
+  },
+  slash(x0,y0,x1,y1){
+    // aggiungi effetto slash visivo
+    gameState.slashes.push({x0,y0,x1,y1,a:1});
+    // controlla intersezione con ogni torta
+    gameState.items.forEach(it=>{
+      if(it.cut||it.missed) return;
+      // linea slash vs cerchio torta
+      const dx=x1-x0,dy=y1-y0;
+      const len=Math.sqrt(dx*dx+dy*dy);
+      if(len<5) return;
+      const t=((it.x-x0)*dx+(it.y-y0)*dy)/(len*len);
+      const tc=Math.max(0,Math.min(1,t));
+      const cx2=x0+tc*dx, cy2=y0+tc*dy;
+      const dist=Math.sqrt((it.x-cx2)**2+(it.y-cy2)**2);
+      if(dist<it.size+8){
+        it.cut=true;
+        score+=10+Math.floor(gameState.speed*5);
+        document.getElementById('gm-score').textContent=score;
+        gameState.speed=Math.min(8,gameState.speed+.15);
+        gameState.spawnInt=Math.max(30,100-score/3);
+        // particelle
+        for(let i=0;i<8;i++){
+          const ang=Math.random()*Math.PI*2;
+          gameState.particles.push({x:it.x,y:it.y,vx:Math.cos(ang)*3,vy:Math.sin(ang)*3,a:1,color:i%2?'#E8C4B8':'#C9A8C0'});
+        }
       }
     });
   },
-  update() {
-    gameState.spawnTimer++;
-    if (gameState.spawnTimer >= gameState.spawnInterval) { this.spawn(); gameState.spawnTimer=0; }
-    gameState.items.forEach(it => {
-      if (!it.caught) {
-        it.y += gameState.speed;
-        if (it.y > H()+20 && !it.miss) {
-          it.miss=true; gameState.combo=0; gameState.lives--;
-          if (gameState.lives<=0) { gameRunning=false; setTimeout(endGame,300); }
-        }
-      } else { it.y-=3; it.alpha-=.05; }
-    });
-    gameState.items = gameState.items.filter(i=>i.alpha>0&&i.y<H()+60);
-  },
-  draw() {
-    ctx.fillStyle='#2C2420'; ctx.fillRect(0,0,W(),H());
-    ctx.font='22px serif'; ctx.textAlign='left';
-    for(let i=0;i<3;i++){ctx.globalAlpha=i<gameState.lives?1:.2;ctx.fillText('💗',12+i*32,36);}
-    ctx.globalAlpha=1;
-    if(gameState.combo>1){ctx.fillStyle='#C9A8C0';ctx.font=`${Math.min(16,10+gameState.combo)}px "DM Sans",sans-serif`;ctx.textAlign='center';ctx.fillText(`x${gameState.combo} combo!`,W()/2,28);}
+  update(){
+    if(gameState.ended) return;
+    gameState.spawnT++;
+    if(gameState.spawnT>=gameState.spawnInt){this.spawn();gameState.spawnT=0;}
+    const g=0.18;
     gameState.items.forEach(it=>{
-      ctx.globalAlpha=it.alpha; ctx.textAlign='center';
-      if(it.caught){ctx.fillStyle='#C9A8C0';ctx.font='bold 14px "DM Sans",sans-serif';ctx.fillText('+'+10*Math.max(1,gameState.combo),it.x,it.y);}
-      else{ctx.font=`${it.size}px serif`;ctx.fillText('💐',it.x,it.y);}
+      if(it.cut) return;
+      it.vy+=g; it.x+=it.vx; it.y+=it.vy; it.rot+=it.rotv;
+      if(!it.missed && it.y>H()+60){
+        it.missed=true;
+        gameState.lives--;
+        if(gameState.lives<=0 && !gameState.ended){
+          gameState.ended=true;
+          setTimeout(endGame,600);
+        }
+      }
+    });
+    gameState.items=gameState.items.filter(i=>!i.cut && i.y<H()+80);
+    gameState.slashes=gameState.slashes.filter(s=>(s.a-=.08)>0);
+    gameState.particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.1;p.a-=.06;});
+    gameState.particles=gameState.particles.filter(p=>p.a>0);
+  },
+  draw(){
+    // sfondo scuro con gradiente
+    ctx.fillStyle='#0e0a06';ctx.fillRect(0,0,W(),H());
+    // vignetta
+    const vg=ctx.createRadialGradient(W()/2,H()/2,H()*.2,W()/2,H()/2,H()*.8);
+    vg.addColorStop(0,'transparent');vg.addColorStop(1,'rgba(0,0,0,.4)');
+    ctx.fillStyle=vg;ctx.fillRect(0,0,W(),H());
+    // vite
+    for(let i=0;i<3;i++){
+      ctx.globalAlpha=i<gameState.lives?1:.12;
+      ctx.font='24px serif';ctx.textAlign='left';
+      ctx.fillText('❤️',14+i*36,38);
+    }
+    ctx.globalAlpha=1;
+    // slash effect
+    gameState.slashes.forEach(s=>{
+      ctx.globalAlpha=s.a*.8;
+      ctx.strokeStyle='rgba(254,252,248,.9)';
+      ctx.lineWidth=3;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(s.x0,s.y0);ctx.lineTo(s.x1,s.y1);ctx.stroke();
+      // alone colorato
+      ctx.strokeStyle='rgba(201,160,192,.4)';ctx.lineWidth=8;
+      ctx.beginPath();ctx.moveTo(s.x0,s.y0);ctx.lineTo(s.x1,s.y1);ctx.stroke();
     });
     ctx.globalAlpha=1;
-    ctx.strokeStyle='rgba(201,160,192,.2)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(0,H()-4);ctx.lineTo(W(),H()-4);ctx.stroke();
+    // particelle
+    gameState.particles.forEach(p=>{
+      ctx.globalAlpha=p.a;
+      ctx.fillStyle=p.color;
+      ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    // torte
+    gameState.items.forEach(it=>{
+      ctx.save();
+      ctx.translate(it.x,it.y);
+      ctx.rotate(it.rot);
+      ctx.font=`${it.size*2}px serif`;
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.fillText('🎂',0,0);
+      ctx.restore();
+    });
+    // hint
+    if(score===0 && gameState.items.length===0){
+      ctx.fillStyle='rgba(254,252,248,.3)';
+      ctx.font='14px "DM Sans",sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText('🔪 Fai uno swipe per tagliare!',W()/2,H()-30);
+    }
   },
-  endMessage(s){return s>=200?'Campionessa del bouquet! 💐':s>=100?'Ottimo riflesso! 🌸':s>=50?'Non male! Riprova 😄':'Il bouquet ti è sfuggito! 😅';}
+  endMessage(s){return s>=300?'Tagliatrice leggendaria! 🎂':s>=150?'Ottima lama! 🔪':s>=80?'Brava! Riprova 😄':'Le torte sono sopravvissute! 😅';}
 };
 
-/* ── SPOSO ───────────────────────────────────────────────── */
-const G_SPOSO = {
-  title:'Lega lo Sposo', emoji:'🏃',
-  instructions:'Damiano scappa!<br><strong>Toccalo o cliccalo</strong> prima che esca dallo schermo.<br>Hai 30 secondi!',
-  init() {
-    // usa W() e H() — già corretti dopo resizeCanvas
-    gameState = {
-      x: W()/2, y: H()/2,
-      vx: 2.5, vy: 2,
-      size: 48, caught: 0,
-      timeLeft: 30, lastTick: Date.now(), shake: 0
-    };
-    canvas.onclick = e => this.click(getPointerPos(e));
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); this.click(getPointerPos(e)); }, {passive:false});
-    document.getElementById('gm-timer').textContent = '30';
-  },
-  click(pos) {
-    const dx=pos.x-gameState.x, dy=pos.y-gameState.y;
-    if(Math.sqrt(dx*dx+dy*dy) < gameState.size*.8) {
-      gameState.caught++;
-      score += 10 + gameState.caught*2;
-      document.getElementById('gm-score').textContent = score;
-      const spd = 2.5 + gameState.caught*.8;
-      const ang = Math.random()*Math.PI*2;
-      gameState.vx = Math.cos(ang)*spd;
-      gameState.vy = Math.sin(ang)*spd;
-      // riposiziona lontano dai bordi
-      gameState.x = 80 + Math.random()*(W()-160);
-      gameState.y = 80 + Math.random()*(H()-160);
-      gameState.shake = 10;
-    }
-  },
-  update() {
-    const now = Date.now();
-    if(now - gameState.lastTick >= 1000) {
-      gameState.timeLeft--;
-      gameState.lastTick = now;
-      const t = document.getElementById('gm-timer');
-      t.textContent = gameState.timeLeft;
-      t.className = 'game-timer'+(gameState.timeLeft<=5?' urgent':'');
-      if(gameState.timeLeft<=0){ gameRunning=false; setTimeout(endGame,200); return; }
-    }
-    gameState.x += gameState.vx;
-    gameState.y += gameState.vy;
-    const s = gameState.size;
-    if(gameState.x < s)    { gameState.x = s;    gameState.vx = Math.abs(gameState.vx); }
-    if(gameState.x > W()-s){ gameState.x = W()-s; gameState.vx = -Math.abs(gameState.vx); }
-    if(gameState.y < s)    { gameState.y = s;    gameState.vy = Math.abs(gameState.vy); }
-    if(gameState.y > H()-s){ gameState.y = H()-s; gameState.vy = -Math.abs(gameState.vy); }
-    if(gameState.shake>0) gameState.shake -= .5;
-  },
-  draw() {
-    ctx.fillStyle='#2C2420'; ctx.fillRect(0,0,W(),H());
-    ctx.fillStyle='rgba(201,160,192,.6)'; ctx.font='13px "DM Sans",sans-serif'; ctx.textAlign='left';
-    ctx.fillText(`Preso: ${gameState.caught}x`,12,36);
-    const spd = Math.sqrt(gameState.vx**2+gameState.vy**2);
-    ctx.fillStyle = spd>8?'#E8C4B8':'rgba(201,160,192,.5)'; ctx.textAlign='right';
-    ctx.fillText(spd>8?'⚡ Velocissimo!':spd>5?'🏃 Veloce':'🚶 Cammina', W()-12, 36);
-    // glow
-    const g = ctx.createRadialGradient(gameState.x,gameState.y,0,gameState.x,gameState.y,60);
-    g.addColorStop(0,'rgba(201,160,192,.15)'); g.addColorStop(1,'transparent');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(gameState.x,gameState.y,60,0,Math.PI*2); ctx.fill();
-    // sposo
-    const sx = gameState.shake>0?(Math.random()-.5)*gameState.shake:0;
-    const sy = gameState.shake>0?(Math.random()-.5)*gameState.shake:0;
-    ctx.font=`${gameState.size}px serif`; ctx.textAlign='center';
-    ctx.fillText('🤵', gameState.x+sx, gameState.y+sy+gameState.size/3);
-    // cerchio target
-    ctx.strokeStyle='rgba(232,196,184,.3)'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.arc(gameState.x,gameState.y,gameState.size*.8,0,Math.PI*2); ctx.stroke();
-  },
-  endMessage(s){return s>=150?'Lo sposo non può fuggire! 💍':s>=80?'Brava! Damiano è catturato 😄':s>=40?'Quasi! Riprova 🏃':'Damiano è scappato! 😂';}
-};
-
-/* ── TORTA ───────────────────────────────────────────────── */
-const G_TORTA = {
-  title:'Taglia la Torta', emoji:'🎂',
-  instructions:'La torta scorre — <strong>tocca o clicca</strong> per tagliare.<br>Più sei vicino al centro, più punti guadagni!<br>10 torte in totale.',
-  init() {
-    gameState = {
-      cakeX: -80, cakeSpeed: 0, // impostato in nextCake
-      round: 0, totalRounds: 10,
-      cutting: false, cutX: 0, cutAnim: 0,
-      waitingNext: false, resultText:'', resultColor:''
-    };
-    canvas.onclick = e => this.cut(getPointerPos(e));
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); this.cut(getPointerPos(e)); }, {passive:false});
-    this.nextCake();
-  },
-  nextCake() {
-    const dir = Math.random()>.5 ? 1 : -1;
-    gameState.cakeSpeed = (3 + gameState.round * .4) * dir;
-    gameState.cakeX = dir===1 ? -80 : W()+80;
-    gameState.cutting = false;
-    gameState.waitingNext = false;
-    gameState.cutAnim = 0;
-  },
-  cut(pos) {
-    if(gameState.cutting||gameState.waitingNext) return;
-    gameState.cutting = true;
-    gameState.cutX = gameState.cakeX;
-    const center = W()/2;
-    const pct = Math.max(0, 1 - Math.abs(gameState.cakeX-center)/(W()/2));
-    let pts, text, color;
-    if(pct>.92)     { pts=50; text='PERFETTO! 🎯'; color='#C9A8C0'; }
-    else if(pct>.75){ pts=30; text='Ottimo! 🌸';  color='#9BAF8E'; }
-    else if(pct>.5) { pts=15; text='Quasi! 😊';   color='#E8C4B8'; }
-    else            { pts=5;  text='Mancino! 😅'; color='rgba(254,252,248,.4)'; }
-    score += pts;
-    document.getElementById('gm-score').textContent = score;
-    gameState.resultText=text; gameState.resultColor=color;
-    gameState.round++; gameState.cutAnim=1;
-    if(gameState.round>=gameState.totalRounds){ setTimeout(endGame,1200); }
-    else { gameState.waitingNext=true; setTimeout(()=>this.nextCake(),900); }
-  },
-  update() {
-    if(!gameState.cutting) {
-      gameState.cakeX += gameState.cakeSpeed;
-      if(gameState.cakeX > W()+80) gameState.cakeSpeed = -Math.abs(gameState.cakeSpeed);
-      if(gameState.cakeX < -80)    gameState.cakeSpeed =  Math.abs(gameState.cakeSpeed);
-    }
-    if(gameState.cutAnim>0) gameState.cutAnim -= .03;
-  },
-  draw() {
-    ctx.fillStyle='#2C2420'; ctx.fillRect(0,0,W(),H());
-    const cx=W()/2, cy=H()/2;
-    // linea centro
-    ctx.strokeStyle='rgba(201,160,192,.35)'; ctx.setLineDash([6,4]); ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(cx,50); ctx.lineTo(cx,H()-50); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle='rgba(201,160,192,.6)'; ctx.font='11px "DM Sans",sans-serif'; ctx.textAlign='center';
-    ctx.fillText('CENTRO',cx,44);
-    // round
-    ctx.fillStyle='rgba(254,252,248,.45)'; ctx.textAlign='left'; ctx.font='13px "DM Sans",sans-serif';
-    ctx.fillText(`Torta ${gameState.round+1}/${gameState.totalRounds}`,12,36);
-    // torta
-    ctx.font='64px serif'; ctx.textAlign='center';
-    ctx.fillText('🎂',gameState.cakeX,cy+22);
-    // taglio
-    if(gameState.cutting && gameState.cutAnim>0){
-      ctx.globalAlpha=gameState.cutAnim;
-      ctx.strokeStyle='#FEFCF8'; ctx.lineWidth=3; ctx.setLineDash([]);
-      ctx.beginPath(); ctx.moveTo(gameState.cutX,cy-90); ctx.lineTo(gameState.cutX,cy+90); ctx.stroke();
-      ctx.fillStyle=gameState.resultColor; ctx.font='bold 22px "DM Sans",sans-serif'; ctx.textAlign='center';
-      ctx.fillText(gameState.resultText, gameState.cutX, cy-110);
-      ctx.globalAlpha=1;
-    }
-    // suggerimento
-    if(!gameState.cutting){
-      ctx.fillStyle='rgba(254,252,248,.22)'; ctx.font='13px "DM Sans",sans-serif'; ctx.textAlign='center';
-      ctx.fillText('🔪 Tocca per tagliare!',cx,H()-28);
-    }
-  },
-  endMessage(s){return s>=400?'Tagliatrice perfetta! 🎂':s>=250?'Ottima precisione! 🌸':s>=150?'Ci vuole pratica 😄':'La torta è sopravvissuta! 😂';}
-};
-
-const GAMES = { bouquet:G_BOUQUET, sposo:G_SPOSO, torta:G_TORTA };
-window.openGame  = window.openGame;
-window.closeGame = window.closeGame;
-window.startGame = window.startGame;
-window.switchLb  = window.switchLb;
+const GAMES={bouquet:G_BOUQUET, sposo:G_SPOSO, torta:G_TORTA};
+window.openGame=window.openGame;
+window.closeGame=window.closeGame;
+window.startGame=window.startGame;
+window.switchLb=window.switchLb;
 </script>
 <script src="../js/nav.js"></script>
 </body>
