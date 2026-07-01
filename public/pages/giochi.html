@@ -287,10 +287,12 @@ window.openGame=function(game){
 window.closeGame=function(){
   gameRunning=false;
   if(animId) cancelAnimationFrame(animId);
-  // rimuovi listener canvas
+  // pulisci tutti i listener (assegnazione diretta, non serve clonare)
   canvas.onclick=null;
-  const old=canvas.cloneNode(true);
-  canvas.parentNode.replaceChild(old,canvas);
+  canvas.onmousedown=null;
+  canvas.onmouseup=null;
+  canvas.ontouchstart=null;
+  canvas.ontouchend=null;
   document.getElementById('game-modal').classList.remove('open');
   document.body.style.overflow='';
   loadLeaderboard(currentLbGame);
@@ -330,7 +332,7 @@ const G_BOUQUET = {
   init(){
     gameState={items:[], spawnT:0, spawnInt:90, lives:3, combo:0, speed:2.2, ended:false};
     canvas.onclick=e=>this.tap(getPointerPos(e));
-    canvas.addEventListener('touchstart',e=>{e.preventDefault();this.tap(getPointerPos(e));},{passive:false});
+    canvas.ontouchstart=e=>{e.preventDefault();this.tap(getPointerPos(e));};
   },
   spawn(){
     const x=50+Math.random()*(W()-100);
@@ -439,7 +441,7 @@ const G_SPOSO = {
       flash:0, trail:[]
     };
     canvas.onclick=e=>this.tap(getPointerPos(e));
-    canvas.addEventListener('touchstart',e=>{e.preventDefault();this.tap(getPointerPos(e));},{passive:false});
+    canvas.ontouchstart=e=>{e.preventDefault();this.tap(getPointerPos(e));};
     document.getElementById('gm-timer').textContent='30';
   },
   tap(pos){
@@ -529,12 +531,12 @@ const G_TORTA = {
       slashes:[], ended:false, particles:[]
     };
     // touch swipe
-    let tx0=0,ty0=0,tx1=0,ty1=0;
-    canvas.addEventListener('touchstart',e=>{
+    let tx0=0,ty0=0;
+    canvas.ontouchstart=e=>{
       e.preventDefault();
       tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;
-    },{passive:false});
-    canvas.addEventListener('touchend',e=>{
+    };
+    canvas.ontouchend=e=>{
       e.preventDefault();
       const r=canvas.getBoundingClientRect();
       const scx=W()/r.width, scy=H()/r.height;
@@ -542,7 +544,7 @@ const G_TORTA = {
       const ex=(e.changedTouches[0].clientX-r.left)*scx;
       const ey=(e.changedTouches[0].clientY-r.top)*scy;
       this.slash(sx,sy,ex,ey);
-    },{passive:false});
+    };
     // mouse drag
     let md=false, mx0=0,my0=0;
     canvas.onmousedown=e=>{md=true;const p=getPointerPos(e);mx0=p.x;my0=p.y;};
