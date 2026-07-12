@@ -12,7 +12,7 @@
 .games-hero{padding:8rem 1.5rem 3rem;text-align:center;background:linear-gradient(160deg,var(--petal) 0%,var(--milk) 100%);border-bottom:1px solid var(--border)}
 .games-intro{font-size:.88rem;color:var(--mid);margin-top:.8rem}
 #name-gate{max-width:400px;margin:3rem auto;padding:2.5rem 2rem;text-align:center;border:1px solid var(--border);background:var(--milk);position:relative}
-#name-gate::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage))}
+#name-gate::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow)}
 #name-gate h3{font-family:var(--fd);font-style:italic;font-size:1.5rem;margin-bottom:.5rem}
 #name-gate p{font-size:.8rem;color:var(--mid);margin-bottom:1.2rem}
 #player-name-input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);background:transparent;font-family:var(--fb);font-size:.95rem;color:var(--ink);outline:none;text-align:center;margin-bottom:.8rem;transition:border-color .2s}
@@ -24,7 +24,7 @@
 .player-welcome strong{color:var(--mauve)}
 .game-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;padding:2rem 1.5rem;max-width:960px;margin:0 auto}
 .game-card{background:var(--milk);border:1px solid var(--border);padding:2rem 1.5rem;text-align:center;cursor:pointer;position:relative;transition:transform .22s,box-shadow .22s,background .2s}
-.game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage))}
+.game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow)}
 .game-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(44,36,32,.08);background:var(--petal)}
 .game-card-emoji{font-size:3rem;margin-bottom:1rem;display:block}
 .game-card-title{font-family:var(--fd);font-style:italic;font-size:1.4rem;color:var(--ink);margin-bottom:.4rem}
@@ -36,7 +36,7 @@
 .lb-tabs{display:flex;justify-content:center;border:1px solid var(--border);width:fit-content;margin:0 auto 1.5rem}
 .lb-tab{padding:.6rem 1.2rem;font-size:.62rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);cursor:pointer;border:none;background:transparent;transition:all .2s;font-family:var(--fb);border-right:1px solid var(--border)}
 .lb-tab:last-child{border-right:none}
-.lb-tab.active{background:var(--mauve);color:var(--milk)}
+.lb-tab.active{background:linear-gradient(135deg,var(--pink),var(--orange));color:var(--milk)}
 .lb-list{max-width:500px;margin:0 auto}
 .lb-row{display:grid;grid-template-columns:2rem 1fr auto;gap:.8rem;align-items:center;padding:.8rem 1rem;border-bottom:1px solid rgba(201,160,192,.1);font-size:.85rem}
 .lb-row:first-child{border-top:1px solid rgba(201,160,192,.1)}
