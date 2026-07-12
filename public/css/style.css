@@ -1,25 +1,41 @@
 /* ============================================================
    DESIGN SYSTEM — Damiano & Francesca — 24 Luglio 2027
-   Stile floreale pastello
+   Stile floreale pastello — palette arcobaleno tenue
+   Pronta per adattarsi alla grafica delle partecipazioni
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --milk:    #FEFCF8;
-  --petal:   #F2D9D0;
-  --rose:    #E8C4B8;
-  --mauve:   #C9A8C0;
-  --sage:    #9BAF8E;
-  --sage-dk: #6B8560;
-  --ink:     #2C2420;
-  --mid:     #7A6A64;
-  --border:  rgba(201,160,192,0.22);
+  /* base */
+  --milk:      #FEFCF8;
+  --petal:     #F2D9D0;
+  --ink:       #2C2420;
+  --mid:       #7A6A64;
+  --border:    rgba(201,160,192,0.22);
+
+  /* palette arcobaleno pastello — pronta per le partecipazioni */
+  --pink:      #F3B9C6;
+  --rose:      #E8C4B8;
+  --orange:    #F0B888;
+  --yellow:    #F5DFA0;
+  --sage:      #9BAF8E;
+  --sage-dk:   #6B8560;
+  --blue:      #A8CBDD;
+  --mauve:     #C9A8C0;
+  --red:       #E88C82;
+
+  /* gradiente arcobaleno riutilizzabile — accenti, bordi, linee */
+  --gradient-rainbow: linear-gradient(90deg, var(--pink), var(--orange), var(--yellow), var(--sage), var(--blue), var(--mauve));
+  --gradient-warm:     linear-gradient(90deg, var(--pink), var(--red), var(--orange));
+  --gradient-cool:     linear-gradient(90deg, var(--sage), var(--blue), var(--mauve));
+
   --fd: 'Playfair Display', Georgia, serif;
   --fb: 'DM Sans', system-ui, sans-serif;
   --ease: cubic-bezier(.4,0,.2,1);
   --door-ease: cubic-bezier(.77,0,.18,1);
 }
 
+/* ── RESET ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--milk);color:var(--ink);font-family:var(--fb);font-weight:300;line-height:1.7;overflow-x:hidden}
@@ -42,7 +58,7 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
 }
 .nav-brand{font-family:var(--fd);font-style:italic;font-size:1.3rem;color:var(--ink)}
 .nav-brand span{color:var(--mauve)}
-.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links{display:flex;gap:1.6rem;list-style:none}
 .nav-links a{font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);transition:color .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--sage-dk)}
 
@@ -67,7 +83,10 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
 }
 .page-hero::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 80% at 50% 0%, rgba(201,160,192,.2) 0%, transparent 65%);
+  background:
+    radial-gradient(ellipse 60% 70% at 15% 0%, rgba(243,185,198,.22) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 10%, rgba(168,203,221,.18) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 50% at 50% 100%, rgba(245,223,160,.15) 0%, transparent 55%);
   pointer-events:none;
 }
 .page-hero-ey{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:.8rem;position:relative;z-index:1}
@@ -77,16 +96,16 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
 /* ── SECTION ────────────────────────────────────────────── */
 .section{padding:5rem 1.5rem;max-width:960px;margin:0 auto}
 .section-header{text-align:center;margin-bottom:3.5rem}
-.section-tag{display:inline-block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:.6rem}
-.section-title{font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(1.9rem,5vw,3rem);line-height:1.1;color:var(--ink)}
-.floral-rule{display:flex;align-items:center;gap:.8rem;margin:1.2rem auto 0;max-width:200px}
-.floral-rule::before,.floral-rule::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rose),transparent)}
+.section-tag{display:inline-block;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:.6rem}
+.section-title{font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(2rem,6vw,3.4rem);line-height:1.1;color:var(--ink)}
+.gold-rule,.floral-rule{display:flex;align-items:center;gap:.8rem;margin:1.2rem auto 0;max-width:200px}
+.gold-rule::before,.gold-rule::after,.floral-rule::before,.floral-rule::after{content:'';flex:1;height:2px;background:var(--gradient-rainbow);border-radius:2px;opacity:.7}
 .floral-rule span{font-size:.9rem}
 
 /* ── BUTTONS ────────────────────────────────────────────── */
 .btn{display:inline-block;padding:.85rem 2.6rem;font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;transition:all .2s;border:none;cursor:pointer;font-family:var(--fb)}
-.btn-primary{background:linear-gradient(135deg,var(--mauve),var(--rose));color:var(--milk)}
-.btn-primary:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,160,192,.4)}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--orange));color:var(--milk)}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,184,136,.4)}
 .btn-primary:disabled{opacity:.6;pointer-events:none}
 .btn-primary.loading::after{content:'';display:inline-block;width:13px;height:13px;border:2px solid rgba(254,252,248,.4);border-top-color:var(--milk);border-radius:50%;animation:spin .7s linear infinite;margin-left:.8rem;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -111,14 +130,15 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
 /* ── CARD ───────────────────────────────────────────────── */
 .card{background:var(--milk);border:1px solid var(--border);padding:2.5rem 2rem;position:relative;transition:transform .25s,box-shadow .25s}
 .card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(44,36,32,.08)}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--mauve),var(--sage))}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow)}
 
 /* ── FOOTER ─────────────────────────────────────────────── */
-.site-footer{background:linear-gradient(135deg,#2C2420,#3D2E2A);color:rgba(254,252,248,.35);text-align:center;padding:3rem 1.5rem;font-size:.74rem}
+.site-footer{background:linear-gradient(135deg,#2C2420,#3D2E2A);color:rgba(254,252,248,.35);text-align:center;padding:3rem 1.5rem;font-size:.74rem;position:relative}
+.site-footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow)}
 .site-footer .fn{font-family:var(--fd);font-style:italic;font-size:1.8rem;color:rgba(254,252,248,.82);margin-bottom:.4rem}
-.site-footer .fl{display:flex;justify-content:center;gap:2rem;margin-top:1rem;list-style:none}
+.site-footer .fl{display:flex;justify-content:center;gap:2rem;margin-top:1rem;list-style:none;flex-wrap:wrap}
 .site-footer .fl a{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(254,252,248,.35);transition:color .2s}
-.site-footer .fl a:hover{color:var(--rose)}
+.site-footer .fl a:hover{color:var(--pink)}
 
 /* ── REVEAL ─────────────────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
