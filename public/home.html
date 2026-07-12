@@ -7,44 +7,53 @@
 <title>Damiano & Francesca — 24 · VII · 2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="css/style.css"/>
 <link rel="stylesheet" href="css/door.css"/>
 <style>
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 1.5rem 5rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 30% 20%,rgba(242,217,208,.55) 0%,transparent 65%),radial-gradient(ellipse 60% 50% at 75% 80%,rgba(201,160,192,.3) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 60% 30%,rgba(155,175,142,.18) 0%,transparent 55%);pointer-events:none}
-.hero-flower{position:absolute;opacity:.18;pointer-events:none}
-.hero-flower--tl{top:-20px;left:-20px;width:260px;transform:rotate(-15deg)}
-.hero-flower--br{bottom:-20px;right:-20px;width:220px;transform:rotate(165deg)}
-.hero-ey{font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:2.2rem;position:relative;z-index:1}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 1.5rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 20% 15%, rgba(243,185,198,.30) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 20%, rgba(245,223,160,.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 55% at 80% 85%, rgba(168,203,221,.22) 0%, transparent 58%),
+    radial-gradient(ellipse 45% 45% at 15% 85%, rgba(155,175,142,.16) 0%, transparent 55%);
+  pointer-events:none}
+.hero-flower{position:absolute;pointer-events:none}
+.hero-flower--tl{top:-20px;left:-20px;width:260px;opacity:.22;transform:rotate(-15deg)}
+.hero-flower--br{bottom:-20px;right:-20px;width:220px;opacity:.2;transform:rotate(165deg)}
+.hero-ey{font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:2rem;position:relative;z-index:1}
 .hero-names{font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(3.8rem,13vw,9.5rem);line-height:.9;color:var(--ink);position:relative;z-index:1}
-.hero-names .amp{display:block;font-size:.55em;color:var(--mauve);margin:.2em 0}
-.hero-petal-rule{display:flex;align-items:center;gap:1rem;margin:2.2rem auto;position:relative;z-index:1;max-width:200px}
-.hero-petal-rule::before,.hero-petal-rule::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rose),transparent)}
-.hero-date{font-family:var(--fd);font-size:clamp(.95rem,2.5vw,1.35rem);font-weight:400;letter-spacing:.18em;color:var(--mid);position:relative;z-index:1}
-.hero-loc{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage-dk);margin-top:.6rem;position:relative;z-index:1}
+.hero-names .amp{display:block;font-size:.55em;background:linear-gradient(90deg,var(--pink),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent;margin:.2em 0}
+.hero-rule{display:flex;align-items:center;gap:1rem;margin:2rem auto;max-width:220px;position:relative;z-index:1}
+.hero-rule::before,.hero-rule::after{content:'';flex:1;height:2px;background:var(--gradient-rainbow);border-radius:2px}
+.hero-date{font-family:var(--fd);font-size:clamp(1rem,3vw,1.5rem);font-weight:400;letter-spacing:.22em;color:var(--mid);position:relative;z-index:1}
+.hero-loc{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage-dk);margin-top:.6rem;position:relative;z-index:1}
 .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:scrollBob 2s ease-in-out infinite;z-index:1}
-.hero-scroll span{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rose)}
+.hero-scroll span{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--pink)}
 @keyframes scrollBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
 .cd-section{background:linear-gradient(135deg,#2C2420 0%,#3D2E2A 100%);padding:4.5rem 1.5rem;text-align:center;position:relative;overflow:hidden}
-.cd-section::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%23E8C4B8' opacity='.07' transform='rotate(0 40 40)'/%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%23C9A8C0' opacity='.07' transform='rotate(60 40 40)'/%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%239BAF8E' opacity='.07' transform='rotate(120 40 40)'/%3E%3C/svg%3E");pointer-events:none}
-.cd-top{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,160,192,.7);margin-bottom:2.5rem;position:relative;z-index:1}
+.cd-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow)}
+.cd-section::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cellipse cx='45' cy='30' rx='4' ry='7' fill='%23F3B9C6' opacity='.06' transform='rotate(0 45 45)'/%3E%3Cellipse cx='45' cy='30' rx='4' ry='7' fill='%23F5DFA0' opacity='.06' transform='rotate(72 45 45)'/%3E%3Cellipse cx='45' cy='30' rx='4' ry='7' fill='%23A8CBDD' opacity='.06' transform='rotate(144 45 45)'/%3E%3Cellipse cx='45' cy='30' rx='4' ry='7' fill='%239BAF8E' opacity='.06' transform='rotate(216 45 45)'/%3E%3Cellipse cx='45' cy='30' rx='4' ry='7' fill='%23C9A8C0' opacity='.06' transform='rotate(288 45 45)'/%3E%3C/svg%3E");pointer-events:none}
+.cd-top{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--pink);margin-bottom:2.5rem;position:relative;z-index:1}
 #cd-wrap{display:flex;justify-content:center;align-items:center;gap:clamp(.8rem,4vw,3.5rem);flex-wrap:wrap;position:relative;z-index:1}
 .cd-unit{display:flex;flex-direction:column;align-items:center;gap:.4rem}
 .cd-num{font-family:var(--fd);font-weight:400;font-size:clamp(2.8rem,8vw,5.5rem);color:#FEFCF8;line-height:1;min-width:2.5ch;text-align:center}
-.cd-lbl{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(254,252,248,.35)}
-.cd-sep{font-family:var(--fd);font-style:italic;font-size:2.5rem;color:var(--rose);margin-bottom:1.2rem;opacity:.7}
+.cd-lbl{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(254,252,248,.35)}
+.cd-sep{font-family:var(--fd);font-style:italic;font-size:2.5rem;color:var(--orange);margin-bottom:1.2rem;opacity:.8}
 
 .intro{max-width:580px;margin:0 auto;text-align:center;font-size:1.02rem;color:var(--mid);line-height:1.95}
 .intro em{font-family:var(--fd);font-size:1.2em;font-style:italic;color:var(--mauve)}
 
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
-.lcard{background:var(--milk);padding:2.5rem 1.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.8rem;cursor:pointer;transition:background .2s,transform .22s}
+.lcard{background:var(--milk);padding:2.5rem 1.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.8rem;cursor:pointer;transition:background .2s,transform .22s;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.lcard:hover::before{transform:scaleX(1)}
 .lcard:hover{background:var(--petal);transform:translateY(-4px)}
 .lcard-icon{font-size:2rem}
 .lcard-title{font-family:var(--fd);font-style:italic;font-size:1.25rem;color:var(--ink)}
-.lcard-desc{font-size:.75rem;color:var(--mid);line-height:1.6}
+.lcard-desc{font-size:.76rem;color:var(--mid);line-height:1.6}
 .lcard-cta{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sage-dk);border-bottom:1px solid var(--sage);padding-bottom:2px}
 
 .eng{background:var(--petal);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -75,17 +84,17 @@
   </div>
   <div class="door-cta">
     <span class="door-cta-txt">Apri l'invito</span>
-    <button class="door-cta-ring" id="door-cta-btn" aria-label="Apri">
+    <button class="door-cta-btn" id="door-cta-btn" aria-label="Apri">
       <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
     </button>
   </div>
 </div>
 
 <nav class="nav">
-  <a class="nav-brand" href="index.html">D <span>&amp;</span> F</a>
+  <a class="nav-brand" href="home.html">D <span>&amp;</span> F</a>
   <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
+    <li><a href="home.html">Home</a></li>
     <li><a href="pages/info.html">Informazioni</a></li>
     <li><a href="pages/rsvp.html">RSVP</a></li>
     <li><a href="pages/regali.html">Regali</a></li>
@@ -95,27 +104,24 @@
 </nav>
 
 <section class="hero">
-  <svg class="hero-flower hero-flower--tl" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#E8C4B8" opacity=".6" transform="rotate(0 130 130)"/>
-    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#C9A8C0" opacity=".5" transform="rotate(45 130 130)"/>
-    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#9BAF8E" opacity=".4" transform="rotate(90 130 130)"/>
-    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#E8C4B8" opacity=".5" transform="rotate(135 130 130)"/>
-    <ellipse cx="130" cy="80" rx="18" ry="32" fill="#C9A8C0" opacity=".35" transform="rotate(22 130 130)"/>
-    <ellipse cx="130" cy="80" rx="18" ry="32" fill="#9BAF8E" opacity=".35" transform="rotate(67 130 130)"/>
-    <ellipse cx="130" cy="80" rx="18" ry="32" fill="#F2D9D0" opacity=".45" transform="rotate(112 130 130)"/>
-    <ellipse cx="130" cy="80" rx="18" ry="32" fill="#E8C4B8" opacity=".35" transform="rotate(157 130 130)"/>
-    <circle cx="130" cy="130" r="14" fill="#F2D9D0" opacity=".8"/>
-    <circle cx="130" cy="130" r="7" fill="#C9A8C0" opacity=".9"/>
+  <svg class="hero-flower hero-flower--tl" viewBox="0 0 260 260" fill="none">
+    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#F3B9C6" opacity=".6" transform="rotate(0 130 130)"/>
+    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#F0B888" opacity=".5" transform="rotate(51 130 130)"/>
+    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#F5DFA0" opacity=".5" transform="rotate(102 130 130)"/>
+    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#9BAF8E" opacity=".45" transform="rotate(153 130 130)"/>
+    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#A8CBDD" opacity=".45" transform="rotate(204 130 130)"/>
+    <ellipse cx="130" cy="80" rx="22" ry="38" fill="#C9A8C0" opacity=".45" transform="rotate(255 130 130)"/>
+    <circle cx="130" cy="130" r="14" fill="#F2D9D0" opacity=".85"/>
+    <circle cx="130" cy="130" r="7" fill="#F0B888" opacity=".9"/>
   </svg>
-  <svg class="hero-flower hero-flower--br" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#C9A8C0" opacity=".6" transform="rotate(0 110 110)"/>
-    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#9BAF8E" opacity=".5" transform="rotate(60 110 110)"/>
-    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#E8C4B8" opacity=".55" transform="rotate(120 110 110)"/>
-    <ellipse cx="110" cy="65" rx="14" ry="26" fill="#F2D9D0" opacity=".4" transform="rotate(30 110 110)"/>
-    <ellipse cx="110" cy="65" rx="14" ry="26" fill="#C9A8C0" opacity=".4" transform="rotate(90 110 110)"/>
-    <ellipse cx="110" cy="65" rx="14" ry="26" fill="#9BAF8E" opacity=".4" transform="rotate(150 110 110)"/>
+  <svg class="hero-flower hero-flower--br" viewBox="0 0 220 220" fill="none">
+    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#A8CBDD" opacity=".55" transform="rotate(0 110 110)"/>
+    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#C9A8C0" opacity=".5" transform="rotate(72 110 110)"/>
+    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#F3B9C6" opacity=".5" transform="rotate(144 110 110)"/>
+    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#F5DFA0" opacity=".45" transform="rotate(216 110 110)"/>
+    <ellipse cx="110" cy="65" rx="18" ry="32" fill="#9BAF8E" opacity=".4" transform="rotate(288 110 110)"/>
     <circle cx="110" cy="110" r="12" fill="#F2D9D0" opacity=".85"/>
-    <circle cx="110" cy="110" r="6" fill="#E8C4B8" opacity=".9"/>
+    <circle cx="110" cy="110" r="6" fill="#F3B9C6" opacity=".9"/>
   </svg>
 
   <p class="hero-ey">Vi invitiamo al nostro matrimonio</p>
@@ -124,14 +130,14 @@
     <span class="amp">&amp;</span>
     Francesca
   </h1>
-  <div class="hero-petal-rule"></div>
+  <div class="hero-rule"></div>
   <p class="hero-date">24 &middot; VII &middot; 2027</p>
   <p class="hero-loc">Comiso &mdash; Ispica &middot; Sicilia</p>
   <div class="hero-scroll" aria-hidden="true">
     <span>scopri</span>
     <svg width="16" height="22" viewBox="0 0 16 22" fill="none">
-      <rect x="1" y="1" width="14" height="20" rx="7" stroke="#C9A8C0" stroke-width="1.2"/>
-      <circle cx="8" cy="7" r="2" fill="#C9A8C0">
+      <rect x="1" y="1" width="14" height="20" rx="7" stroke="#F3B9C6" stroke-width="1.2"/>
+      <circle cx="8" cy="7" r="2" fill="#F3B9C6">
         <animate attributeName="cy" values="7;13;7" dur="1.8s" repeatCount="indefinite"/>
         <animate attributeName="opacity" values="1;0.3;1" dur="1.8s" repeatCount="indefinite"/>
       </circle>
@@ -156,7 +162,7 @@
   <div class="section-header">
     <span class="section-tag">La nostra storia</span>
     <h2 class="section-title">Due vite, un unico giorno</h2>
-    <div class="floral-rule"><span>🌿</span></div>
+    <div class="floral-rule"></div>
   </div>
   <div class="intro">
     <p>C'è un momento preciso in cui capisci che quella persona è la tua casa. Per noi è successo qui, in questa terra di sole e sale, tra i profumi della Sicilia.</p>
@@ -172,22 +178,22 @@
     <a class="lcard" href="pages/info.html"><span class="lcard-icon">📍</span><span class="lcard-title">Informazioni</span><span class="lcard-desc">Cerimonia, ricevimento e programma</span><span class="lcard-cta">Scopri →</span></a>
     <a class="lcard" href="pages/rsvp.html"><span class="lcard-icon">✉️</span><span class="lcard-title">RSVP</span><span class="lcard-desc">Conferma entro il 30 Aprile 2027</span><span class="lcard-cta">Rispondi →</span></a>
     <a class="lcard" href="pages/regali.html"><span class="lcard-icon">🎁</span><span class="lcard-title">Regali</span><span class="lcard-desc">Lista nozze e viaggio di nozze</span><span class="lcard-cta">Vedi →</span></a>
-    <a class="lcard" href="pages/album.html"><span class="lcard-icon">📷</span><span class="lcard-title">Album</span><span class="lcard-desc">La nostra storia in immagini</span><span class="lcard-cta">Guarda →</span></a>
+    <a class="lcard" href="pages/album.html"><span class="lcard-icon">📷</span><span class="lcard-title">Album</span><span class="lcard-desc">Foto e video della nostra storia</span><span class="lcard-cta">Guarda →</span></a>
+    <a class="lcard" href="pages/giochi.html"><span class="lcard-icon">🎮</span><span class="lcard-title">Giochi</span><span class="lcard-desc">Sfide e classifica tra ospiti</span><span class="lcard-cta">Gioca →</span></a>
   </div>
 </section>
 
 <section class="section eng reveal">
   <div class="section-header">
     <span class="section-tag">Prossimamente</span>
-    <h2 class="section-title">Giochi & sorprese</h2>
-    <div class="floral-rule"><span>🌸</span></div>
+    <h2 class="section-title">Nuove sorprese</h2>
+    <div class="floral-rule"></div>
   </div>
   <div class="ph-grid">
     <div class="ph-card"><div class="ph-icon">🔮</div><div class="ph-title">Fantasposi</div><span class="ph-badge">Coming soon</span></div>
     <div class="ph-card"><div class="ph-icon">🎯</div><div class="ph-title">Challenges</div><span class="ph-badge">Coming soon</span></div>
     <div class="ph-card"><div class="ph-icon">🧠</div><div class="ph-title">Quiz Sposi</div><span class="ph-badge">Coming soon</span></div>
     <div class="ph-card"><div class="ph-icon">🎙️</div><div class="ph-title">Audio Capsule</div><span class="ph-badge">Coming soon</span></div>
-    <div class="ph-card"><div class="ph-icon">📡</div><div class="ph-title">Live Radar</div><span class="ph-badge">Coming soon</span></div>
   </div>
 </section>
 
