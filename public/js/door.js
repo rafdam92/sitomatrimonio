@@ -1,10 +1,10 @@
-/* door.js — apertura porta + petali */
+/* door.js — apertura porta + petali arcobaleno pastello */
 
 (function () {
   const canvas = document.getElementById('petal-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const COLORS = ['#E8C4B8', '#C9A8C0', '#9BAF8E', '#F2D9D0', '#D4B8C0'];
+  const COLORS = ['#F3B9C6','#F0B888','#F5DFA0','#9BAF8E','#A8CBDD','#C9A8C0','#E8C4B8'];
   let petals = [];
   let running = false;
 
@@ -56,7 +56,7 @@
     canvas.classList.add('active');
     running = true;
     petals = [];
-    for (let i = 0; i < 20; i++) { const p = makePetal(); p.y = Math.random() * canvas.height; petals.push(p); }
+    for (let i = 0; i < 24; i++) { const p = makePetal(); p.y = Math.random() * canvas.height; petals.push(p); }
     requestAnimationFrame(loop);
     setTimeout(() => { running = false; setTimeout(() => canvas.classList.remove('active'), 2000); }, 4500);
   };
