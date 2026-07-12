@@ -37,11 +37,9 @@
 .tl-body strong{display:block;font-size:.82rem;font-weight:500;color:var(--ink);margin-bottom:.18rem}
 .tl-body span{font-size:.74rem;color:var(--mid)}
 
-.maps-grid{display:grid;grid-template-columns:1fr 1fr}
-@media(max-width:580px){.maps-grid{grid-template-columns:1fr}}
-.map-frame{position:relative;height:320px}
-.map-frame iframe{width:100%;height:100%;border:none;filter:saturate(.9) contrast(1.05)}
-.map-cap{position:absolute;bottom:0;left:0;right:0;padding:1rem 1.5rem;background:linear-gradient(transparent,rgba(44,36,32,.8));color:#FEFCF8;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase}
+.watercolor-map-wrap{max-width:620px;margin:0 auto;text-align:center;padding:0 1.5rem}
+.watercolor-map{width:100%;height:auto;display:block;margin:0 auto}
+.wc-links{display:flex;justify-content:center;gap:2rem;margin-top:1.5rem;flex-wrap:wrap}
 
 .arr{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
 .arr-item{display:flex;gap:1rem;align-items:flex-start}
@@ -124,19 +122,113 @@
 <div style="padding:4rem 0 0">
   <div style="text-align:center;padding:0 1.5rem 2.5rem">
     <span class="section-tag">Come arrivare</span>
-    <h2 class="section-title" style="font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(2rem,6vw,3.2rem);color:var(--ink)">Le sedi sulla mappa</h2>
+    <h2 class="section-title" style="font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(2rem,6vw,3.2rem);color:var(--ink)">La nostra Sicilia</h2>
     <div class="floral-rule"></div>
   </div>
-  <div class="maps-grid">
-    <div class="map-frame">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3157.5!2d14.6038!3d36.9475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1313dbb8b0a58b53%3A0x4a97e6b4d5a22a3e!2sChiesa+Maria+SS.+Annunziata%2C+Comiso!5e0!3m2!1sit!2sit" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Chiesa Annunziata Comiso"></iframe>
-      <div class="map-cap">⛪ Chiesa dell'Annunziata — Comiso</div>
-    </div>
-    <div class="map-frame">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.0!2d14.9102!3d36.7841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x131396a04f3c3af5%3A0x0!2sVilla+Anna%2C+Ispica!5e0!3m2!1sit!2sit" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Villa Anna Ispica"></iframe>
-      <div class="map-cap">🥂 Villa Anna — Ispica</div>
-    </div>
+  <div class="watercolor-map-wrap reveal">
+  <svg class="watercolor-map" viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa illustrata della Sicilia con Comiso e Ispica">
+    <defs>
+      <filter id="wc-rough" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="6" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="10"/>
+      </filter>
+      <filter id="wc-rough2" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="14" result="n2"/>
+        <feDisplacementMap in="SourceGraphic" in2="n2" scale="14"/>
+      </filter>
+      <filter id="wc-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="grain"/>
+        <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.03 0"/>
+        <feComposite operator="over" in2="SourceGraphic"/>
+      </filter>
+      <radialGradient id="wc-sea" cx="30%" cy="30%" r="80%">
+        <stop offset="0%" stop-color="#A8CBDD" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#A8CBDD" stop-opacity="0.08"/>
+      </radialGradient>
+    </defs>
+
+    <!-- mare di sfondo -->
+    <rect x="0" y="0" width="600" height="560" fill="url(#wc-sea)"/>
+    <g stroke="#A8CBDD" stroke-width="1.4" fill="none" opacity="0.35">
+      <path d="M20,60 Q40,55 60,60 T100,60" filter="url(#wc-rough2)"/>
+      <path d="M480,40 Q500,35 520,40 T560,40" filter="url(#wc-rough2)"/>
+      <path d="M30,480 Q50,475 70,480 T110,480" filter="url(#wc-rough2)"/>
+      <path d="M470,500 Q490,495 510,500 T550,500" filter="url(#wc-rough2)"/>
+      <path d="M500,250 Q520,245 540,250 T570,250" filter="url(#wc-rough2)"/>
+    </g>
+
+    <!-- isola: doppio strato per effetto acquerello sovrapposto -->
+    <path class="wc-island-under" filter="url(#wc-rough2)"
+      d="M65,190 C55,240 60,290 75,330 C60,370 75,410 105,430
+         C140,460 180,470 220,478 C270,488 330,485 380,470
+         C420,458 445,430 460,395 C480,410 505,405 515,380
+         C525,350 505,320 480,305 C495,270 490,235 465,210
+         C480,180 470,145 440,130 C400,110 350,105 310,95
+         C260,82 210,80 165,95 C120,110 90,145 65,190 Z"
+      fill="#F0B888" opacity="0.28"/>
+
+    <path class="wc-island" filter="url(#wc-rough)"
+      d="M70,185 C58,235 64,285 80,325 C64,365 80,405 110,425
+         C145,455 185,466 225,474 C275,485 332,481 382,466
+         C422,454 448,427 462,392 C482,406 507,400 517,376
+         C527,347 508,317 482,302 C498,268 492,233 467,208
+         C482,178 472,143 442,128 C402,108 352,103 312,93
+         C262,80 212,78 167,93 C122,108 92,142 70,185 Z"
+      fill="#9BAF8E" opacity="0.4"/>
+
+    <path class="wc-island-outline" filter="url(#wc-rough)"
+      d="M70,185 C58,235 64,285 80,325 C64,365 80,405 110,425
+         C145,455 185,466 225,474 C275,485 332,481 382,466
+         C422,454 448,427 462,392 C482,406 507,400 517,376
+         C527,347 508,317 482,302 C498,268 492,233 467,208
+         C482,178 472,143 442,128 C402,108 352,103 312,93
+         C262,80 212,78 167,93 C122,108 92,142 70,185 Z"
+      fill="none" stroke="#6B8560" stroke-width="2" opacity="0.55"/>
+
+    <!-- Etna stilizzato -->
+    <g transform="translate(430,175)" opacity="0.55" filter="url(#wc-rough2)">
+      <path d="M-22,18 L0,-24 L22,18 Z" fill="#C9A8C0" opacity="0.5"/>
+      <ellipse cx="4" cy="-30" rx="10" ry="5" fill="#F5DFA0" opacity="0.6"/>
+    </g>
+
+    <!-- linea tratteggiata che unisce le due tappe della giornata -->
+    <path d="M300,415 C330,435 355,445 385,450" fill="none"
+      stroke="#E88C82" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Comiso -->
+    <g transform="translate(295,415)">
+      <circle r="7" fill="#F3B9C6" stroke="#FEFCF8" stroke-width="2"/>
+      <text x="0" y="-16" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="19" fill="#2C2420">Comiso</text>
+      <text x="0" y="2" text-anchor="middle" font-size="11" dy="24">⛪</text>
+    </g>
+
+    <!-- Ispica -->
+    <g transform="translate(392,452)">
+      <circle r="7" fill="#F0B888" stroke="#FEFCF8" stroke-width="2"/>
+      <text x="14" y="-10" text-anchor="start" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="19" fill="#2C2420">Ispica</text>
+      <text x="14" y="14" text-anchor="start" font-size="11">🥂</text>
+    </g>
+
+    <!-- sole decorativo -->
+    <g transform="translate(505,90)" opacity="0.5">
+      <circle r="16" fill="none" stroke="#F5DFA0" stroke-width="2"/>
+      <g stroke="#F5DFA0" stroke-width="2" stroke-linecap="round">
+        <line x1="0" y1="-24" x2="0" y2="-30"/>
+        <line x1="0" y1="24" x2="0" y2="30"/>
+        <line x1="-24" y1="0" x2="-30" y2="0"/>
+        <line x1="24" y1="0" x2="30" y2="0"/>
+      </g>
+    </g>
+
+    <text x="300" y="30" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="17" fill="#6B8560" opacity="0.8">Sicilia, casa nostra</text>
+  </svg>
+
+  <div class="wc-links">
+    <a class="luogo-link" href="https://maps.google.com/?q=Chiesa+Maria+SS+Annunziata+Comiso" target="_blank" rel="noopener">⛪ Apri Comiso su Maps →</a>
+    <a class="luogo-link" href="https://maps.google.com/?q=Villa+Anna+Ispica" target="_blank" rel="noopener">🥂 Apri Ispica su Maps →</a>
   </div>
+</div>
+
 </div>
 
 <section class="section reveal">
