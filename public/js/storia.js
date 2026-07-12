@@ -12,21 +12,13 @@
   path.style.strokeDasharray  = len;
   path.style.strokeDashoffset = reduceMotion ? 0 : len;
 
-  const petals = track.querySelectorAll('.storia-petal');
-
   function updateVine() {
+    if (reduceMotion) return;
     const rect = track.getBoundingClientRect();
     const vh   = window.innerHeight;
     let progress = (vh - rect.top) / (vh + rect.height);
     progress = Math.max(0, Math.min(1, progress));
-
-    if (!reduceMotion) {
-      path.style.strokeDashoffset = len * (1 - progress);
-      petals.forEach((p, i) => {
-        const speed = 30 + i * 18;
-        p.style.transform = `translateY(${(progress - 0.5) * speed}px)`;
-      });
-    }
+    path.style.strokeDashoffset = len * (1 - progress);
   }
 
   let ticking = false;
