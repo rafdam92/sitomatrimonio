@@ -20,34 +20,33 @@
 .pres-label{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.5rem 1rem;border:1px solid var(--border);cursor:pointer;text-align:center;transition:all .2s;background:var(--milk)}
 .pres-label:hover{background:var(--petal)}
 .pres-label-icon{font-size:1.6rem}
-.pres-label-text{font-size:.74rem;color:var(--mid)}
-.pres-opt input:checked + .pres-label{border-color:var(--mauve);background:rgba(201,160,192,.08)}
-.pres-opt input:checked + .pres-label .pres-label-text{color:var(--mauve);font-weight:500}
+.pres-label-text{font-size:.75rem;color:var(--mid)}
+.pres-opt input:checked + .pres-label{border-color:var(--orange);background:linear-gradient(135deg,rgba(243,185,198,.08),rgba(240,184,136,.08))}
+.pres-opt input:checked + .pres-label .pres-label-text{color:var(--orange);font-weight:500}
 
-.c-lbl{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:.4rem}
-.c-wrap{display:flex;align-items:center;border:1px solid var(--border)}
+.counter-lbl{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:.4rem}
+.counter-wrap{display:flex;align-items:center;border:1px solid var(--border)}
 .c-btn{width:46px;height:46px;font-size:1.2rem;color:var(--mauve);transition:background .2s;flex-shrink:0}
 .c-btn:hover{background:rgba(201,160,192,.1)}
 #guest-count{flex:1;text-align:center;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:.7rem;font-size:1rem;color:var(--ink);background:transparent;font-family:var(--fb)}
 
 .form-submit{display:flex;flex-direction:column;align-items:center;gap:1rem;margin-top:2rem}
-.form-note{font-size:.68rem;color:var(--mid);text-align:center}
+.form-note{font-size:.7rem;color:var(--mid);text-align:center}
 
 #rsvp-success{display:none;text-align:center;padding:4rem 1rem}
 #rsvp-success .s-icon{font-size:3rem;margin-bottom:1rem}
 #rsvp-success h2{font-family:var(--fd);font-style:italic;font-size:2rem;color:var(--ink);margin-bottom:.7rem}
 #rsvp-success p{color:var(--mid);font-size:.95rem}
-
 #pres-err{font-size:.65rem;color:#c0392b;display:none;margin-bottom:.5rem}
 </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a class="nav-brand" href="../index.html">D <span>&amp;</span> F</a>
+  <a class="nav-brand" href="../home.html">D <span>&amp;</span> F</a>
   <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
+    <li><a href="../home.html">Home</a></li>
     <li><a href="info.html">Informazioni</a></li>
     <li><a href="rsvp.html">RSVP</a></li>
     <li><a href="regali.html">Regali</a></li>
@@ -77,13 +76,13 @@
       <div style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:.7rem">Presenza *</div>
       <div class="pres-grid">
         <div class="pres-opt"><input type="radio" name="presenza" id="p-si" value="si"/><label class="pres-label" for="p-si"><span class="pres-label-icon">🥂</span><span class="pres-label-text">Sarò presente!</span></label></div>
-        <div class="pres-opt"><input type="radio" name="presenza" id="p-no" value="no"/><label class="pres-label" for="p-no"><span class="pres-label-icon">😢</span><span class="pres-label-text">Purtroppo non potrò</span></label></div>
+        <div class="pres-opt"><input type="radio" name="presenza" id="p-no" value="no"/><label class="pres-label" for="p-no"><span class="pres-label-icon">😢</span><span class="pres-label-text">Purtroppo non potrò venire</span></label></div>
       </div>
       <span id="pres-err">Seleziona un'opzione</span>
     </div>
     <div id="fw-ospiti" style="display:none;margin-bottom:1.2rem">
-      <div class="c-lbl">Numero di persone</div>
-      <div class="c-wrap">
+      <div class="counter-lbl">Numero di persone</div>
+      <div class="counter-wrap">
         <button type="button" class="c-btn" id="c-minus">−</button>
         <input type="number" id="guest-count" value="1" min="1" max="10" readonly/>
         <button type="button" class="c-btn" id="c-plus">+</button>
@@ -119,27 +118,20 @@
   <p>24 Luglio 2027 · Sicilia</p>
 </footer>
 
-<!-- ══ FIREBASE FIRESTORE ══════════════════════════════════
-     IMPORTANTE: sostituisci firebaseConfig con i tuoi valori
-     reali presi da: Firebase Console → ⚙️ Project Settings →
-     scorri fino a "Le tue app" → clicca l'icona web </>
-════════════════════════════════════════════════════════════ -->
 <script type="module">
   import { initializeApp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // ⚠️ SOSTITUISCI QUESTI VALORI con quelli del tuo progetto Firebase
   const firebaseConfig = {
-  apiKey: "AIzaSyBYhH_Zw9BEKrAy9mM1_EE2MmYJty0jKXk",
-  authDomain: "damianoefrancescawedding.firebaseapp.com",
-  projectId: "damianoefrancescawedding",
-  storageBucket: "damianoefrancescawedding.firebasestorage.app",
-  messagingSenderId: "1073018154819",
-  appId: "1:1073018154819:web:f8c162873eeda558ed89f6",
-  measurementId: "G-MJNEJMRRRL"
-};
+    apiKey: "AIzaSyBYhH_Zw9BEKrAy9mM1_EE2MmYJty0jKXk",
+    authDomain: "damianoefrancescawedding.firebaseapp.com",
+    projectId: "damianoefrancescawedding",
+    storageBucket: "damianoefrancescawedding.firebasestorage.app",
+    messagingSenderId: "1073018154819",
+    appId: "1:1073018154819:web:f8c162873eeda558ed89f6"
+  };
 
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
