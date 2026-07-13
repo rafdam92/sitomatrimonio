@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Capsula Audio — Damiano & Francesca</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+/* ── NAME GATE (stesso pattern di album/giochi) ─────────── */
+#name-gate{max-width:400px;margin:9rem auto 3rem;padding:2.5rem 2rem;text-align:center;border:1px solid var(--border);background:var(--milk);position:relative}
+#name-gate::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient-rainbow)}
+#name-gate h3{font-family:var(--fd);font-style:italic;font-size:1.5rem;margin-bottom:.5rem}
+#name-gate p{font-size:.8rem;color:var(--mid);margin-bottom:1.2rem}
+#player-name-input{width:100%;padding:.8rem 1rem;border:1px solid var(--border);background:transparent;font-family:var(--fb);font-size:.95rem;color:var(--ink);outline:none;text-align:center;margin-bottom:.8rem;transition:border-color .2s}
+#player-name-input:focus{border-color:var(--mauve)}
+#player-name-input::placeholder{color:rgba(122,106,100,.45)}
+
+/* ── MAIN CONTENT ────────────────────────────────────────── */
+#capsule-content{display:none}
+#capsule-content.visible{display:block}
+
+.capsule-hero{padding:9rem 1.5rem 3rem;text-align:center;background:linear-gradient(160deg,var(--petal) 0%,var(--milk) 100%);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.capsule-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 0%,rgba(201,160,192,.2) 0%,transparent 65%);pointer-events:none}
+.capsule-hero-ey{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--sage-dk);margin-bottom:.8rem;position:relative;z-index:1}
+.capsule-hero-title{font-family:var(--fd);font-style:italic;font-weight:400;font-size:clamp(2.4rem,7vw,4rem);color:var(--ink);line-height:1.1;position:relative;z-index:1}
+.capsule-hero-sub{font-size:.9rem;color:var(--mid);max-width:460px;margin:1rem auto 0;line-height:1.85;position:relative;z-index:1}
+.capsule-hero-sub strong{color:var(--mauve)}
+
+.capsule-wrap{max-width:480px;margin:0 auto;padding:3.5rem 1.5rem 5rem;text-align:center}
+
+.privacy-note{
+  display:flex;align-items:center;gap:.6rem;justify-content:center;
+  font-size:.72rem;color:var(--sage-dk);margin-bottom:2.5rem;
+  padding:.7rem 1.2rem;border:1px solid rgba(155,175,142,.3);
+  background:rgba(155,175,142,.06);
+}
+
+/* ── RECORD BUTTON ───────────────────────────────────────── */
+.record-stage{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+
+.record-btn-wrap{position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center}
+.record-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(232,140,130,.3);opacity:0;transform:scale(1)}
+.record-ring.pulsing{animation:ringPulse 1.8s ease-out infinite}
+.record-ring.r2{animation-delay:.6s}
+@keyframes ringPulse{
+  0%{opacity:.6;transform:scale(0.85)}
+  100%{opacity:0;transform:scale(1.5)}
+}
+
+.record-btn{
+  width:110px;height:110px;border-radius:50%;
+  background:linear-gradient(135deg,var(--pink),var(--red));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 30px rgba(232,140,130,.35);
+  transition:transform .2s;
+  position:relative;z-index:1;
+}
+.record-btn:hover{transform:scale(1.05)}
+.record-btn.recording{background:linear-gradient(135deg,#E88C82,#c0392b)}
+.record-btn svg{width:38px;height:38px;stroke:var(--milk);fill:none;stroke-width:1.8}
+.record-btn .icon-stop{display:none}
+.record-btn.recording .icon-mic{display:none}
+.record-btn.recording .icon-stop{display:block}
+
+.record-hint{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
+.record-timer{font-family:var(--fd);font-size:2rem;color:var(--ink);display:none}
+.record-timer.active{display:block}
+
+/* barre livello audio */
+.level-bars{display:none;gap:3px;align-items:flex-end;height:28px}
+.level-bars.active{display:flex}
+.level-bars span{width:3px;background:var(--red);border-radius:2px;height:4px;transition:height .08s}
+
+/* ── PLAYBACK PREVIEW ────────────────────────────────────── */
+.preview-stage{display:none;flex-direction:column;align-items:center;gap:1.2rem;width:100%}
+.preview-stage.visible{display:flex}
+
+.preview-icon{font-size:2.5rem}
+audio.preview-audio{width:100%;max-width:320px}
+
+.preview-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:.5rem}
+.btn-rerecord{
+  padding:.7rem 1.6rem;background:transparent;border:1px solid var(--border);
+  color:var(--mid);font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;font-family:var(--fb);
+}
+.btn-rerecord:hover{background:var(--petal);border-color:var(--mauve)}
+
+/* ── NOTE FIELD ──────────────────────────────────────────── */
+.note-field{width:100%;margin-top:1.5rem;text-align:left}
+.note-field label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:.5rem}
+.note-field input{
+  width:100%;padding:.8rem 1rem;border:1px solid var(--border);background:transparent;
+  font-family:var(--fb);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s;
+}
+.note-field input:focus{border-color:var(--mauve)}
+.note-field input::placeholder{color:rgba(122,106,100,.4)}
+
+/* ── SUCCESS STATE ───────────────────────────────────────── */
+#success-stage{display:none;text-align:center;padding:2rem 1rem}
+#success-stage.visible{display:block}
+.success-icon{font-size:3.2rem;margin-bottom:1rem}
+#success-stage h2{font-family:var(--fd);font-style:italic;font-size:1.9rem;color:var(--ink);margin-bottom:.7rem}
+#success-stage p{color:var(--mid);font-size:.92rem;line-height:1.7;max-width:340px;margin:0 auto}
+
+/* ── ERRORS / UNSUPPORTED ────────────────────────────────── */
+.mic-error{display:none;text-align:center;padding:2rem 1.5rem;border:1px solid rgba(192,57,43,.25);background:rgba(192,57,43,.04);font-size:.85rem;color:var(--mid);line-height:1.7}
+.mic-error.visible{display:block}
+
+/* ── UPLOAD PROGRESS ─────────────────────────────────────── */
+.upload-state{display:none;font-size:.8rem;color:var(--mid);margin-top:1rem}
+.upload-state.visible{display:block}
+</style>
+</head>
+<body>
+
+<!-- NAME GATE -->
+<div id="name-gate">
+  <h3>Come ti chiami?</h3>
+  <p>Il tuo nome accompagnerà il messaggio</p>
+  <input type="text" id="player-name-input" placeholder="Nome e Cognome" autocomplete="name"/>
+  <button class="btn btn-primary" id="name-confirm" style="width:100%">Continua →</button>
+</div>
+
+<!-- MAIN -->
+<div id="capsule-content">
+  <nav class="nav">
+    <a class="nav-brand" href="../home.html">D <span>&amp;</span> F</a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../home.html">Home</a></li>
+      <li><a href="info.html">Informazioni</a></li>
+      <li><a href="rsvp.html">RSVP</a></li>
+      <li><a href="regali.html">Regali</a></li>
+      <li><a href="album.html">Album</a></li>
+      <li><a href="giochi.html">Giochi</a></li>
+      <li><a href="capsula.html">Capsula Audio</a></li>
+    </ul>
+  </nav>
+
+  <div class="capsule-hero">
+    <p class="capsule-hero-ey">Un ricordo per noi</p>
+    <h1 class="capsule-hero-title">Capsula Audio 🎙️</h1>
+    <p class="capsule-hero-sub">Lasciate un messaggio vocale per <strong>Damiano e Francesca</strong> — un augurio, un ricordo, una risata. Lo ascolteremo insieme, con calma, dopo il matrimonio.</p>
+  </div>
+
+  <div class="capsule-wrap">
+    <div class="privacy-note">
+      🔒 <span>Il tuo messaggio è privato: solo gli sposi lo ascolteranno</span>
+    </div>
+
+    <!-- RECORDING STAGE -->
+    <div class="record-stage" id="record-stage">
+      <div class="record-btn-wrap">
+        <div class="record-ring" id="ring1"></div>
+        <div class="record-ring r2" id="ring2"></div>
+        <button class="record-btn" id="record-btn" aria-label="Registra messaggio">
+          <svg class="icon-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          <svg class="icon-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+        </button>
+      </div>
+      <div class="level-bars" id="level-bars"></div>
+      <div class="record-timer" id="record-timer">0:00</div>
+      <p class="record-hint" id="record-hint">Tocca per registrare</p>
+    </div>
+
+    <!-- PREVIEW STAGE -->
+    <div class="preview-stage" id="preview-stage">
+      <div class="preview-icon">💌</div>
+      <audio class="preview-audio" id="preview-audio" controls></audio>
+      <div class="note-field">
+        <label>Per chi è questo messaggio? (opzionale)</label>
+        <input type="text" id="note-input" placeholder="Es. per Francesca, per entrambi…"/>
+      </div>
+      <div class="preview-actions">
+        <button class="btn-rerecord" id="rerecord-btn">↺ Registra di nuovo</button>
+        <button class="btn btn-primary" id="submit-btn">Invia il messaggio</button>
+      </div>
+      <div class="upload-state" id="upload-state">Caricamento in corso…</div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="success-stage">
+      <div class="success-icon">🤍</div>
+      <h2>Grazie di cuore</h2>
+      <p id="success-msg">Il tuo messaggio è al sicuro. Non vediamo l'ora di riascoltarlo insieme.</p>
+      <button class="btn-rerecord" style="margin-top:1.5rem" id="another-btn">Lascia un altro messaggio</button>
+    </div>
+
+    <!-- MIC ERROR -->
+    <div class="mic-error" id="mic-error">
+      🎙️ Non riesco ad accedere al microfono. Controlla di aver dato il permesso al browser,
+      oppure prova da un altro dispositivo (funziona su smartphone e computer moderni).
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="fn">Damiano & Francesca</div>
+    <p>24 Luglio 2027 · Sicilia</p>
+  </footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { getFirestore, collection, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBYhH_Zw9BEKrAy9mM1_EE2MmYJty0jKXk",
+  authDomain: "damianoefrancescawedding.firebaseapp.com",
+  projectId: "damianoefrancescawedding",
+  storageBucket: "damianoefrancescawedding.firebasestorage.app",
+  messagingSenderId: "1073018154819",
+  appId: "1:1073018154819:web:f8c162873eeda558ed89f6"
+};
+const app     = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+const db      = getFirestore(app);
+
+// ── NAME GATE ────────────────────────────────────────────
+let guestName = localStorage.getItem('capsuleGuest') || '';
+if (guestName) enter();
+
+document.getElementById('name-confirm').addEventListener('click', () => {
+  const val = document.getElementById('player-name-input').value.trim();
+  if (val.length < 2) return;
+  guestName = val;
+  localStorage.setItem('capsuleGuest', val);
+  enter();
+});
+document.getElementById('player-name-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('name-confirm').click();
+});
+
+function enter() {
+  document.getElementById('name-gate').style.display = 'none';
+  document.getElementById('capsule-content').classList.add('visible');
+}
+
+// ── RECORDING ────────────────────────────────────────────
+const MAX_SECONDS = 120;
+let mediaRecorder, chunks = [], stream, audioCtx, analyser, levelInterval, timerInterval, seconds = 0;
+let recordedBlob = null;
+
+const recordBtn   = document.getElementById('record-btn');
+const recordStage = document.getElementById('record-stage');
+const previewStage= document.getElementById('preview-stage');
+const timerEl     = document.getElementById('record-timer');
+const hintEl      = document.getElementById('record-hint');
+const ring1       = document.getElementById('ring1');
+const ring2       = document.getElementById('ring2');
+const levelBars   = document.getElementById('level-bars');
+const micError    = document.getElementById('mic-error');
+
+// crea le barre del livello audio
+for (let i = 0; i < 20; i++) {
+  const bar = document.createElement('span');
+  levelBars.appendChild(bar);
+}
+const bars = levelBars.querySelectorAll('span');
+
+function pickMimeType() {
+  const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'];
+  for (const c of candidates) {
+    if (window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c;
+  }
+  return '';
+}
+
+recordBtn.addEventListener('click', async () => {
+  if (recordBtn.classList.contains('recording')) {
+    stopRecording();
+  } else {
+    await startRecording();
+  }
+});
+
+async function startRecording() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (err) {
+    micError.classList.add('visible');
+    return;
+  }
+  micError.classList.remove('visible');
+
+  const mimeType = pickMimeType();
+  mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+  chunks = [];
+
+  mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  mediaRecorder.onstop = onRecordingStop;
+  mediaRecorder.start();
+
+  recordBtn.classList.add('recording');
+  hintEl.textContent = 'Tocca per fermare';
+  timerEl.classList.add('active');
+  levelBars.classList.add('active');
+  ring1.classList.add('pulsing');
+  ring2.classList.add('pulsing');
+
+  seconds = 0;
+  timerEl.textContent = '0:00';
+  timerInterval = setInterval(() => {
+    seconds++;
+    const m = Math.floor(seconds / 60), s = seconds % 60;
+    timerEl.textContent = `${m}:${String(s).padStart(2,'0')}`;
+    if (seconds >= MAX_SECONDS) stopRecording();
+  }, 1000);
+
+  // analizzatore per le barre di livello
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaStreamSource(stream);
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 64;
+  source.connect(analyser);
+  const data = new Uint8Array(analyser.frequencyBinCount);
+
+  levelInterval = setInterval(() => {
+    analyser.getByteFrequencyData(data);
+    bars.forEach((bar, i) => {
+      const v = data[i % data.length] || 0;
+      bar.style.height = Math.max(4, (v / 255) * 28) + 'px';
+    });
+  }, 80);
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  clearInterval(timerInterval);
+  clearInterval(levelInterval);
+  if (audioCtx) audioCtx.close();
+
+  recordBtn.classList.remove('recording');
+  timerEl.classList.remove('active');
+  levelBars.classList.remove('active');
+  ring1.classList.remove('pulsing');
+  ring2.classList.remove('pulsing');
+  bars.forEach(b => b.style.height = '4px');
+}
+
+function onRecordingStop() {
+  const mimeType = mediaRecorder.mimeType || 'audio/webm';
+  recordedBlob = new Blob(chunks, { type: mimeType });
+  const url = URL.createObjectURL(recordedBlob);
+  document.getElementById('preview-audio').src = url;
+
+  recordStage.style.display = 'none';
+  previewStage.classList.add('visible');
+}
+
+// ── RE-RECORD ────────────────────────────────────────────
+document.getElementById('rerecord-btn').addEventListener('click', () => {
+  previewStage.classList.remove('visible');
+  recordStage.style.display = 'flex';
+  hintEl.textContent = 'Tocca per registrare';
+  document.getElementById('note-input').value = '';
+  recordedBlob = null;
+});
+
+// ── SUBMIT ───────────────────────────────────────────────
+document.getElementById('submit-btn').addEventListener('click', async () => {
+  if (!recordedBlob) return;
+  const btn = document.getElementById('submit-btn');
+  const uploadState = document.getElementById('upload-state');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  uploadState.classList.add('visible');
+  uploadState.textContent = 'Caricamento in corso…';
+
+  const ext  = (mediaRecorder.mimeType || '').includes('mp4') ? 'm4a'
+             : (mediaRecorder.mimeType || '').includes('ogg') ? 'ogg' : 'webm';
+  const path = `audio-capsule/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const storRef = ref(storage, path);
+  const task = uploadBytesResumable(storRef, recordedBlob, { contentType: mediaRecorder.mimeType || 'audio/webm' });
+
+  task.on('state_changed',
+    snap => {
+      const pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
+      uploadState.textContent = `Caricamento in corso… ${pct}%`;
+    },
+    err => {
+      console.error(err);
+      uploadState.textContent = 'Errore durante il caricamento. Riprova.';
+      btn.disabled = false;
+      btn.classList.remove('loading');
+    },
+    async () => {
+      const url = await getDownloadURL(task.snapshot.ref);
+      await addDoc(collection(db, 'audioMessages'), {
+        url, path,
+        author: guestName,
+        dedica: document.getElementById('note-input').value.trim(),
+        duration: seconds,
+        timestamp: serverTimestamp(),
+      });
+
+      previewStage.classList.remove('visible');
+      document.getElementById('success-stage').classList.add('visible');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      uploadState.classList.remove('visible');
+    }
+  );
+});
+
+// ── LASCIA UN ALTRO MESSAGGIO ────────────────────────────
+document.getElementById('another-btn').addEventListener('click', () => {
+  document.getElementById('success-stage').classList.remove('visible');
+  recordStage.style.display = 'flex';
+  hintEl.textContent = 'Tocca per registrare';
+  timerEl.textContent = '0:00';
+  document.getElementById('note-input').value = '';
+  recordedBlob = null;
+});
+</script>
+
+<script src="../js/nav.js"></script>
+</body>
+</html>
