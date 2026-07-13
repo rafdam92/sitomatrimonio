@@ -126,101 +126,84 @@
     <div class="floral-rule"></div>
   </div>
   <div class="watercolor-map-wrap reveal">
-  <svg class="watercolor-map" viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa illustrata della Sicilia con Comiso e Ispica">
+  <svg class="watercolor-map" viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Disegno della Sicilia con Comiso e Ispica">
     <defs>
-      <filter id="wc-rough" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="6" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="10"/>
-      </filter>
-      <filter id="wc-rough2" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="14" result="n2"/>
-        <feDisplacementMap in="SourceGraphic" in2="n2" scale="14"/>
-      </filter>
-      <filter id="wc-grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="grain"/>
-        <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.03 0"/>
-        <feComposite operator="over" in2="SourceGraphic"/>
-      </filter>
       <radialGradient id="wc-sea" cx="30%" cy="30%" r="80%">
-        <stop offset="0%" stop-color="#A8CBDD" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="#A8CBDD" stop-opacity="0.08"/>
+        <stop offset="0%" stop-color="#A8CBDD" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#A8CBDD" stop-opacity="0.06"/>
       </radialGradient>
+      <clipPath id="island-clip">
+        <path d="M578.2,38.2 L581.2,48.0 L574.7,48.3 L571.6,52.0 L564.1,51.3 L560.3,55.4 L549.8,68.6 L549.1,87.8 L537.8,100.6 L534.1,117.9 L524.6,131.1 L513.3,143.8 L510.8,160.4 L502.8,174.5 L491.7,187.4 L486.3,202.6 L486.8,210.4 L479.5,213.4 L474.3,217.7 L479.1,228.2 L465.7,233.4 L477.9,244.5 L491.2,254.7 L502.5,266.4 L505.1,285.1 L522.8,294.9 L520.1,312.3 L513.2,328.3 L501.3,342.8 L497.8,360.0 L496.7,372.2 L465.9,357.7 L435.0,343.5 L407.4,323.3 L374.8,312.0 L346.4,293.2 L325.9,279.7 L302.5,272.6 L281.4,260.3 L258.4,252.2 L237.7,239.7 L216.9,240.1 L202.4,228.5 L186.5,219.6 L168.6,214.5 L153.4,205.5 L136.5,200.1 L121.1,191.0 L105.6,181.8 L88.0,178.7 L70.2,172.5 L63.6,167.4 L59.6,160.0 L58.9,149.7 L51.9,144.9 L46.9,140.5 L43.3,129.4 L52.3,121.8 L49.8,111.0 L53.8,102.0 L64.0,99.5 L66.7,87.6 L73.2,79.8 L81.4,73.9 L90.8,69.3 L94.5,63.9 L116.4,57.5 L137.5,59.0 L158.2,63.9 L179.3,64.6 L200.9,64.9 L220.8,79.8 L243.0,81.1 L265.7,79.7 L286.8,87.3 L308.8,87.1 L350.1,90.8 L390.2,81.0 L430.6,75.4 L471.1,70.3 L512.4,71.0 L524.3,61.0 L539.5,58.7 L554.3,55.4 L565.8,44.7 L580.0,40.0 Z"/>
+      </clipPath>
     </defs>
 
-    <!-- mare di sfondo -->
-    <rect x="0" y="0" width="600" height="560" fill="url(#wc-sea)"/>
-    <g stroke="#A8CBDD" stroke-width="1.4" fill="none" opacity="0.35">
-      <path d="M20,60 Q40,55 60,60 T100,60" filter="url(#wc-rough2)"/>
-      <path d="M480,40 Q500,35 520,40 T560,40" filter="url(#wc-rough2)"/>
-      <path d="M30,480 Q50,475 70,480 T110,480" filter="url(#wc-rough2)"/>
-      <path d="M470,500 Q490,495 510,500 T550,500" filter="url(#wc-rough2)"/>
-      <path d="M500,250 Q520,245 540,250 T570,250" filter="url(#wc-rough2)"/>
+    <!-- mare -->
+    <rect x="0" y="0" width="640" height="460" fill="url(#wc-sea)"/>
+    <g stroke="#A8CBDD" stroke-width="2.5" fill="none" opacity="0.4" stroke-linecap="round">
+      <path d="M18,48 Q34,38 50,48 T82,48 T114,48"/>
+      <path d="M18,414 Q34,404 50,414 T82,414 T114,414"/>
+      <path d="M534,414 Q550,404 566,414 T598,414 T630,414"/>
+      <path d="M556,198 Q572,188 588,198 T620,198"/>
     </g>
 
-    <!-- isola: doppio strato per effetto acquerello sovrapposto -->
-    <path class="wc-island-under" filter="url(#wc-rough2)"
-      d="M65,190 C55,240 60,290 75,330 C60,370 75,410 105,430
-         C140,460 180,470 220,478 C270,488 330,485 380,470
-         C420,458 445,430 460,395 C480,410 505,405 515,380
-         C525,350 505,320 480,305 C495,270 490,235 465,210
-         C480,180 470,145 440,130 C400,110 350,105 310,95
-         C260,82 210,80 165,95 C120,110 90,145 65,190 Z"
-      fill="#F0B888" opacity="0.28"/>
+    <!-- Sicilia: contorno "disegnato" — riempimento pieno + doppio tratto a mano -->
+    <path d="M578.2,38.2 L581.2,48.0 L574.7,48.3 L571.6,52.0 L564.1,51.3 L560.3,55.4 L549.8,68.6 L549.1,87.8 L537.8,100.6 L534.1,117.9 L524.6,131.1 L513.3,143.8 L510.8,160.4 L502.8,174.5 L491.7,187.4 L486.3,202.6 L486.8,210.4 L479.5,213.4 L474.3,217.7 L479.1,228.2 L465.7,233.4 L477.9,244.5 L491.2,254.7 L502.5,266.4 L505.1,285.1 L522.8,294.9 L520.1,312.3 L513.2,328.3 L501.3,342.8 L497.8,360.0 L496.7,372.2 L465.9,357.7 L435.0,343.5 L407.4,323.3 L374.8,312.0 L346.4,293.2 L325.9,279.7 L302.5,272.6 L281.4,260.3 L258.4,252.2 L237.7,239.7 L216.9,240.1 L202.4,228.5 L186.5,219.6 L168.6,214.5 L153.4,205.5 L136.5,200.1 L121.1,191.0 L105.6,181.8 L88.0,178.7 L70.2,172.5 L63.6,167.4 L59.6,160.0 L58.9,149.7 L51.9,144.9 L46.9,140.5 L43.3,129.4 L52.3,121.8 L49.8,111.0 L53.8,102.0 L64.0,99.5 L66.7,87.6 L73.2,79.8 L81.4,73.9 L90.8,69.3 L94.5,63.9 L116.4,57.5 L137.5,59.0 L158.2,63.9 L179.3,64.6 L200.9,64.9 L220.8,79.8 L243.0,81.1 L265.7,79.7 L286.8,87.3 L308.8,87.1 L350.1,90.8 L390.2,81.0 L430.6,75.4 L471.1,70.3 L512.4,71.0 L524.3,61.0 L539.5,58.7 L554.3,55.4 L565.8,44.7 L580.0,40.0 Z"
+      fill="#9BAF8E" opacity="0.65"/>
 
-    <path class="wc-island" filter="url(#wc-rough)"
-      d="M70,185 C58,235 64,285 80,325 C64,365 80,405 110,425
-         C145,455 185,466 225,474 C275,485 332,481 382,466
-         C422,454 448,427 462,392 C482,406 507,400 517,376
-         C527,347 508,317 482,302 C498,268 492,233 467,208
-         C482,178 472,143 442,128 C402,108 352,103 312,93
-         C262,80 212,78 167,93 C122,108 92,142 70,185 Z"
-      fill="#9BAF8E" opacity="0.4"/>
-
-    <path class="wc-island-outline" filter="url(#wc-rough)"
-      d="M70,185 C58,235 64,285 80,325 C64,365 80,405 110,425
-         C145,455 185,466 225,474 C275,485 332,481 382,466
-         C422,454 448,427 462,392 C482,406 507,400 517,376
-         C527,347 508,317 482,302 C498,268 492,233 467,208
-         C482,178 472,143 442,128 C402,108 352,103 312,93
-         C262,80 212,78 167,93 C122,108 92,142 70,185 Z"
-      fill="none" stroke="#6B8560" stroke-width="2" opacity="0.55"/>
-
-    <!-- Etna stilizzato -->
-    <g transform="translate(430,175)" opacity="0.55" filter="url(#wc-rough2)">
-      <path d="M-22,18 L0,-24 L22,18 Z" fill="#C9A8C0" opacity="0.5"/>
-      <ellipse cx="4" cy="-30" rx="10" ry="5" fill="#F5DFA0" opacity="0.6"/>
+    <!-- scarabocchi di colorazione, tipici di un bambino che non sta nei bordi perfettamente -->
+    <g clip-path="url(#island-clip)" opacity="0.28" stroke="#6B8560" stroke-width="6" fill="none" stroke-linecap="round">
+      <path d="M120,120 Q220,90 320,130 T520,140"/>
+      <path d="M100,250 Q220,290 340,250 T500,260"/>
+      <path d="M150,350 Q280,330 400,360"/>
     </g>
 
-    <!-- linea tratteggiata che unisce le due tappe della giornata -->
-    <path d="M300,415 C330,435 355,445 385,450" fill="none"
-      stroke="#E88C82" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" opacity="0.7"/>
+    <!-- secondo passaggio del contorno, leggermente diverso: l'effetto "ripassato a mano" -->
+    <path d="M585.2,45.2 L569.3,37.8 L571.4,48.4 L572.5,58.0 L573.1,63.0 L558.3,78.6 L540.4,92.3 L526.2,108.3 L521.8,129.8 L519.0,150.7 L504.6,166.5 L487.0,180.8 L486.4,202.6 L475.5,205.2 L475.3,214.5 L481.8,228.0 L465.5,233.5 L479.9,248.0 L494.7,262.2 L510.8,275.4 L516.5,292.9 L520.2,316.9 L507.6,335.7 L501.3,356.5 L499.8,366.7 L460.3,350.3 L418.8,337.6 L383.0,314.7 L342.5,301.6 L321.7,274.4 L292.6,265.0 L262.0,259.1 L237.7,239.8 L216.7,230.7 L193.8,225.2 L177.4,207.3 L155.3,200.0 L136.0,188.7 L113.6,185.7 L89.7,187.0 L68.6,174.0 L58.7,169.0 L61.9,152.6 L56.9,143.2 L53.3,142.3 L44.9,127.3 L47.1,115.3 L61.4,106.6 L65.9,101.6 L62.1,78.9 L76.4,75.9 L80.4,61.7 L94.3,65.7 L120.7,66.6 L147.9,60.7 L173.8,66.8 L199.8,71.3 L228.0,70.5 L253.8,83.3 L282.0,82.9 L308.3,81.5 L359.8,85.0 L410.7,81.9 L460.7,69.3 L510.0,65.5 L532.6,70.7 L546.6,56.4 L562.5,46.5 L580.0,40.0 Z"
+      fill="none" stroke="#5A7550" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
+
+    <path d="M578.2,38.2 L581.2,48.0 L574.7,48.3 L571.6,52.0 L564.1,51.3 L560.3,55.4 L549.8,68.6 L549.1,87.8 L537.8,100.6 L534.1,117.9 L524.6,131.1 L513.3,143.8 L510.8,160.4 L502.8,174.5 L491.7,187.4 L486.3,202.6 L486.8,210.4 L479.5,213.4 L474.3,217.7 L479.1,228.2 L465.7,233.4 L477.9,244.5 L491.2,254.7 L502.5,266.4 L505.1,285.1 L522.8,294.9 L520.1,312.3 L513.2,328.3 L501.3,342.8 L497.8,360.0 L496.7,372.2 L465.9,357.7 L435.0,343.5 L407.4,323.3 L374.8,312.0 L346.4,293.2 L325.9,279.7 L302.5,272.6 L281.4,260.3 L258.4,252.2 L237.7,239.7 L216.9,240.1 L202.4,228.5 L186.5,219.6 L168.6,214.5 L153.4,205.5 L136.5,200.1 L121.1,191.0 L105.6,181.8 L88.0,178.7 L70.2,172.5 L63.6,167.4 L59.6,160.0 L58.9,149.7 L51.9,144.9 L46.9,140.5 L43.3,129.4 L52.3,121.8 L49.8,111.0 L53.8,102.0 L64.0,99.5 L66.7,87.6 L73.2,79.8 L81.4,73.9 L90.8,69.3 L94.5,63.9 L116.4,57.5 L137.5,59.0 L158.2,63.9 L179.3,64.6 L200.9,64.9 L220.8,79.8 L243.0,81.1 L265.7,79.7 L286.8,87.3 L308.8,87.1 L350.1,90.8 L390.2,81.0 L430.6,75.4 L471.1,70.3 L512.4,71.0 L524.3,61.0 L539.5,58.7 L554.3,55.4 L565.8,44.7 L580.0,40.0 Z"
+      fill="none" stroke="#4A5F42" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+    <!-- Etna, disegno semplice e giocoso -->
+    <g transform="translate(472,148)">
+      <path d="M-17.3,14.2 L-0.7,-19.5 L16.6,11.8 Z" fill="#C9A8C0" stroke="#8B6F8A" stroke-width="2.5" stroke-linejoin="round" opacity="0.85"/>
+      <path d="M-2,-14 Q3,-24 8,-15 Q10,-10 4,-8 Z" fill="#F5DFA0" opacity="0.8"/>
+    </g>
+
+    <!-- linea tratteggiata a mano tra le due tappe -->
+    <path d="M406,320 Q422,330 435,338 Q447,346 457,354" fill="none"
+      stroke="#E88C82" stroke-width="3" stroke-dasharray="1 9" stroke-linecap="round" opacity="0.8"/>
 
     <!-- Comiso -->
-    <g transform="translate(295,415)">
-      <circle r="7" fill="#F3B9C6" stroke="#FEFCF8" stroke-width="2"/>
-      <text x="0" y="-16" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="19" fill="#2C2420">Comiso</text>
-      <text x="0" y="2" text-anchor="middle" font-size="11" dy="24">⛪</text>
+    <g transform="translate(406,320)">
+      <circle r="8" fill="#F3B9C6" stroke="#2C2420" stroke-width="2"/>
+      <text x="0" y="-16" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="20" fill="#2C2420">Comiso</text>
+      <text x="-33" y="6" font-size="14">⛪</text>
     </g>
 
     <!-- Ispica -->
-    <g transform="translate(392,452)">
-      <circle r="7" fill="#F0B888" stroke="#FEFCF8" stroke-width="2"/>
-      <text x="14" y="-10" text-anchor="start" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="19" fill="#2C2420">Ispica</text>
-      <text x="14" y="14" text-anchor="start" font-size="11">🥂</text>
+    <g transform="translate(457,354)">
+      <circle r="8" fill="#F0B888" stroke="#2C2420" stroke-width="2"/>
+      <text x="15" y="-10" text-anchor="start" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="20" fill="#2C2420">Ispica</text>
+      <text x="15" y="16" font-size="14">🥂</text>
     </g>
 
-    <!-- sole decorativo -->
-    <g transform="translate(505,90)" opacity="0.5">
-      <circle r="16" fill="none" stroke="#F5DFA0" stroke-width="2"/>
-      <g stroke="#F5DFA0" stroke-width="2" stroke-linecap="round">
-        <line x1="0" y1="-24" x2="0" y2="-30"/>
-        <line x1="0" y1="24" x2="0" y2="30"/>
-        <line x1="-24" y1="0" x2="-30" y2="0"/>
-        <line x1="24" y1="0" x2="30" y2="0"/>
+    <!-- sole con raggi irregolari, stile disegno di un bambino -->
+    <g transform="translate(560,320)" opacity="0.75">
+      <circle r="17" fill="#F5DFA0" stroke="#D9A93E" stroke-width="2.5" opacity="0.9"/>
+      <g stroke="#D9A93E" stroke-width="3" stroke-linecap="round">
+        <line x1="17.0" y1="-0.2" x2="28.6" y2="-0.3"/>
+        <line x1="13.2" y1="10.7" x2="24.8" y2="20.3"/>
+        <line x1="2.3" y1="16.8" x2="4.1" y2="29.2"/>
+        <line x1="-13.3" y1="10.6" x2="-20.8" y2="16.6"/>
+        <line x1="-17.0" y1="-0.3" x2="-30.3" y2="-0.5"/>
+        <line x1="-13.5" y1="-10.4" x2="-22.7" y2="-17.5"/>
+        <line x1="1.0" y1="-17.0" x2="1.7" y2="-29.1"/>
+        <line x1="12.8" y1="-11.2" x2="20.3" y2="-17.9"/>
       </g>
     </g>
 
-    <text x="300" y="30" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="17" fill="#6B8560" opacity="0.8">Sicilia, casa nostra</text>
+    <text x="320" y="26" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="18" fill="#6B8560">Sicilia, casa nostra</text>
   </svg>
 
   <div class="wc-links">
